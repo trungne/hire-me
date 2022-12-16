@@ -28,6 +28,7 @@ const provider = new GoogleAuthProvider();
 const Home: NextPage = () => {
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
+  const [idToken, setIdToken] = useState<string>();
   return (
     <>
       <Head>
@@ -76,6 +77,7 @@ const Home: NextPage = () => {
         }
       >
         <>
+          <Text>Id token: {idToken}</Text>
           <button
             onClick={() => {
               signOut(auth)
@@ -100,7 +102,7 @@ const Home: NextPage = () => {
                   // The signed-in user info.
                   const user = result.user;
                   const idToken = await user.getIdToken();
-                  console.log("idToken", idToken);
+                  setIdToken(idToken)
                   // ...
                 })
                 .catch((error) => {
