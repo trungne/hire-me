@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   AppShell,
   Navbar,
@@ -18,6 +18,7 @@ import {
   getAuth,
   signInWithPopup,
   GoogleAuthProvider,
+  onAuthStateChanged,
   signOut,
 } from "firebase/auth";
 import SideBar from "components/SideBar";
@@ -29,6 +30,24 @@ const Home: NextPage = () => {
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
   const [idToken, setIdToken] = useState<string>();
+
+  useEffect(() => {
+    const subscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/firebase.User
+        const uid = user.uid;
+        setIdToken(await user.getIdToken());
+        // ...
+      } else {
+        // User is signed out
+        // ...
+      }
+    });
+    return () => {
+      subscribe();
+    };
+  }, []);
   return (
     <>
       <Head>
@@ -102,7 +121,7 @@ const Home: NextPage = () => {
                   // The signed-in user info.
                   const user = result.user;
                   const idToken = await user.getIdToken();
-                  setIdToken(idToken)
+                  setIdToken(idToken);
                   // ...
                 })
                 .catch((error) => {
