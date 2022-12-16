@@ -1,8 +1,16 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import type { NextPage } from "next";
+import Head from "next/head";
+import Image from "next/image";
+import styles from "../styles/Home.module.css";
+import {
+  getAuth,
+  signInWithPopup,
+  GoogleAuthProvider,
+  signOut,
+} from "firebase/auth";
 
+const auth = getAuth();
+const provider = new GoogleAuthProvider();
 const Home: NextPage = () => {
   return (
     <div className={styles.container}>
@@ -13,12 +21,54 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
+        <button
+          onClick={() => {
+            signOut(auth)
+              .then(() => {
+                // Sign-out successful.
+              })
+              .catch((error) => {
+                // An error happened.
+              });
+          }}
+        >
+          Log out
+        </button>
+        <button
+          onClick={() => {
+            signInWithPopup(auth, provider)
+              .then(async (result) => {
+                // This gives you a Google Access Token. You can use it to access the Google API.
+                const credential =
+                  GoogleAuthProvider.credentialFromResult(result);
+                const token = credential?.accessToken;
+                // The signed-in user info.
+                const user = result.user;
+                const idToken = await user.getIdToken();
+                console.log("idToken", idToken);
+                // ...
+              })
+              .catch((error) => {
+                // Handle Errors here.
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                // The email of the user's account used.
+                const email = error.customData.email;
+                // The AuthCredential type that was used.
+                const credential =
+                  GoogleAuthProvider.credentialFromError(error);
+                // ...
+              });
+          }}
+        >
+          Login
+        </button>
         <h1 className={styles.title}>
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
 
         <p className={styles.description}>
-          Get started by editing{' '}
+          Get started by editing{" "}
           <code className={styles.code}>pages/index.tsx</code>
         </p>
 
@@ -59,14 +109,14 @@ const Home: NextPage = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Powered by{' '}
+          Powered by{" "}
           <span className={styles.logo}>
             <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
           </span>
         </a>
       </footer>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
