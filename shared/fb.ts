@@ -6,15 +6,22 @@ import { getAuth } from "firebase/auth";
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
-const firebaseConfig: FirebaseOptions = {
-  apiKey: process.env.NEXT_PUBLIC_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_APP_ID,
+// const firebaseConfig: FirebaseOptions = {
+//   apiKey: process.env.NEXT_PUBLIC_API_KEY,
+//   authDomain: process.env.NEXT_PUBLIC_AUTH_DOMAIN,
+//   projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
+//   storageBucket: process.env.NEXT_PUBLIC_STORAGE_BUCKET,
+//   messagingSenderId: process.env.NEXT_PUBLIC_MESSAGING_SENDER_ID,
+//   appId: process.env.NEXT_PUBLIC_APP_ID,
+// };
+const firebaseConfig = {
+  apiKey: "AIzaSyBFh6kgA65hEKFTzwfJsSiSaHitlyOo5AM",
+  authDomain: "hire-me-68593.firebaseapp.com",
+  projectId: "hire-me-68593",
+  storageBucket: "hire-me-68593.appspot.com",
+  messagingSenderId: "680026127937",
+  appId: "1:680026127937:web:2f29c85f3ee28b746f50c0",
 };
-
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
 export const firebaseAuth = getAuth();
