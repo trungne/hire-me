@@ -75,7 +75,7 @@ const Home: NextPage = () => {
           </Header>
         }
       >
-        {/* <>
+        <>
           <button
             onClick={() => {
               signOut(auth)
@@ -118,7 +118,7 @@ const Home: NextPage = () => {
           >
             Login
           </button>
-        </> */}
+        </>
       </AppShell>
     </>
   );
