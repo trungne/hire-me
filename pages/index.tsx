@@ -42,6 +42,7 @@ const Home: NextPage = () => {
       } else {
         // User is signed out
         // ...
+        setIdToken("");
       }
     });
     return () => {
