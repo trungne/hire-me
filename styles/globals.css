@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 html,
 body {
   padding: 0;
@@ -28,4 +27,8 @@ a {
     color: white;
     background: black;
   }
+}
+
+.mantine-Navbar-root {
+  background-color: rgb(156 163 175);
 }

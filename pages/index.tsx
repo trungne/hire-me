@@ -77,6 +77,7 @@ const Home: NextPage = () => {
       </div> */}
       <Tabs
         classNames={{
+          root: "bg-slate-50",
           tabLabel: "font-['Montserrat']",
           panel: "h-full",
         }}
