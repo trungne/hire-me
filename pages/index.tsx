@@ -31,7 +31,6 @@ const Home: NextPage = () => {
   // const { data, isLoading } = useQuery("CVs", getCVs);
 
   const [navBar, setNavBar] = useAtom(navBarAtom);
-  console.log("navBar", navBar);
   useEffect(() => {
     const persistentNavBar = localStorage.getItem(
       CURRENT_NAV_BAR_LOCAL_STORAGE
@@ -43,8 +42,8 @@ const Home: NextPage = () => {
       )
     ) {
       setNavBar(persistentNavBar as NavCategoryValueType);
-      console.log("persistentNavBar", persistentNavBar);
-      console.log("current navBar", persistentNavBar);
+    } else {
+      setNavBar("Template");
     }
   }, []);
   useEffect(() => {

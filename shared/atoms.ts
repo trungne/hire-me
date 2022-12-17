@@ -1,11 +1,14 @@
 import { atom } from "jotai";
 import axiosInstance from "./axios-settings";
-import { CURRENT_NAV_BAR_LOCAL_STORAGE, NAV_BAR } from "./constants";
+import { CURRENT_NAV_BAR_LOCAL_STORAGE } from "./constants";
 import { NavCategoryValueType } from "./types";
 
-export const navBarPersistentAtom = atom<NavCategoryValueType>("Template");
+export const navBarPersistentAtom = atom<NavCategoryValueType | null>(null);
 
-export const navBarAtom = atom<NavCategoryValueType, NavCategoryValueType>(
+export const navBarAtom = atom<
+  NavCategoryValueType | null,
+  NavCategoryValueType
+>(
   (get) => get(navBarPersistentAtom),
   (get, set, update) => {
     set(navBarPersistentAtom, update);
