@@ -25,6 +25,8 @@ import SideBar from "components/SideBar";
 import Footer from "components/Footer";
 import { useAtom } from "jotai";
 import { writeIdTokenAtom } from "shared/atoms";
+import { useQuery } from "react-query";
+import { getCVs } from "shared/queries";
 
 const auth = getAuth();
 const provider = new GoogleAuthProvider();
@@ -32,6 +34,7 @@ const Home: NextPage = () => {
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
   const [_, setIdToken] = useAtom(writeIdTokenAtom);
+  const { data, isLoading } = useQuery("CVs", getCVs);
 
   useEffect(() => {
     const subscribe = onAuthStateChanged(auth, async (user) => {
@@ -98,7 +101,7 @@ const Home: NextPage = () => {
         }
       >
         <>
-        <button>Get cat fact</button>
+          <div>{data}</div>
           <button
             onClick={async () => {
               try {
