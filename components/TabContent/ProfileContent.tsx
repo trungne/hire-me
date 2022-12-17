@@ -2,9 +2,10 @@ import TabContent from "./TabContent";
 import { useForm } from "@mantine/form";
 import { TextInput, Button } from "@mantine/core";
 import { CommonTabContentType } from ".";
+import { ProfileInfo } from "shared/types";
 
 const ProfileContent = ({ setNavBar }: CommonTabContentType) => {
-  const form = useForm({
+  const form = useForm<ProfileInfo>({
     initialValues: {
       fullName: "",
       email: "",
@@ -18,6 +19,7 @@ const ProfileContent = ({ setNavBar }: CommonTabContentType) => {
       email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
       phoneNumber: (value) =>
         value.length > 0 ? null : "Invalid phone number",
+      location: (value) => (!!value ? null : "Invalid location"),
     },
   });
 

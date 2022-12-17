@@ -11,3 +11,23 @@ export const NavCategory = {
 export type NavCategoryType = keyof typeof NavCategory;
 export type NavCategoryValueType = typeof NavCategory[keyof typeof NavCategory];
 export type SetNavBar = (update: NavCategoryValueType) => void;
+
+// Tab Content Types
+
+export type ProfileInfo = {
+  fullName: string;
+  email: string;
+  phoneNumber: string;
+  location: string;
+  website?: string;
+};
+
+export type EducationInfo = {
+  schoolName: string;
+  schoolLocation: string;
+  degree: string;
+  major: string;
+  GPA: number;
+  startDate: string;
+  endDate: string;
+};
