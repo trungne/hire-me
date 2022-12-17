@@ -1,8 +1,9 @@
 import TabContent from "./TabContent";
 import { useForm } from "@mantine/form";
-import { TextInput, Group, Button } from "@mantine/core";
+import { TextInput, Button } from "@mantine/core";
+import { CommonTabContentType } from ".";
 
-const ProfileContent = () => {
+const ProfileContent = ({ setNavBar }: CommonTabContentType) => {
   const form = useForm({
     initialValues: {
       fullName: "",
@@ -22,11 +23,11 @@ const ProfileContent = () => {
 
   return (
     <TabContent title="Enter your personal information">
-      <div>
-        <form
-          className="flex flex-col gap-4"
-          onSubmit={form.onSubmit((values) => console.log(values))}
-        >
+      <form
+        className="grow flex flex-col"
+        onSubmit={form.onSubmit((values) => console.log(values))}
+      >
+        <div className="flex flex-col gap-4">
           <TextInput
             withAsterisk
             label="Full name"
@@ -56,12 +57,28 @@ const ProfileContent = () => {
             placeholder="myawesomewebsite.com"
             {...form.getInputProps("website")}
           />
+        </div>
 
-          <Group position="right" mt="md">
-            <Button type="submit">Submit</Button>
-          </Group>
-        </form>
-      </div>
+        <div className="flex justify-between mt-auto">
+          <Button
+            onClick={() => {
+              setNavBar("Template");
+            }}
+          >
+            Previous
+          </Button>
+          <Button
+            onClick={() => {
+              if (form.isValid()) {
+                setNavBar("Education");
+              }
+            }}
+            type="submit"
+          >
+            Next
+          </Button>
+        </div>
+      </form>
     </TabContent>
   );
 };

@@ -74,6 +74,7 @@ const Home: NextPage = () => {
       <Tabs
         classNames={{
           tabLabel: "font-['Montserrat']",
+          panel: "h-full",
         }}
         orientation="vertical"
         value={navBar}
@@ -96,7 +97,7 @@ const Home: NextPage = () => {
           navbarOffsetBreakpoint="sm"
           asideOffsetBreakpoint="sm"
           navbar={<SideBar isOpened={opened} />}
-          footer={<Footer />}
+          // footer={<Footer />}
           header={
             <Header height={{ base: 50, md: 70 }} p="md">
               <div
@@ -122,10 +123,10 @@ const Home: NextPage = () => {
           }
         >
           <Tabs.Panel value={NavCategory.TEMPLATE}>
-            <TemplateContent />
+            <TemplateContent setNavBar={setNavBar} />
           </Tabs.Panel>
           <Tabs.Panel value={NavCategory.PROFILE}>
-            <ProfileContent />
+            <ProfileContent setNavBar={setNavBar} />
           </Tabs.Panel>
           <Tabs.Panel value={NavCategory.EDUCATION}>Education</Tabs.Panel>
           <Tabs.Panel value={NavCategory.WORK}>Work</Tabs.Panel>

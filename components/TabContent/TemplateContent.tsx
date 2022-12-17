@@ -1,9 +1,26 @@
-import TabContent from "./TabContent"
+import { Button } from "@mantine/core";
+import { useAtom } from "jotai";
+import { CommonTabContentType } from ".";
+import TabContent from "./TabContent";
 
-const TemplateContent = () => {
-    return (<TabContent title="Choose a template">
+const TemplateContent = ({ setNavBar }: CommonTabContentType) => {
+  return (
+    <TabContent title="Choose a template">
+      <div></div>
+
+      <div className="flex justify-between mt-auto">
         <div></div>
-    </TabContent>)
-}
+        <Button
+          onClick={() => {
+            setNavBar("Profile");
+          }}
+          type="submit"
+        >
+          Next
+        </Button>
+      </div>
+    </TabContent>
+  );
+};
 
-export default TemplateContent
+export default TemplateContent;
