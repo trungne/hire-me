@@ -9,4 +9,5 @@ export const NavCategory = {
 } as const;
 
 export type NavCategoryType = keyof typeof NavCategory;
-export type type = typeof NavCategory
+export type NavCategoryValueType = typeof NavCategory[keyof typeof NavCategory];
+export type type = typeof NavCategory;

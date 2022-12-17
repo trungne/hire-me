@@ -11,24 +11,42 @@ import {
   useMantineTheme,
   Tabs,
 } from "@mantine/core";
-import { getAuth, GoogleAuthProvider, onAuthStateChanged } from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { GetStaticProps } from "next";
 
 import SideBar from "components/SideBar";
 import Footer from "components/Footer";
-import { writeIdTokenAtom } from "shared/atoms";
-import { NavCategory } from "shared/types";
+import { navBarAtom, writeIdTokenAtom } from "shared/atoms";
+import { NavCategory, NavCategoryValueType } from "shared/types";
 import TabContent from "components/TabContent/TabContent";
 import TemplateContent from "components/TabContent/TemplateContent";
 import ProfileContent from "components/TabContent/ProfileContent";
+import { CURRENT_NAV_BAR_LOCAL_STORAGE, NAV_BAR } from "shared/constants";
 
 const auth = getAuth();
-const provider = new GoogleAuthProvider();
 const Home: NextPage = () => {
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
   const [_, setIdToken] = useAtom(writeIdTokenAtom);
   // const { data, isLoading } = useQuery("CVs", getCVs);
 
+  const [navBar, setNavBar] = useAtom(navBarAtom);
+  console.log("navBar", navBar);
+  useEffect(() => {
+    const persistentNavBar = localStorage.getItem(
+      CURRENT_NAV_BAR_LOCAL_STORAGE
+    );
+    if (
+      persistentNavBar &&
+      Object.values(NavCategory).includes(
+        persistentNavBar as NavCategoryValueType
+      )
+    ) {
+      setNavBar(persistentNavBar as NavCategoryValueType);
+      console.log("persistentNavBar", persistentNavBar);
+      console.log("current navBar", persistentNavBar);
+    }
+  }, []);
   useEffect(() => {
     const subscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
@@ -59,7 +77,13 @@ const Home: NextPage = () => {
           tabLabel: "font-['Montserrat']",
         }}
         orientation="vertical"
-        defaultValue={NavCategory.TEMPLATE}
+        value={navBar}
+        onTabChange={(value) => {
+          if (value) {
+            console.log("set nav bar on tab change", value);
+            setNavBar(value as typeof NavCategory[keyof typeof NavCategory]);
+          }
+        }}
       >
         <AppShell
           styles={{
