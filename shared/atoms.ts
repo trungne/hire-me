@@ -1,5 +1,4 @@
-import { atom, useAtom } from "jotai";
-import { ResumeInfoCategory } from "./types";
+import { atom } from "jotai";
+import { ResumeCategory } from "./types";
 
-export const infoCategoryAtom = atom<ResumeInfoCategory>("Template");
-
+export const infoCategoryAtom = atom<ResumeCategory>("TEMPLATE");

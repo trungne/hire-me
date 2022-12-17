@@ -97,6 +97,7 @@ const Home: NextPage = () => {
         }
       >
         <>
+          {JSON.stringify(auth)}
           <Text>Id token: {idToken}</Text>
           <button
             onClick={() => {

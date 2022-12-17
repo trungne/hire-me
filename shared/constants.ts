@@ -1,11 +1,10 @@
-import { ResumeInfoCategory } from "./types";
+export const RESUME_INFO_CATEGORIES = {
+  TEMPLATE: "Template",
+  PROFILE: "Profile",
+  EDUCATION: "Education",
+  WORK: "Work",
+  SKILLS: "Skills",
+  AWARDS: "Awards",
+  PROJECTS: "Projects",
+} as const;
 
-export const CATEGORIES: ResumeInfoCategory[] = [
-  "Template",
-  "Profile",
-  "Education",
-  "Work",
-  "Skills",
-  "Profile",
-  "Awards",
-];
