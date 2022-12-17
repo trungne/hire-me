@@ -90,7 +90,7 @@ const Home: NextPage = () => {
         }}
       >
         <SideBar isOpened={opened}></SideBar>
-        <div className="overflow-y-auto max-h-screen w-full scrollbar-hide p-4">
+        <div className="overflow-y-auto max-h-screen min-h-screen w-full scrollbar-hide p-4">
           <Tabs.Panel value={NavCategory.TEMPLATE}>
             <TemplateContent setNavBar={setNavBar} />
           </Tabs.Panel>
