@@ -112,6 +112,7 @@ const Home: NextPage = () => {
           <button
             onClick={async () => {
               try {
+                setIdToken("Log in");
                 const result = await signInWithPopup(auth, provider);
                 const credential =
                   GoogleAuthProvider.credentialFromResult(result);
