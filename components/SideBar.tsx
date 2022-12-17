@@ -1,9 +1,14 @@
-import { Navbar, Text } from "@mantine/core";
+import { Navbar } from "@mantine/core";
+
 import { memo } from "react";
+import { NAV_BAR } from "shared/constants";
+import { NavCategory } from "shared/types";
+import { Tabs } from "@mantine/core";
 
 type Props = {
   isOpened: boolean;
 };
+
 const SideBar = ({ isOpened }: Props) => {
   return (
     <Navbar
@@ -12,15 +17,15 @@ const SideBar = ({ isOpened }: Props) => {
       hidden={!isOpened}
       width={{ sm: 200, lg: 300 }}
     >
-      <div>
-        Template
-      </div>
-      <div>
-        Profile
-      </div>
-      <div>
-        Education
-      </div>
+      <Tabs.List>
+        {NAV_BAR.map((category) => {
+          return (
+            <Tabs.Tab unstyled={true} value={NavCategory[category]} key={category}>
+              {NavCategory[category]}
+            </Tabs.Tab>
+          );
+        })}
+      </Tabs.List>
     </Navbar>
   );
 };

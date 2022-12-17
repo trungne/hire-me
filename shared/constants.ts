@@ -1,14 +1,15 @@
 import { QueryClient } from "react-query";
+import { NavCategoryType } from "./types";
 
-export const RESUME_INFO_CATEGORIES = {
-  TEMPLATE: "Template",
-  PROFILE: "Profile",
-  EDUCATION: "Education",
-  WORK: "Work",
-  SKILLS: "Skills",
-  AWARDS: "Awards",
-  PROJECTS: "Projects",
-} as const;
+export const NAV_BAR: NavCategoryType[] = [
+  "TEMPLATE",
+  "PROFILE",
+  "EDUCATION",
+  "WORK",
+  "SKILLS",
+  "PROJECTS",
+  "AWARDS",
+];
 
 export const QUERY_CLIENT = new QueryClient();
 

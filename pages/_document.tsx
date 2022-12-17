@@ -9,8 +9,13 @@ export default class _Document extends Document {
   render() {
     return (
       <Html>
-        <Head />
-        <body>
+        <Head>
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200..900&display=swap"
+          />
+        </Head>
+        <body className="font-['Montserrat']">
           <Main />
           <NextScript />
         </body>

@@ -1,3 +1,12 @@
-import { RESUME_INFO_CATEGORIES } from "./constants";
+export const NavCategory = {
+  TEMPLATE: "Template",
+  PROFILE: "Profile",
+  EDUCATION: "Education",
+  WORK: "Work",
+  SKILLS: "Skills",
+  AWARDS: "Awards",
+  PROJECTS: "Projects",
+} as const;
 
-export type ResumeCategory = keyof typeof RESUME_INFO_CATEGORIES;
+export type NavCategoryType = keyof typeof NavCategory;
+export type type = typeof NavCategory

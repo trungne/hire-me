@@ -1,8 +1,5 @@
 import { atom } from "jotai";
 import axiosInstance from "./axios-settings";
-import { ResumeCategory } from "./types";
-
-export const infoCategoryAtom = atom<ResumeCategory>("TEMPLATE");
 
 const _idTokenAtom = atom<String>("");
 
