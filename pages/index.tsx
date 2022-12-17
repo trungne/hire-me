@@ -24,15 +24,14 @@ import {
 import SideBar from "components/SideBar";
 import Footer from "components/Footer";
 import { useAtom } from "jotai";
-import { idTokenAtom, writeIdTokenAtom } from "shared/atoms";
+import { writeIdTokenAtom } from "shared/atoms";
 
 const auth = getAuth();
 const provider = new GoogleAuthProvider();
 const Home: NextPage = () => {
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
-  // const [idToken, setIdToken] = useState<string>();
-  const [_, setIdToken] = useAtom(idTokenAtom);
+  const [_, setIdToken] = useAtom(writeIdTokenAtom);
 
   useEffect(() => {
     const subscribe = onAuthStateChanged(auth, async (user) => {
@@ -44,7 +43,7 @@ const Home: NextPage = () => {
       } else {
         // User is signed out
         // ...
-        setIdToken("Log out!");
+        setIdToken("");
       }
     });
     return () => {
@@ -99,6 +98,7 @@ const Home: NextPage = () => {
         }
       >
         <>
+        <button>Get cat fact</button>
           <button
             onClick={async () => {
               try {
