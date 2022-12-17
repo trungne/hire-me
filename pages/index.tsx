@@ -23,6 +23,7 @@ import {
 } from "firebase/auth";
 import SideBar from "components/SideBar";
 import Footer from "components/Footer";
+import { FirebaseError } from "firebase/app";
 
 const auth = getAuth();
 const provider = new GoogleAuthProvider();
@@ -42,7 +43,7 @@ const Home: NextPage = () => {
       } else {
         // User is signed out
         // ...
-        setIdToken("");
+        setIdToken("Log out!");
       }
     });
     return () => {
@@ -100,43 +101,35 @@ const Home: NextPage = () => {
           {JSON.stringify(auth)}
           <Text>Id token: {idToken}</Text>
           <button
-            onClick={() => {
-              signOut(auth)
-                .then(() => {
-                  // Sign-out successful.
-                })
-                .catch((error) => {
-                  // An error happened.
-                });
+            onClick={async () => {
+              try {
+                await signOut(auth);
+              } catch (e) {}
             }}
           >
             Log out
           </button>
           <button
-            onClick={() => {
-              signInWithPopup(auth, provider)
-                .then(async (result) => {
-                  // This gives you a Google Access Token. You can use it to access the Google API.
-                  const credential =
-                    GoogleAuthProvider.credentialFromResult(result);
-                  const token = credential?.accessToken;
-                  // The signed-in user info.
-                  const user = result.user;
-                  const idToken = await user.getIdToken();
-                  setIdToken(idToken);
-                  // ...
-                })
-                .catch((error) => {
-                  // Handle Errors here.
-                  const errorCode = error.code;
-                  const errorMessage = error.message;
-                  // The email of the user's account used.
-                  const email = error.customData.email;
-                  // The AuthCredential type that was used.
-                  const credential =
-                    GoogleAuthProvider.credentialFromError(error);
-                  // ...
-                });
+            onClick={async () => {
+              try {
+                const result = await signInWithPopup(auth, provider);
+                const credential =
+                  GoogleAuthProvider.credentialFromResult(result);
+                // const token = credential?.accessToken;
+                // const user = result.user;
+                // const idToken = await user.getIdToken();
+                // setIdToken(idToken);
+              } catch (error: any) {
+                // Handle Errors here.
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                // The email of the user's account used.
+                const email = error.customData.email;
+                // The AuthCredential type that was used.
+                const credential =
+                  GoogleAuthProvider.credentialFromError(error);
+                // ...
+              }
             }}
           >
             Login
