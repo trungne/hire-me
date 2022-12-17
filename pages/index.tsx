@@ -23,21 +23,22 @@ import {
 } from "firebase/auth";
 import SideBar from "components/SideBar";
 import Footer from "components/Footer";
-import { FirebaseError } from "firebase/app";
+import { useAtom } from "jotai";
+import { idTokenAtom, writeIdTokenAtom } from "shared/atoms";
 
 const auth = getAuth();
 const provider = new GoogleAuthProvider();
 const Home: NextPage = () => {
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
-  const [idToken, setIdToken] = useState<string>();
+  // const [idToken, setIdToken] = useState<string>();
+  const [_, setIdToken] = useAtom(idTokenAtom);
 
   useEffect(() => {
     const subscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/firebase.User
-        const uid = user.uid;
         setIdToken(await user.getIdToken());
         // ...
       } else {
@@ -98,8 +99,6 @@ const Home: NextPage = () => {
         }
       >
         <>
-          {JSON.stringify(auth)}
-          <Text>Id token: {idToken}</Text>
           <button
             onClick={async () => {
               try {
@@ -112,7 +111,6 @@ const Home: NextPage = () => {
           <button
             onClick={async () => {
               try {
-                setIdToken("Log in");
                 const result = await signInWithPopup(auth, provider);
                 const credential =
                   GoogleAuthProvider.credentialFromResult(result);
