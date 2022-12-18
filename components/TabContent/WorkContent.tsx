@@ -73,7 +73,7 @@ const WorkInfoInputForm = ({
         <TextInput
           withAsterisk
           label="Location"
-          placeholder="Software Engineer (L1/L2)"
+          placeholder="New York, NY"
           {...form.getInputProps("location")}
         />
 
