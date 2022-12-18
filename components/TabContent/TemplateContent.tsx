@@ -1,5 +1,4 @@
 import { Button } from "@mantine/core";
-import { useAtom } from "jotai";
 import { CommonTabContentType } from ".";
 import TabContent from "./TabContent";
 

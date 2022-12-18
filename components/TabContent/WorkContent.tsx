@@ -4,16 +4,18 @@ import { useState, useRef, useCallback } from "react";
 import { WorkInfo } from "shared/types";
 import { CommonTabContentType } from ".";
 import TabContent from "./TabContent";
-import { Minus, Plus } from "tabler-icons-react";
+import { Plus } from "tabler-icons-react";
+import { InputFormProps } from "./type";
+import { useDynamicForm } from "shared/hooks";
 
 const INPUT_FORM_PREFIX = "work-info-input-";
-type Props = {
-  idx: number;
-  remove: (id: number) => void;
-  add: () => void;
-  formMap: Record<number, WorkInfo>;
-};
-const WorkInfoInputForm = ({ idx, remove, add, formMap }: Props) => {
+
+const WorkInfoInputForm = ({
+  idx,
+  remove,
+  add,
+  formMap,
+}: InputFormProps<WorkInfo>) => {
   const form = useForm<Omit<WorkInfo, "responsibilities">>({
     initialValues: {
       companyName: "",
@@ -28,37 +30,10 @@ const WorkInfoInputForm = ({ idx, remove, add, formMap }: Props) => {
       location: (value) => (!!value ? null : "Invalid location"),
     },
   });
-  const [inputFields, setFields] = useState<Record<string, string>>({
-    "0": "",
+  const { fields, formElement } = useDynamicForm({
+    placeholder: "Make awesome stuff",
+    errorMessage: "Invalid responsibility",
   });
-
-  const removeField = (id: string) => {
-    setFields((prev) => {
-      const data = { ...prev };
-      if (data[id] !== undefined) {
-        delete data[id];
-      }
-      return data;
-    });
-  };
-
-  const updateField = (id: string, value: string) => {
-    setFields((prev) => {
-      const data = { ...prev };
-      data[id] = value;
-      return data;
-    });
-  };
-  const addField = () => {
-    setFields((prev) => {
-      const indices = Object.keys(prev).map((i) => parseInt(i));
-      const maxIdx = Math.max(...indices);
-      return {
-        ...prev,
-        [maxIdx + 1]: "",
-      };
-    });
-  };
 
   return (
     <>
@@ -67,11 +42,17 @@ const WorkInfoInputForm = ({ idx, remove, add, formMap }: Props) => {
         className="flex flex-col gap-4 mb-4"
         onSubmit={form.onSubmit(
           (values) => {
-            const sortedKeys = Object.keys(inputFields);
+            if (
+              Object.values(fields).filter((value) => value.length === 0)
+                .length > 0
+            ) {
+              return;
+            }
+            const sortedKeys = Object.keys(fields);
             sortedKeys.sort((a, b) => parseInt(a) - parseInt(b));
             formMap[idx] = {
               ...values,
-              responsibilities: sortedKeys.map((key) => inputFields[key]),
+              responsibilities: sortedKeys.map((key) => fields[key]),
             };
           },
           (_validationErrors, _values, _event) => {
@@ -105,63 +86,24 @@ const WorkInfoInputForm = ({ idx, remove, add, formMap }: Props) => {
         ></button>
       </form>
 
-      <form
-      // onSubmit={form.onSubmit(
-      //   (values) => {},
-      //   (_validationErrors, _values, _event) => {}
-      // )}
-      >
-        <Button onClick={addField} color="green" compact className="mb-4">
-          <Plus />
-        </Button>
-        <div className="flex flex-col gap-4">
-          {Object.keys(inputFields).map((key, index) => {
-            return (
-              <TextInput
-                error={!inputFields[key] && <div>Invalid responsibility</div>}
-                id={`responsibility-input-${index}`}
-                key={key}
-                rightSection={
-                  <CloseButton
-                    onClick={() => {
-                      removeField(key);
-                    }}
-                    color="gray"
-                    className="bg-red-50"
-                    title={`Remove responsibility ${index + 1}`}
-                  />
-                }
-                placeholder="Make awesome stuff"
-                onChange={(e) => {
-                  updateField(key, e.currentTarget.value);
-                }}
-              ></TextInput>
-            );
-          })}
-        </div>
-      </form>
+      {formElement}
 
       <div className="flex justify-between my-4">
-          <button
-            id={`${INPUT_FORM_PREFIX}${idx}`}
-            type="submit"
-            className="hidden"
-          ></button>
-          <Button
-            disabled={idx === 0}
-            color="red"
-            variant="light"
-            onClick={() => {
-              remove(idx);
-            }}
-          >
-            Remove
-          </Button>
+        <Button
+          disabled={idx === 0}
+          color="red"
+          variant="light"
+          onClick={() => {
+            remove(idx);
+          }}
+        >
+          Remove
+        </Button>
 
-          <Button variant="light" onClick={add}>
-            Add
-          </Button>
-        </div>
+        <Button variant="light" onClick={add}>
+          Add
+        </Button>
+      </div>
     </>
   );
 };
@@ -177,7 +119,7 @@ const WorkContent = ({ setNavBar }: CommonTabContentType) => {
     });
   }, []);
 
-  const removeWork = useCallback((id: Props["idx"]) => {
+  const removeWork = useCallback((id: number) => {
     setFormIndices((prev) => {
       return [...prev.filter((e) => e !== id)];
     });

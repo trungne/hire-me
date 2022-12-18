@@ -5,16 +5,15 @@ import { CommonTabContentType } from ".";
 import TabContent from "./TabContent";
 import { EducationInfo } from "shared/types";
 import { useForm } from "@mantine/form";
-
-type Props = {
-  idx: number;
-  remove: (id: number) => void;
-  add: () => void;
-  formMap: Record<number, EducationInfo>;
-};
+import { InputFormProps } from "./type";
 
 const INPUT_FORM_PREFIX = "education-info-input-";
-const EducationInfoInputForm = ({ idx, remove, add, formMap }: Props) => {
+const EducationInfoInputForm = ({
+  idx,
+  remove,
+  add,
+  formMap,
+}: InputFormProps<EducationInfo>) => {
   const form = useForm<EducationInfo>({
     validate: {
       schoolName: (value) => (!!value ? null : "Invalid school name"),
@@ -115,7 +114,7 @@ const EducationContent = ({ setNavBar }: CommonTabContentType) => {
     });
   }, []);
 
-  const removeSchool = useCallback((id: Props["idx"]) => {
+  const removeSchool = useCallback((id: number) => {
     setFormIndices((prev) => {
       return [...prev.filter((e) => e !== id)];
     });

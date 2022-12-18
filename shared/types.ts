@@ -40,3 +40,8 @@ export type WorkInfo = {
   endDate?: string;
   responsibilities: string[];
 };
+
+export type SkillInfo = {
+  name: string;
+  details: string[];
+};
