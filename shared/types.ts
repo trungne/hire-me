@@ -52,3 +52,10 @@ export type ProjectInfo = {
   link: string;
   toolsUsed: string[];
 };
+
+export type AwardInfo = {
+  name: string;
+  date: string;
+  awarder: string;
+  summary: string;
+};
