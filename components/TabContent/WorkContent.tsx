@@ -6,6 +6,7 @@ import { CommonTabContentType } from ".";
 import TabContent from "./TabContent";
 import { InputFormProps } from "./type";
 import { useDynamicForm } from "components/DynamicForm/hooks";
+import { hasEmptyStringField } from "shared/utils";
 
 const INPUT_FORM_PREFIX = "work-info-input-";
 
@@ -42,10 +43,7 @@ const WorkInfoInputForm = ({
         className="flex flex-col gap-4 mb-4"
         onSubmit={form.onSubmit(
           (values) => {
-            if (
-              Object.values(fields).filter((value) => value.length === 0)
-                .length > 0
-            ) {
+            if (hasEmptyStringField(fields)) {
               return;
             }
             const sortedKeys = Object.keys(fields);

@@ -6,6 +6,7 @@ import { SkillInfo } from "shared/types";
 import { CommonTabContentType } from ".";
 import TabContent from "./TabContent";
 import { InputFormProps } from "./type";
+import { hasEmptyStringField } from "shared/utils";
 
 const INPUT_FORM_PREFIX = "skill-info-input-";
 
@@ -34,10 +35,7 @@ const SkillInfoInputForm = ({
         className="flex flex-col gap-4 mb-4"
         onSubmit={form.onSubmit(
           (values) => {
-            if (
-              Object.values(fields).filter((value) => value.length === 0)
-                .length > 0
-            ) {
+            if (hasEmptyStringField(fields)) {
               return;
             }
             const sortedKeys = Object.keys(fields);
