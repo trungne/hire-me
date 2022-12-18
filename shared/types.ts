@@ -45,3 +45,10 @@ export type SkillInfo = {
   name: string;
   details: string[];
 };
+
+export type ProjectInfo = {
+  name: string;
+  description: string;
+  link: string;
+  toolsUsed: string[];
+};

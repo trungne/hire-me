@@ -13,6 +13,7 @@ import { CURRENT_NAV_BAR_LOCAL_STORAGE, NAV_BAR } from "shared/constants";
 import EducationContent from "components/TabContent/EducationContent";
 import WorkContent from "components/TabContent/WorkContent";
 import SkillContent from "components/TabContent/SkillContent";
+import ProjectContent from "components/TabContent/ProjectContent";
 
 const auth = getAuth();
 const Home: NextPage = () => {
@@ -96,7 +97,9 @@ const Home: NextPage = () => {
           <Tabs.Panel value={NavCategory.SKILLS}>
             <SkillContent setNavBar={setNavBar} />
           </Tabs.Panel>
-          <Tabs.Panel value={NavCategory.PROJECTS}>Projects</Tabs.Panel>
+          <Tabs.Panel value={NavCategory.PROJECTS}>
+            <ProjectContent setNavBar={setNavBar} />
+          </Tabs.Panel>
           <Tabs.Panel value={NavCategory.AWARDS}>Awards</Tabs.Panel>
         </div>
         {/* <AppShell
