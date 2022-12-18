@@ -23,6 +23,7 @@ import TemplateContent from "components/TabContent/TemplateContent";
 import ProfileContent from "components/TabContent/ProfileContent";
 import { CURRENT_NAV_BAR_LOCAL_STORAGE, NAV_BAR } from "shared/constants";
 import EducationContent from "components/TabContent/EducationContent";
+import WorkContent from "components/TabContent/WorkContent";
 
 const auth = getAuth();
 const Home: NextPage = () => {
@@ -100,7 +101,9 @@ const Home: NextPage = () => {
           <Tabs.Panel value={NavCategory.EDUCATION}>
             <EducationContent setNavBar={setNavBar} />
           </Tabs.Panel>
-          <Tabs.Panel value={NavCategory.WORK}>Work</Tabs.Panel>
+          <Tabs.Panel value={NavCategory.WORK}>
+            <WorkContent setNavBar={setNavBar} />
+          </Tabs.Panel>
           <Tabs.Panel value={NavCategory.SKILLS}>Skills</Tabs.Panel>
           <Tabs.Panel value={NavCategory.PROJECTS}>Projects</Tabs.Panel>
           <Tabs.Panel value={NavCategory.AWARDS}>Awards</Tabs.Panel>

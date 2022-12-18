@@ -31,3 +31,12 @@ export type EducationInfo = {
   startDate?: string;
   endDate?: string;
 };
+
+export type WorkInfo = {
+  companyName: string;
+  jobTitle: string;
+  location: string;
+  startDate?: string;
+  endDate?: string;
+  responsibilities: string[];
+};

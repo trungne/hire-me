@@ -32,7 +32,7 @@ const EducationInfoInputForm = ({ idx, remove, add, formMap }: Props) => {
 
   return (
     <>
-      <div className=" h-2 my-4  bg-slate-700"></div>
+      <div className=" h-2 my-4 bg-slate-700"></div>
       <form
         className="flex-1 flex flex-col gap-4 mb-4"
         onSubmit={form.onSubmit(
