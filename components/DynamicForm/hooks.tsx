@@ -1,12 +1,14 @@
-import { Button, CloseButton, TextInput } from "@mantine/core";
+import { Button, CloseButton, Text, TextInput } from "@mantine/core";
 import { useMemo, useState } from "react";
 import { Plus } from "tabler-icons-react";
 
 type UseDynamicFormProps = {
+  label: string;
   placeholder: string;
   errorMessage: string;
 };
 export const useDynamicForm = ({
+  label,
   placeholder,
   errorMessage,
 }: UseDynamicFormProps) => {
@@ -45,7 +47,18 @@ export const useDynamicForm = ({
   const formElement = useMemo(() => {
     return (
       <form>
-        <Button onClick={addField} color="green" compact className="mb-4">
+        <Text className="text-[14px] text-[#212529] font-medium font-['Montserrat']">
+          {label}
+          <span
+            className="mantine-u5apz8 mantine-InputWrapper-required mantine-TextInput-required"
+            aria-hidden="true"
+          >
+            {" "}
+            *
+          </span>
+        </Text>
+
+        <Button onClick={addField} color="green" compact className="mb-4 mt-2">
           <Plus />
         </Button>
         <div className="flex flex-col gap-4">

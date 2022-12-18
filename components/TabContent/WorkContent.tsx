@@ -1,12 +1,11 @@
-import { Button, TextInput, CloseButton } from "@mantine/core";
+import { Button, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useState, useRef, useCallback } from "react";
 import { WorkInfo } from "shared/types";
 import { CommonTabContentType } from ".";
 import TabContent from "./TabContent";
-import { Plus } from "tabler-icons-react";
 import { InputFormProps } from "./type";
-import { useDynamicForm } from "shared/hooks";
+import { useDynamicForm } from "components/DynamicForm/hooks";
 
 const INPUT_FORM_PREFIX = "work-info-input-";
 
@@ -33,6 +32,7 @@ const WorkInfoInputForm = ({
   const { fields, formElement } = useDynamicForm({
     placeholder: "Make awesome stuff",
     errorMessage: "Invalid responsibility",
+    label: "Responsibilities",
   });
 
   return (

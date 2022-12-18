@@ -2,28 +2,17 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
-import {
-  AppShell,
-  Header,
-  Text,
-  MediaQuery,
-  Burger,
-  useMantineTheme,
-  Tabs,
-} from "@mantine/core";
+import { useMantineTheme, Tabs } from "@mantine/core";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { GetStaticProps } from "next";
-
 import SideBar from "components/SideBar";
-import Footer from "components/Footer";
 import { navBarAtom, writeIdTokenAtom } from "shared/atoms";
 import { NavCategory, NavCategoryValueType } from "shared/types";
-import TabContent from "components/TabContent/TabContent";
 import TemplateContent from "components/TabContent/TemplateContent";
 import ProfileContent from "components/TabContent/ProfileContent";
 import { CURRENT_NAV_BAR_LOCAL_STORAGE, NAV_BAR } from "shared/constants";
 import EducationContent from "components/TabContent/EducationContent";
 import WorkContent from "components/TabContent/WorkContent";
+import SkillContent from "components/TabContent/SkillContent";
 
 const auth = getAuth();
 const Home: NextPage = () => {
@@ -104,7 +93,9 @@ const Home: NextPage = () => {
           <Tabs.Panel value={NavCategory.WORK}>
             <WorkContent setNavBar={setNavBar} />
           </Tabs.Panel>
-          <Tabs.Panel value={NavCategory.SKILLS}>Skills</Tabs.Panel>
+          <Tabs.Panel value={NavCategory.SKILLS}>
+            <SkillContent setNavBar={setNavBar} />
+          </Tabs.Panel>
           <Tabs.Panel value={NavCategory.PROJECTS}>Projects</Tabs.Panel>
           <Tabs.Panel value={NavCategory.AWARDS}>Awards</Tabs.Panel>
         </div>
