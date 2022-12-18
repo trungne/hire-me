@@ -1,5 +1,5 @@
 import { Button, TextInput } from "@mantine/core";
-import { ReactNode, useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 import { CommonTabContentType } from ".";
 import TabContent from "./TabContent";
@@ -10,10 +10,11 @@ type Props = {
   idx: number;
   remove: (id: number) => void;
   add: () => void;
+  formMap: Record<number, EducationInfo>;
 };
 
 const INPUT_FORM_PREFIX = "education-info-input-";
-const EducationInfoInputForm = ({ idx, remove, add }: Props) => {
+const EducationInfoInputForm = ({ idx, remove, add, formMap }: Props) => {
   const form = useForm<EducationInfo>({
     validate: {
       schoolName: (value) => (!!value ? null : "Invalid school name"),
@@ -34,7 +35,14 @@ const EducationInfoInputForm = ({ idx, remove, add }: Props) => {
       <div className=" h-2 my-4  bg-slate-700"></div>
       <form
         className="flex-1 flex flex-col gap-4 mb-4"
-        onSubmit={form.onSubmit((values) => {})}
+        onSubmit={form.onSubmit(
+          (values) => {
+            formMap[idx] = { ...values };
+          },
+          (_validationErrors, _values, _event) => {
+            delete formMap[idx];
+          }
+        )}
       >
         <TextInput
           withAsterisk
@@ -95,40 +103,33 @@ const EducationInfoInputForm = ({ idx, remove, add }: Props) => {
   );
 };
 
-const initialEducationInfo: EducationInfo = {
-  schoolName: "",
-  GPA: 0.0,
-  degree: "",
-  schoolLocation: "",
-  major: "",
-};
-
-type EducationInfoForm = EducationInfo & {
-  idx: number;
-};
-
 const EducationContent = ({ setNavBar }: CommonTabContentType) => {
-  const [educationInfoList, setEducationInfoList] = useState<
-    EducationInfoForm[]
-  >([{ ...initialEducationInfo, idx: 0 }]);
+  const [formIndices, setFormIndices] = useState<number[]>([0]);
+  const formMapRef = useRef<Record<number, EducationInfo>>({});
 
   const addSchool = useCallback(() => {
-    setEducationInfoList((prev) => {
-      const newId = prev[prev.length - 1].idx + 1;
-      return [...prev, { ...initialEducationInfo, idx: newId }];
+    setFormIndices((prev) => {
+      const newIdx = prev[prev.length - 1] + 1;
+
+      return [...prev, newIdx];
     });
   }, []);
 
   const removeSchool = useCallback((id: Props["idx"]) => {
-    setEducationInfoList((prev) => {
-      return [...prev.filter((e) => e.idx !== id)];
+    setFormIndices((prev) => {
+      return [...prev.filter((e) => e !== id)];
     });
+
+    if (formMapRef.current[id]) {
+      delete formMapRef.current[id];
+    }
   }, []);
 
   return (
     <TabContent title="Enter your education background">
-      {educationInfoList.map((info, idx) => (
+      {formIndices.map((idx) => (
         <EducationInfoInputForm
+          formMap={formMapRef.current}
           add={addSchool}
           remove={removeSchool}
           idx={idx}
@@ -146,7 +147,7 @@ const EducationContent = ({ setNavBar }: CommonTabContentType) => {
         </Button>
         <Button
           onClick={() => {
-            educationInfoList.forEach((info, idx) => {
+            formIndices.forEach((idx) => {
               const button = document.querySelector<HTMLButtonElement>(
                 `#${INPUT_FORM_PREFIX}${idx}`
               );
@@ -154,8 +155,10 @@ const EducationContent = ({ setNavBar }: CommonTabContentType) => {
                 button.click();
               }
             });
-
-            setNavBar("Education");
+            // number of form object received equal to form => all form is valid
+            if (Object.keys(formMapRef.current).length === formIndices.length) {
+              setNavBar("Education");
+            }
           }}
           type="submit"
         >
