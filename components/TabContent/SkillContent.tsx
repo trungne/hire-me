@@ -109,7 +109,7 @@ const SkillContent = ({ setNavBar }: CommonTabContentType) => {
   }, []);
 
   return (
-    <TabContent title="Enter your education background">
+    <TabContent title="Enter your skills">
       {formIndices.map((idx) => (
         <SkillInfoInputForm
           formMap={formMapRef.current}
@@ -123,7 +123,7 @@ const SkillContent = ({ setNavBar }: CommonTabContentType) => {
       <div className="flex justify-between mt-auto">
         <Button
           onClick={() => {
-            setNavBar("Profile");
+            setNavBar("Work");
           }}
         >
           Previous
@@ -140,7 +140,7 @@ const SkillContent = ({ setNavBar }: CommonTabContentType) => {
             });
             // number of form object received equal to form => all form is valid
             if (Object.keys(formMapRef.current).length === formIndices.length) {
-              setNavBar("Education");
+              setNavBar("Projects");
             }
           }}
           type="submit"

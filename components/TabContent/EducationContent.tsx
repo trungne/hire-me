@@ -156,7 +156,7 @@ const EducationContent = ({ setNavBar }: CommonTabContentType) => {
             });
             // number of form object received equal to form => all form is valid
             if (Object.keys(formMapRef.current).length === formIndices.length) {
-              setNavBar("Education");
+              setNavBar("Work");
             }
           }}
           type="submit"
