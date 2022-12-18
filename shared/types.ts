@@ -28,6 +28,6 @@ export type EducationInfo = {
   degree: string;
   major: string;
   GPA: number;
-  startDate: string;
-  endDate: string;
+  startDate?: string;
+  endDate?: string;
 };

@@ -10,7 +10,6 @@ type Props = {
   idx: number;
   remove: (id: number) => void;
   add: () => void;
-  //   form: UseFormReturnType<EducationInfo>;
 };
 
 const INPUT_FORM_PREFIX = "education-info-input-";
@@ -35,7 +34,7 @@ const EducationInfoInputForm = ({ idx, remove, add }: Props) => {
       <div className=" h-2 my-4  bg-slate-700"></div>
       <form
         className="flex-1 flex flex-col gap-4 mb-4"
-        onSubmit={form.onSubmit((values) => console.log(values))}
+        onSubmit={form.onSubmit((values) => {})}
       >
         <TextInput
           withAsterisk
@@ -96,32 +95,44 @@ const EducationInfoInputForm = ({ idx, remove, add }: Props) => {
   );
 };
 
+const initialEducationInfo: EducationInfo = {
+  schoolName: "",
+  GPA: 0.0,
+  degree: "",
+  schoolLocation: "",
+  major: "",
+};
+
+type EducationInfoForm = EducationInfo & {
+  idx: number;
+};
+
 const EducationContent = ({ setNavBar }: CommonTabContentType) => {
-  const [inputFormIds, setInputFormIds] = useState<number[]>([0]);
+  const [educationInfoList, setEducationInfoList] = useState<
+    EducationInfoForm[]
+  >([{ ...initialEducationInfo, idx: 0 }]);
 
   const addSchool = useCallback(() => {
-    // add new element with id increase by 1
-
-    setInputFormIds((prev) => {
-      const newId = prev[prev.length - 1] + 1;
-      return [...prev, newId];
+    setEducationInfoList((prev) => {
+      const newId = prev[prev.length - 1].idx + 1;
+      return [...prev, { ...initialEducationInfo, idx: newId }];
     });
   }, []);
 
   const removeSchool = useCallback((id: Props["idx"]) => {
-    setInputFormIds((prev) => {
-      return [...prev.filter((e) => e !== id)];
+    setEducationInfoList((prev) => {
+      return [...prev.filter((e) => e.idx !== id)];
     });
   }, []);
 
   return (
     <TabContent title="Enter your education background">
-      {inputFormIds.map((id) => (
+      {educationInfoList.map((info, idx) => (
         <EducationInfoInputForm
           add={addSchool}
           remove={removeSchool}
-          idx={id}
-          key={id}
+          idx={idx}
+          key={idx}
         />
       ))}
 
@@ -135,7 +146,7 @@ const EducationContent = ({ setNavBar }: CommonTabContentType) => {
         </Button>
         <Button
           onClick={() => {
-            inputFormIds.forEach((idx) => {
+            educationInfoList.forEach((info, idx) => {
               const button = document.querySelector<HTMLButtonElement>(
                 `#${INPUT_FORM_PREFIX}${idx}`
               );
@@ -143,6 +154,7 @@ const EducationContent = ({ setNavBar }: CommonTabContentType) => {
                 button.click();
               }
             });
+
             setNavBar("Education");
           }}
           type="submit"
