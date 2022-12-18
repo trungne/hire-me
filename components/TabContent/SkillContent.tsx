@@ -5,7 +5,7 @@ import { useDynamicForm } from "components/DynamicForm/hooks";
 import { SkillInfo } from "shared/types";
 import { CommonTabContentType } from ".";
 import TabContent from "./TabContent";
-import { InputFormProps } from "./type";
+import { InputFormProps } from ".";
 import { hasEmptyStringField } from "shared/utils";
 
 const INPUT_FORM_PREFIX = "skill-info-input-";

@@ -5,7 +5,7 @@ import { CommonTabContentType } from ".";
 import TabContent from "./TabContent";
 import { AwardInfo, EducationInfo } from "shared/types";
 import { useForm } from "@mantine/form";
-import { InputFormProps } from "./type";
+import { InputFormProps } from ".";
 
 const INPUT_FORM_PREFIX = "award-info-input-";
 const AwardInfoInputForm = ({

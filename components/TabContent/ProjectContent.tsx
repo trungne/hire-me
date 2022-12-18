@@ -6,7 +6,7 @@ import { ProjectInfo } from "shared/types";
 import { hasEmptyStringField } from "shared/utils";
 import { CommonTabContentType } from ".";
 import TabContent from "./TabContent";
-import { InputFormProps } from "./type";
+import { InputFormProps } from ".";
 
 const INPUT_FORM_PREFIX = "project-info-input-";
 

@@ -4,7 +4,7 @@ import { useState, useRef, useCallback } from "react";
 import { WorkInfo } from "shared/types";
 import { CommonTabContentType } from ".";
 import TabContent from "./TabContent";
-import { InputFormProps } from "./type";
+import { InputFormProps } from ".";
 import { useDynamicForm } from "components/DynamicForm/hooks";
 import { hasEmptyStringField } from "shared/utils";
 

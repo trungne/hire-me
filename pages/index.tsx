@@ -7,14 +7,16 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import SideBar from "components/SideBar";
 import { navBarAtom, writeIdTokenAtom } from "shared/atoms";
 import { NavCategory, NavCategoryValueType } from "shared/types";
-import TemplateContent from "components/TabContent/TemplateContent";
-import ProfileContent from "components/TabContent/ProfileContent";
-import { CURRENT_NAV_BAR_LOCAL_STORAGE, NAV_BAR } from "shared/constants";
-import EducationContent from "components/TabContent/EducationContent";
-import WorkContent from "components/TabContent/WorkContent";
-import SkillContent from "components/TabContent/SkillContent";
-import ProjectContent from "components/TabContent/ProjectContent";
-import AwardContent from "components/TabContent/AwardContent";
+import { CURRENT_NAV_BAR_LOCAL_STORAGE } from "shared/constants";
+import {
+  TemplateContent,
+  ProfileContent,
+  EducationContent,
+  WorkContent,
+  SkillContent,
+  ProjectContent,
+  AwardContent,
+} from "components/TabContent";
 
 const auth = getAuth();
 const Home: NextPage = () => {
