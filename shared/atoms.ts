@@ -1,19 +1,25 @@
 import { atom } from "jotai";
 import axiosInstance from "./axios-settings";
 import { CURRENT_NAV_BAR_LOCAL_STORAGE } from "./constants";
-import { NavCategoryValueType } from "./types";
+import { NavCategoryValueType, ProjectInfo } from "./types";
 
+const createPersistentAtom = <T>(
+  primativeAtom: ReturnType<typeof atom<T>>,
+  localStorageKey: string
+) => {
+  return atom<T, T>(
+    (get) => get(primativeAtom),
+    (get, set, update) => {
+      set(primativeAtom, update);
+      localStorage.setItem(localStorageKey, JSON.stringify(update));
+    }
+  );
+};
 export const navBarPersistentAtom = atom<NavCategoryValueType | null>(null);
 
-export const navBarAtom = atom<
-  NavCategoryValueType | null,
-  NavCategoryValueType
->(
-  (get) => get(navBarPersistentAtom),
-  (get, set, update) => {
-    set(navBarPersistentAtom, update);
-    localStorage.setItem(CURRENT_NAV_BAR_LOCAL_STORAGE, update);
-  }
+export const navBarAtom = createPersistentAtom(
+  navBarPersistentAtom,
+  CURRENT_NAV_BAR_LOCAL_STORAGE
 );
 
 const _idTokenAtom = atom<String>("");
@@ -26,3 +32,16 @@ export const writeIdTokenAtom = atom<null, String>(
     axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${update}`;
   }
 );
+
+const primitiveProjectInfo = atom<ProjectInfo | null>(null);
+export const projectInfoAtom = createPersistentAtom(
+  primitiveProjectInfo,
+  "HIRE_ME_PROJECT_INFO"
+);
+// export const projectInfoAtom = atom<ProjectInfo | null, ProjectInfo>(
+//   (get) => get(primitiveProjectInfo),
+//   (get, set, update) => {
+//     // `update` is any single value we receive for updating this atom
+//     set(primitiveProjectInfo, update);
+//   }
+// );
