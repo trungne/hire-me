@@ -15,7 +15,7 @@ const SideBar = ({ isOpened }: Props) => {
       p="md"
       hiddenBreakpoint="sm"
       hidden={!isOpened}
-      width={{ sm: 200, lg: 300 }}
+      width={{ sm: 150, lg: 200 }}
     >
       <Tabs.List>
         {NAV_BAR.map((category) => {
