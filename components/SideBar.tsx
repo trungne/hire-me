@@ -20,11 +20,12 @@ const SideBar = ({ isOpened }: Props) => {
       <Tabs.List>
         {NAV_BAR.map((category) => {
           return (
-            <Tabs.Tab unstyled={true} value={NavCategory[category]} key={category}>
+            <Tabs.Tab value={NavCategory[category]} key={category}>
               {NavCategory[category]}
             </Tabs.Tab>
           );
         })}
+        
       </Tabs.List>
     </Navbar>
   );

@@ -15,6 +15,9 @@ const createPersistentAtom = <T>(
     }
   );
 };
+
+export const firebaseUserAtom = atom(0);
+
 export const navBarPersistentAtom = atom<NavCategoryValueType | null>(null);
 
 export const navBarAtom = createPersistentAtom(
@@ -22,13 +25,13 @@ export const navBarAtom = createPersistentAtom(
   CURRENT_NAV_BAR_LOCAL_STORAGE
 );
 
-const _idTokenAtom = atom<String>("");
+export const idTokenAtom = atom<string | null>(null);
 
-export const writeIdTokenAtom = atom<null, String>(
+export const writeIdTokenAtom = atom<null, string>(
   null, // it's a convention to pass `null` for the first argument
   (get, set, update) => {
     // `update` is any single value we receive for updating this atom
-    set(_idTokenAtom, update);
+    set(idTokenAtom, update);
     axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${update}`;
   }
 );

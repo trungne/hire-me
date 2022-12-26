@@ -17,6 +17,7 @@ import {
   ProjectContent,
   AwardContent,
 } from "components/TabContent";
+import { Header } from "components/Header";
 
 const auth = getAuth();
 const Home: NextPage = () => {
@@ -69,11 +70,14 @@ const Home: NextPage = () => {
       {/* <div className="h-12 bg-slate-50 flex justify-center items-center">
         <span>Create your resume</span>
       </div> */}
+      
+      <Header></Header>
       <Tabs
         classNames={{
-          root: "bg-slate-50",
+          root: "bg-slate-50 ",
           tabLabel: "font-['Montserrat']",
           panel: "h-full",
+          'tabsList': "p-0"
         }}
         orientation="vertical"
         value={navBar}
@@ -84,7 +88,7 @@ const Home: NextPage = () => {
         }}
       >
         <SideBar isOpened={opened}></SideBar>
-        <div className="overflow-y-auto max-h-screen min-h-screen w-full scrollbar-hide p-4">
+        <div className="overflow-y-auto w-full scrollbar-hide p-4">
           <Tabs.Panel value={NavCategory.TEMPLATE}>
             <TemplateContent setNavBar={setNavBar} />
           </Tabs.Panel>

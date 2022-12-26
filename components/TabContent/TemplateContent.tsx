@@ -8,7 +8,6 @@ const TemplateContent = ({ setNavBar }: CommonTabContentType) => {
       <div></div>
 
       <div className="flex justify-between mt-auto">
-        <div></div>
         <Button
           onClick={() => {
             setNavBar("Profile");
