@@ -28,7 +28,7 @@ export const navBarAtom = createPersistentAtom(
 
 export const idTokenAtom = atom<string | null>(null);
 
-export const writeIdTokenAtom = atom<null, string>(
+export const writeAcessTokenAtom = atom<null, string>(
   null, // it's a convention to pass `null` for the first argument
   (get, set, update) => {
     // `update` is any single value we receive for updating this atom

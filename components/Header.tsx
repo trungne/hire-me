@@ -1,24 +1,20 @@
-import { Button, Header, CopyButton } from "@mantine/core";
+import { Button, Header } from "@mantine/core";
 import { memo, useCallback } from "react";
 
 import { signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
 import { firebaseAuth } from "shared/fb";
-import { FirebaseError } from "firebase/app";
 import { useAtom } from "jotai";
-import { idTokenAtom } from "shared/atoms";
+import { firebaseUserAtom } from "shared/atoms";
+
 const provider = new GoogleAuthProvider();
 
 const HEADER_HEIGHT = 64;
 const CustomHeader = () => {
-  const [idToken, setIdToken] = useAtom(idTokenAtom);
+  const [fbUser] = useAtom(firebaseUserAtom);
+
   const login = useCallback(async () => {
     try {
-      const result = await signInWithPopup(firebaseAuth, provider);
-
-      const idToken = await result.user.getIdToken();
-
-      // TODO: call login api and set access token here
-      setIdToken(idToken);
+      await signInWithPopup(firebaseAuth, provider);
     } catch (e: unknown) {
       console.error(e);
     }
@@ -51,26 +47,17 @@ const CustomHeader = () => {
       </svg>
       <div>
         <Button
-          color={idToken ? "gray" : "green"}
+          color={fbUser ? "gray" : "green"}
           onClick={() => {
-            if (idToken) {
+            if (fbUser) {
               logout();
             } else {
               login();
             }
           }}
         >
-          {idToken ? "Logout" : "Login"}
+          {fbUser ? "Logout" : "Login"}
         </Button>
-        {idToken && (
-          <CopyButton value={idToken}>
-            {({ copied, copy }) => (
-              <Button color={copied ? "teal" : "blue"} onClick={copy}>
-                {copied ? "Copied" : "Copy id token"}
-              </Button>
-            )}
-          </CopyButton>
-        )}
       </div>
     </Header>
   );

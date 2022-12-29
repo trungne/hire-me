@@ -2,11 +2,15 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
-import { useMantineTheme, Tabs } from "@mantine/core";
+import { useMantineTheme, Tabs, Modal, Text, Button } from "@mantine/core";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import SideBar from "components/SideBar";
-import { navBarAtom, writeIdTokenAtom } from "shared/atoms";
-import { NavCategory, NavCategoryValueType } from "shared/types";
+import {
+  firebaseUserAtom,
+  navBarAtom,
+  writeAcessTokenAtom,
+} from "shared/atoms";
+import { NavCategory, NavCategoryValueType, User } from "shared/types";
 import { CURRENT_NAV_BAR_LOCAL_STORAGE } from "shared/constants";
 import {
   TemplateContent,
@@ -18,13 +22,16 @@ import {
   AwardContent,
 } from "components/TabContent";
 import { Header } from "components/Header";
+import { createUser, getAccessToken, getUserByEmail } from "shared/queries";
+import { AxiosError } from "axios";
 
 const auth = getAuth();
 const Home: NextPage = () => {
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
-  const [_, setIdToken] = useAtom(writeIdTokenAtom);
-  // const { data, isLoading } = useQuery("CVs", getCVs);
+  const [_, setAccessToken] = useAtom(writeAcessTokenAtom);
+  const [firebaseUser, setFirebaseUser] = useAtom(firebaseUserAtom);
+  const [modalOpened, setModalOpened] = useState(false);
 
   const [navBar, setNavBar] = useAtom(navBarAtom);
   useEffect(() => {
@@ -43,16 +50,38 @@ const Home: NextPage = () => {
     }
   }, []);
   useEffect(() => {
-    const subscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
-        setIdToken(await user.getIdToken());
-        // ...
-      } else {
-        // User is signed out
-        // ...
-        setIdToken("");
+    const subscribe = onAuthStateChanged(auth, async (fbUser) => {
+      if (!fbUser) {
+        setAccessToken("");
+        setFirebaseUser(null);
+        return;
+      }
+
+      setFirebaseUser(fbUser);
+
+      if (!fbUser.email) {
+        return;
+      }
+
+      try {
+        const { data } = await getUserByEmail(fbUser.email);
+
+        if (data.error && data.error.code === 404) {
+          setModalOpened(true);
+          return;
+        }
+      } catch (e) {
+        console.log(e);
+        return;
+      }
+
+      try {
+        const idToken = await fbUser.getIdToken();
+        const response = await getAccessToken({ idToken });
+
+        setAccessToken(response.data.data);
+      } catch (e) {
+        console.log(e);
       }
     });
     return () => {
@@ -70,14 +99,14 @@ const Home: NextPage = () => {
       {/* <div className="h-12 bg-slate-50 flex justify-center items-center">
         <span>Create your resume</span>
       </div> */}
-      
+
       <Header></Header>
       <Tabs
         classNames={{
           root: "bg-slate-50 ",
           tabLabel: "font-['Montserrat']",
           panel: "h-full",
-          'tabsList': "p-0"
+          tabsList: "p-0",
         }}
         orientation="vertical"
         value={navBar}
@@ -111,46 +140,55 @@ const Home: NextPage = () => {
             <AwardContent setNavBar={setNavBar} />
           </Tabs.Panel>
         </div>
-        {/* <AppShell
-          styles={{
-            main: {
-              background:
-                theme.colorScheme === "dark"
-                  ? theme.colors.dark[8]
-                  : theme.colors.gray[0],
-            },
-          }}
-          navbarOffsetBreakpoint="sm"
-          asideOffsetBreakpoint="sm"
-          navbar={<SideBar isOpened={opened} />}
-          // footer={<Footer />}
-          header={
-            <Header height={{ base: 50, md: 70 }} p="md">
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  height: "100%",
-                }}
-              >
-                <MediaQuery largerThan="sm" styles={{ display: "none" }}>
-                  <Burger
-                    opened={opened}
-                    onClick={() => setOpened((o) => !o)}
-                    size="sm"
-                    color={theme.colors.gray[6]}
-                    mr="xl"
-                  />
-                </MediaQuery>
-
-                <Text>Application header</Text>
-              </div>
-            </Header>
-          }
-        > */}
-
-        {/* </AppShell> */}
       </Tabs>
+
+      <Modal
+        opened={modalOpened}
+        onClose={() => setModalOpened(false)}
+        closeOnClickOutside={false}
+        closeOnEscape={false}
+        withCloseButton={false}
+        centered
+      >
+        <div className="flex flex-col gap-4">
+          <Text className="text-center">Look like we have a new user.</Text>
+          <Text className="text-center">Tell us what you're looking for!</Text>
+          <div className="flex flex-col gap-4">
+            <Button
+              onClick={async () => {
+                setModalOpened(false);
+                if (!firebaseUser || !firebaseUser.email) {
+                  return;
+                }
+                const user: Omit<User, "id"> = {
+                  email: firebaseUser.email,
+                  isRecruiter: false,
+                };
+                await createUser(user);
+              }}
+              color="teal"
+            >
+              I'm looking for a job
+            </Button>
+            <Button
+              onClick={async () => {
+                setModalOpened(false);
+                if (!firebaseUser || !firebaseUser.email) {
+                  return;
+                }
+                const user: Omit<User, "id"> = {
+                  email: firebaseUser.email,
+                  isRecruiter: true,
+                };
+                await createUser(user);
+              }}
+              color="indigo"
+            >
+              I'm looking for candidates
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </>
   );
 };

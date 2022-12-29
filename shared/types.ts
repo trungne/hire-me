@@ -1,3 +1,5 @@
+import axios from "axios";
+
 export const NavCategory = {
   TEMPLATE: "Template",
   PROFILE: "Profile",
@@ -16,6 +18,21 @@ export type User = {
   id: string;
   email: string;
   isRecruiter: boolean;
+};
+
+export type GetAccessTokenRequest = {
+  idToken: string;
+};
+
+export type ResponseError = {
+  mgs: string;
+  code: number;
+  data: any;
+};
+
+export type ResponseBody<T = any> = {
+  data: T;
+  error: ResponseError | null;
 };
 
 // Tab Content Types
