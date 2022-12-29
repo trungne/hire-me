@@ -2,6 +2,7 @@ import { atom } from "jotai";
 import axiosInstance from "./axios-settings";
 import { CURRENT_NAV_BAR_LOCAL_STORAGE } from "./constants";
 import { NavCategoryValueType, ProjectInfo } from "./types";
+import { User as FirebaseUser } from "firebase/auth";
 
 const createPersistentAtom = <T>(
   primativeAtom: ReturnType<typeof atom<T>>,
@@ -16,7 +17,7 @@ const createPersistentAtom = <T>(
   );
 };
 
-export const firebaseUserAtom = atom(0);
+export const firebaseUserAtom = atom<FirebaseUser | null>(null);
 
 export const navBarPersistentAtom = atom<NavCategoryValueType | null>(null);
 
