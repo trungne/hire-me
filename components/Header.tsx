@@ -1,12 +1,8 @@
 import { Button, Header } from "@mantine/core";
 import { memo, useCallback } from "react";
-
-import { signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
-import { firebaseAuth } from "shared/fb";
+import { loginWithPopup, logout } from "shared/fb";
 import { useAtom } from "jotai";
 import { firebaseUserAtom } from "shared/atoms";
-
-const provider = new GoogleAuthProvider();
 
 const HEADER_HEIGHT = 64;
 const CustomHeader = () => {
@@ -14,15 +10,12 @@ const CustomHeader = () => {
 
   const login = useCallback(async () => {
     try {
-      await signInWithPopup(firebaseAuth, provider);
+      await loginWithPopup();
     } catch (e: unknown) {
       console.error(e);
     }
   }, []);
 
-  const logout = useCallback(() => {
-    signOut(firebaseAuth);
-  }, []);
   return (
     <Header
       className="flex justify-between items-center p-4"

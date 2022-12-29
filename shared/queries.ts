@@ -7,6 +7,7 @@ export const getUserByEmail = async (email: string) => {
 };
 
 export const createUser = async (user: Omit<User, "id">) => {
+  console.log("user", user);
   return axiosInstance.post<ResponseBody<User>>(`users`, user);
 };
 
