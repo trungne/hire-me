@@ -12,6 +12,12 @@ export type NavCategoryType = keyof typeof NavCategory;
 export type NavCategoryValueType = typeof NavCategory[keyof typeof NavCategory];
 export type SetNavBar = (update: NavCategoryValueType) => void;
 
+export type User = {
+  id: string;
+  email: string;
+  isRecruiter: boolean;
+};
+
 // Tab Content Types
 
 export type ProfileInfo = {
