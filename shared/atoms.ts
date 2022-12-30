@@ -6,6 +6,7 @@ import {
 } from "./constants";
 import {
   AwardInfo,
+  CVInfo,
   EducationInfo,
   NavCategoryValueType,
   ProfileInfo,
@@ -54,17 +55,6 @@ export const writeAcessTokenAtom = atom<null, string>(
 
 // firebaseUserAtom
 export const firebaseUserAtom = atom<FirebaseUser | null>(null);
-export const _firebaseUserAtom = atom<FirebaseUser | null, FirebaseUser>(
-  (get) => get(firebaseUserAtom),
-  async (get, set, update) => {
-    const firebaseUser = update;
-    if (!firebaseUser.email) {
-      return;
-    }
-
-    set(firebaseUserAtom, firebaseUser);
-  }
-);
 
 // appUserAtom
 const _appUserAtom = atom<User | null>(null);
@@ -86,7 +76,7 @@ export const appUserAtom = atom<User | null, User>(
   }
 );
 // CV info atoms
-export const primitiveTemplateInfoAtom = atom<TemplateInfo | null>(null);
+export const primitiveTemplateInfoAtom = atom<TemplateInfo | null>({ type: 0 });
 export const templateInfoAtom = createPersistentAtom(
   primitiveTemplateInfoAtom,
   CV_INFO_LOCAL_STORAGE_KEYS.TEMPLATE
@@ -126,3 +116,27 @@ export const awardInfoAtom = createPersistentAtom(
   primitiveAwardInfo,
   CV_INFO_LOCAL_STORAGE_KEYS.AWARDS
 );
+
+export const cvInfoAtom = atom<CVInfo | null>((get) => {
+  const template = get(primitiveTemplateInfoAtom);
+
+  if (!template) {
+    return null;
+  }
+  const profile = get(primitiveProfileInfoAtom) ?? undefined;
+  const educationList = get(primitiveEducationInfoAtom) ?? undefined;
+  const workList = get(primitiveWorkInfoAtom) ?? undefined;
+  const skillList = get(primitiveSkillInfoAtom) ?? undefined;
+  const projectList = get(primitiveProjectInfoAtom) ?? undefined;
+  const awardList = get(primitiveAwardInfo) ?? undefined;
+
+  return {
+    template,
+    profile,
+    educationList,
+    workList,
+    skillList,
+    projectList,
+    awardList,
+  };
+});

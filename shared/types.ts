@@ -35,7 +35,7 @@ export type ResponseBody<T = any> = {
 
 // Tab Content Types
 export type TemplateInfo = {
-  type: string;
+  type: number;
 };
 
 export type ProfileInfo = {
@@ -87,9 +87,9 @@ export type AwardInfo = {
 export type CVInfo = {
   template: TemplateInfo;
   profile?: ProfileInfo;
-  education?: EducationInfo;
-  work?: WorkInfo;
-  skill?: SkillInfo;
-  project?: ProjectInfo;
-  award?: AwardInfo;
+  educationList?: EducationInfo[];
+  workList?: WorkInfo[];
+  skillList?: SkillInfo[];
+  projectList?: ProjectInfo[];
+  awardList?: AwardInfo[];
 };

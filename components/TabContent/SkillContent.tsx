@@ -30,6 +30,7 @@ const SkillInfoInputForm = ({
     placeholder: "OOP",
     errorMessage: "Invalid detail",
     label: "Skill details",
+    initialData: initialData?.details
   });
 
   return (

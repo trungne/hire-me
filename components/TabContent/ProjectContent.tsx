@@ -31,6 +31,7 @@ const SkillInfoInputForm = ({
     placeholder: "NextJS/Spring Boots",
     errorMessage: "Invalid tool",
     label: "Tools Used",
+    initialData: initialData?.toolsUsed,
   });
 
   return (

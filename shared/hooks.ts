@@ -63,7 +63,9 @@ export const useInitCVInfo = () => {
 
   useEffect(() => {
     setTemplateInfo(
-      getLocalStorageData<TemplateInfo>(CV_INFO_LOCAL_STORAGE_KEYS.TEMPLATE)
+      getLocalStorageData<TemplateInfo>(
+        CV_INFO_LOCAL_STORAGE_KEYS.TEMPLATE
+      ) ?? { type: 0 }
     );
     setProfileInfo(
       getLocalStorageData<ProfileInfo>(CV_INFO_LOCAL_STORAGE_KEYS.PROFILE)

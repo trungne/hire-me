@@ -6,6 +6,8 @@ import {
   StyleSheet,
   PDFDownloadLink,
 } from "@react-pdf/renderer";
+import { useAtom } from "jotai";
+import { cvInfoAtom } from "shared/atoms";
 
 // Create styles
 const styles = StyleSheet.create({
@@ -18,29 +20,31 @@ const styles = StyleSheet.create({
     margin: 10,
     padding: 10,
     flexGrow: 1,
+    textAlign: "center",
   },
 });
 
 const PdfDocument = () => {
+  const [cvInfo] = useAtom(cvInfoAtom);
+  console.log(cvInfo);
   return (
     <Document>
       <Page size="A4" style={styles.page}>
         <View style={styles.section}>
-          <Text>Section #1</Text>
-          <Text>Section #1</Text>
-          <Text>Section #1</Text>
-          <Text>Section #1</Text>
-          
+          <Text>{cvInfo?.profile?.fullName}</Text>
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-evenly",
+            }}
+          >
+            <Text>{cvInfo?.profile?.location}</Text>
+            <Text>{cvInfo?.profile?.email}</Text>
+            <Text>{cvInfo?.profile?.phoneNumber}</Text>
+          </View>
         </View>
-        <View style={styles.section}>
-          <Text>Section #2</Text>
-          <Text>Section #2</Text>
-          <Text>Section #2</Text>
-          <Text>Section #2</Text>
-          <Text>Section #2</Text>
-          <Text>Section #2</Text>
-          <Text>Section #2</Text>
-        </View>
+        <View style={styles.section}></View>
       </Page>
     </Document>
   );
@@ -50,11 +54,11 @@ const PdfDocument = () => {
 const MyDocument = () => (
   <>
     <PdfDocument />
-    <PDFDownloadLink document={<PdfDocument />} fileName="somename.pdf">
+    {/* <PDFDownloadLink document={<PdfDocument />} fileName="somename.pdf">
       {({ blob, url, loading, error }) =>
         loading ? "Loading document..." : "Download now!"
       }
-    </PDFDownloadLink>
+    </PDFDownloadLink> */}
   </>
 );
 
