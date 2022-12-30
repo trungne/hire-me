@@ -2,11 +2,12 @@ import { Button, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useState, useRef, useCallback } from "react";
 import { WorkInfo } from "shared/types";
-import { CommonTabContentType } from ".";
 import TabContent from "./TabContent";
 import { InputFormProps } from ".";
 import { useDynamicForm } from "components/DynamicForm/hooks";
-import { hasEmptyStringField } from "shared/utils";
+import { convertArrayToMap, hasEmptyStringField } from "shared/utils";
+import { useAtom } from "jotai";
+import { navBarAtom, workInfoAtom } from "shared/atoms";
 
 const INPUT_FORM_PREFIX = "work-info-input-";
 
@@ -15,15 +16,10 @@ const WorkInfoInputForm = ({
   remove,
   add,
   formMap,
+  initialData
 }: InputFormProps<WorkInfo>) => {
   const form = useForm<Omit<WorkInfo, "responsibilities">>({
-    initialValues: {
-      companyName: "",
-      jobTitle: "",
-      startDate: "",
-      endDate: "",
-      location: "",
-    },
+    initialValues: initialData,
     validate: {
       companyName: (value) => (!!value ? null : "Invalid company name"),
       jobTitle: (value) => (!!value ? null : "Invalid job title"),
@@ -34,6 +30,7 @@ const WorkInfoInputForm = ({
     placeholder: "Make awesome stuff",
     errorMessage: "Invalid responsibility",
     label: "Responsibilities",
+    initialData: initialData?.responsibilities
   });
 
   return (
@@ -106,9 +103,15 @@ const WorkInfoInputForm = ({
   );
 };
 
-const WorkContent = ({ setNavBar }: CommonTabContentType) => {
-  const [formIndices, setFormIndices] = useState<number[]>([0]);
-  const formMapRef = useRef<Record<number, WorkInfo>>({});
+const WorkContent = () => {
+  const [, setNavBar] = useAtom(navBarAtom);
+  const [workInfo, setWorkInfo] = useAtom(workInfoAtom);
+  const [formIndices, setFormIndices] = useState<number[]>(
+    Array.from(Array(workInfo ? workInfo.length : 1).keys())
+  );
+  const formMapRef = useRef<Record<number, WorkInfo>>(
+    convertArrayToMap(workInfo)
+  );
   const addWork = useCallback(() => {
     setFormIndices((prev) => {
       const newIdx = prev[prev.length - 1] + 1;
@@ -136,6 +139,7 @@ const WorkContent = ({ setNavBar }: CommonTabContentType) => {
           remove={removeWork}
           idx={idx}
           key={idx}
+          initialData={formMapRef.current[idx]}
         />
       ))}
 
@@ -159,7 +163,7 @@ const WorkContent = ({ setNavBar }: CommonTabContentType) => {
             });
             // number of form object received equal to form => all form is valid
             if (Object.keys(formMapRef.current).length === formIndices.length) {
-              console.log(formMapRef.current);
+              setWorkInfo(Object.values(formMapRef.current));
               setNavBar("Skills");
             }
           }}

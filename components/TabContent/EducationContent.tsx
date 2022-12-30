@@ -9,7 +9,7 @@ import { EducationInfo } from "shared/types";
 import { useForm } from "@mantine/form";
 import { InputFormProps } from ".";
 import { useAtom } from "jotai";
-import { educationInfoAtom } from "shared/atoms";
+import { educationInfoAtom, navBarAtom } from "shared/atoms";
 import { convertArrayToMap } from "shared/utils";
 
 const INPUT_FORM_PREFIX = "education-info-input-";
@@ -109,7 +109,8 @@ const EducationInfoInputForm = ({
   );
 };
 
-const EducationContent = ({ setNavBar }: CommonTabContentType) => {
+const EducationContent = () => {
+  const [, setNavBar] = useAtom(navBarAtom);
   const [educationInfo, setEducationInfo] = useAtom(educationInfoAtom);
 
   const [formIndices, setFormIndices] = useState<number[]>(

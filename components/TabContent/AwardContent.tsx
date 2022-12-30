@@ -1,11 +1,13 @@
-import { Button, TextInput } from "@mantine/core";
 import { useCallback, useRef, useState } from "react";
-
-import { CommonTabContentType } from ".";
-import TabContent from "./TabContent";
-import { AwardInfo, EducationInfo } from "shared/types";
+import { Button, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import { useAtom } from "jotai";
+
+import TabContent from "./TabContent";
+import { AwardInfo } from "shared/types";
 import { InputFormProps } from ".";
+import { awardInfoAtom, navBarAtom } from "shared/atoms";
+import { convertArrayToMap } from "shared/utils";
 
 const INPUT_FORM_PREFIX = "award-info-input-";
 const AwardInfoInputForm = ({
@@ -13,8 +15,10 @@ const AwardInfoInputForm = ({
   remove,
   add,
   formMap,
+  initialData,
 }: InputFormProps<AwardInfo>) => {
   const form = useForm<AwardInfo>({
+    initialValues: initialData,
     validate: {
       name: (value) => (!!value ? null : "Invalid award name"),
       awarder: (value) => (!!value ? null : "Invalid awarder name"),
@@ -83,9 +87,16 @@ const AwardInfoInputForm = ({
   );
 };
 
-const AwardContent = ({ setNavBar }: CommonTabContentType) => {
-  const [formIndices, setFormIndices] = useState<number[]>([0]);
-  const formMapRef = useRef<Record<number, AwardInfo>>({});
+const AwardContent = () => {
+  const [, setNavBar] = useAtom(navBarAtom);
+  const [awardInfo, setAwardInfo] = useAtom(awardInfoAtom);
+
+  const [formIndices, setFormIndices] = useState<number[]>(
+    Array.from(Array(awardInfo ? awardInfo.length : 1).keys())
+  );
+  const formMapRef = useRef<Record<number, AwardInfo>>(
+    convertArrayToMap(awardInfo)
+  );
 
   const addSchool = useCallback(() => {
     setFormIndices((prev) => {
@@ -114,6 +125,7 @@ const AwardContent = ({ setNavBar }: CommonTabContentType) => {
           remove={removeSchool}
           idx={idx}
           key={idx}
+          initialData={formMapRef.current[idx]}
         />
       ))}
 
@@ -138,6 +150,7 @@ const AwardContent = ({ setNavBar }: CommonTabContentType) => {
 
             // number of form object received equal to form => all form is valid
             if (Object.keys(formMapRef.current).length === formIndices.length) {
+              setAwardInfo(Object.values(formMapRef.current));
               // TODO: create pdf
             }
           }}

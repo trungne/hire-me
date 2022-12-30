@@ -3,10 +3,12 @@ import { useForm } from "@mantine/form";
 import { useDynamicForm } from "components/DynamicForm/hooks";
 import { useState, useRef, useCallback } from "react";
 import { ProjectInfo } from "shared/types";
-import { hasEmptyStringField } from "shared/utils";
+import { convertArrayToMap, hasEmptyStringField } from "shared/utils";
 import { CommonTabContentType } from ".";
 import TabContent from "./TabContent";
 import { InputFormProps } from ".";
+import { navBarAtom, projectInfoAtom } from "shared/atoms";
+import { useAtom } from "jotai";
 
 const INPUT_FORM_PREFIX = "project-info-input-";
 
@@ -15,9 +17,10 @@ const SkillInfoInputForm = ({
   remove,
   add,
   formMap,
-  initialData
+  initialData,
 }: InputFormProps<ProjectInfo>) => {
   const form = useForm<Omit<ProjectInfo, "toolsUsed">>({
+    initialValues: initialData,
     validate: {
       name: (value) => (!!value ? null : "Invalid project name"),
       description: (value) => (!!value ? null : "Invalid description"),
@@ -34,7 +37,6 @@ const SkillInfoInputForm = ({
     <>
       <div className=" h-2 my-4 bg-slate-700"></div>
       <form
-      
         className="flex flex-col gap-4 mb-4"
         onSubmit={form.onSubmit(
           (values) => {
@@ -103,9 +105,16 @@ const SkillInfoInputForm = ({
   );
 };
 
-const ProjectContent = ({ setNavBar }: CommonTabContentType) => {
-  const [formIndices, setFormIndices] = useState<number[]>([0]);
-  const formMapRef = useRef<Record<number, ProjectInfo>>({});
+const ProjectContent = () => {
+  const [, setNavBar] = useAtom(navBarAtom);
+  const [projectInfo, setProjectInfo] = useAtom(projectInfoAtom);
+
+  const [formIndices, setFormIndices] = useState<number[]>(
+    Array.from(Array(projectInfo ? projectInfo.length : 1).keys())
+  );
+  const formMapRef = useRef<Record<number, ProjectInfo>>(
+    convertArrayToMap(projectInfo)
+  );
 
   const addSchool = useCallback(() => {
     setFormIndices((prev) => {
@@ -134,7 +143,7 @@ const ProjectContent = ({ setNavBar }: CommonTabContentType) => {
           remove={removeSchool}
           idx={idx}
           key={idx}
-          initialData={undefined}
+          initialData={formMapRef.current[idx]}
         />
       ))}
 
@@ -146,7 +155,7 @@ const ProjectContent = ({ setNavBar }: CommonTabContentType) => {
         >
           Previous
         </Button>
-        <Button 
+        <Button
           onClick={() => {
             formIndices.forEach((idx) => {
               const button = document.querySelector<HTMLButtonElement>(
@@ -158,6 +167,7 @@ const ProjectContent = ({ setNavBar }: CommonTabContentType) => {
             });
             // number of form object received equal to form => all form is valid
             if (Object.keys(formMapRef.current).length === formIndices.length) {
+              setProjectInfo(Object.values(formMapRef.current));
               setNavBar("Awards");
             }
           }}
@@ -170,4 +180,4 @@ const ProjectContent = ({ setNavBar }: CommonTabContentType) => {
   );
 };
 
-export default ProjectContent
+export default ProjectContent;

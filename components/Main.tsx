@@ -38,25 +38,25 @@ const Main = () => {
         <SideBar isOpened={opened}></SideBar>
         <div className="overflow-y-auto w-full scrollbar-hide p-4">
           <Tabs.Panel value={NavCategory.TEMPLATE}>
-            <TemplateContent setNavBar={setNavBar} />
+            <TemplateContent />
           </Tabs.Panel>
           <Tabs.Panel value={NavCategory.PROFILE}>
             <ProfileContent />
           </Tabs.Panel>
           <Tabs.Panel value={NavCategory.EDUCATION}>
-            <EducationContent setNavBar={setNavBar} />
+            <EducationContent />
           </Tabs.Panel>
           <Tabs.Panel value={NavCategory.WORK}>
-            <WorkContent setNavBar={setNavBar} />
+            <WorkContent />
           </Tabs.Panel>
           <Tabs.Panel value={NavCategory.SKILLS}>
-            <SkillContent setNavBar={setNavBar} />
+            <SkillContent />
           </Tabs.Panel>
           <Tabs.Panel value={NavCategory.PROJECTS}>
-            <ProjectContent setNavBar={setNavBar} />
+            <ProjectContent />
           </Tabs.Panel>
           <Tabs.Panel value={NavCategory.AWARDS}>
-            <AwardContent setNavBar={setNavBar} />
+            <AwardContent />
           </Tabs.Panel>
         </div>
       </Tabs>

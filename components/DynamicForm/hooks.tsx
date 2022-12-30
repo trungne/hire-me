@@ -1,20 +1,24 @@
 import { Button, CloseButton, Text, TextInput } from "@mantine/core";
 import { useMemo, useState } from "react";
+import { convertArrayToMap } from "shared/utils";
 import { Plus } from "tabler-icons-react";
 
 type UseDynamicFormProps = {
   label: string;
   placeholder: string;
   errorMessage: string;
+  initialData?: string[];
 };
 export const useDynamicForm = ({
   label,
   placeholder,
   errorMessage,
+  initialData,
 }: UseDynamicFormProps) => {
-  const [fields, setFields] = useState<Record<string, string>>({
-    "0": "",
-  });
+  const [fields, setFields] = useState<Record<string, string>>(
+    convertArrayToMap(initialData ?? [""])
+  );
+  console.log(label, fields);
 
   const removeField = (id: string) => {
     setFields((prev) => {
@@ -65,6 +69,7 @@ export const useDynamicForm = ({
           {Object.keys(fields).map((key, index) => {
             return (
               <TextInput
+                value={fields[key]}
                 error={!fields[key] && <div>{errorMessage}</div>}
                 key={key}
                 rightSection={

@@ -6,7 +6,9 @@ import { SkillInfo } from "shared/types";
 import { CommonTabContentType } from ".";
 import TabContent from "./TabContent";
 import { InputFormProps } from ".";
-import { hasEmptyStringField } from "shared/utils";
+import { convertArrayToMap, hasEmptyStringField } from "shared/utils";
+import { navBarAtom, skillInfoAtom } from "shared/atoms";
+import { useAtom } from "jotai";
 
 const INPUT_FORM_PREFIX = "skill-info-input-";
 
@@ -15,8 +17,10 @@ const SkillInfoInputForm = ({
   remove,
   add,
   formMap,
+  initialData
 }: InputFormProps<SkillInfo>) => {
   const form = useForm<Omit<SkillInfo, "details">>({
+    initialValues: initialData,
     validate: {
       name: (value) => (!!value ? null : "Invalid skill name"),
     },
@@ -86,9 +90,16 @@ const SkillInfoInputForm = ({
   );
 };
 
-const SkillContent = ({ setNavBar }: CommonTabContentType) => {
-  const [formIndices, setFormIndices] = useState<number[]>([0]);
-  const formMapRef = useRef<Record<number, SkillInfo>>({});
+const SkillContent = () => {
+  const [, setNavBar] = useAtom(navBarAtom);
+  const [skillInfo, setSkillInfo] = useAtom(skillInfoAtom);
+
+  const [formIndices, setFormIndices] = useState<number[]>(
+    Array.from(Array(skillInfo ? skillInfo.length : 1).keys())
+  );
+  const formMapRef = useRef<Record<number, SkillInfo>>(
+    convertArrayToMap(skillInfo)
+  );
 
   const addSchool = useCallback(() => {
     setFormIndices((prev) => {
@@ -117,6 +128,7 @@ const SkillContent = ({ setNavBar }: CommonTabContentType) => {
           remove={removeSchool}
           idx={idx}
           key={idx}
+          initialData={formMapRef.current[idx]}
         />
       ))}
 
@@ -140,6 +152,7 @@ const SkillContent = ({ setNavBar }: CommonTabContentType) => {
             });
             // number of form object received equal to form => all form is valid
             if (Object.keys(formMapRef.current).length === formIndices.length) {
+              setSkillInfo(Object.values(formMapRef.current));
               setNavBar("Projects");
             }
           }}
