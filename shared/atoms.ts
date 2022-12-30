@@ -31,6 +31,9 @@ const createPersistentAtom = <T>(
   );
 };
 
+// registrationModalAtom
+export const registrationModalAtom = atom(false);
+
 // navBarAtom
 export const navBarPersistentAtom = atom<NavCategoryValueType | null>(null);
 export const navBarAtom = createPersistentAtom(
@@ -94,31 +97,31 @@ export const profileInfoAtom = createPersistentAtom(
   CV_INFO_LOCAL_STORAGE_KEYS.PROFILE
 );
 
-export const primitiveEducationInfoAtom = atom<EducationInfo | null>(null);
+export const primitiveEducationInfoAtom = atom<EducationInfo[] | null>(null);
 export const educationInfoAtom = createPersistentAtom(
   primitiveEducationInfoAtom,
   CV_INFO_LOCAL_STORAGE_KEYS.EDUCATION
 );
 
-export const primitiveWorkInfoAtom = atom<WorkInfo | null>(null);
+export const primitiveWorkInfoAtom = atom<WorkInfo[] | null>(null);
 export const workInfoAtom = createPersistentAtom(
   primitiveWorkInfoAtom,
   CV_INFO_LOCAL_STORAGE_KEYS.WORK
 );
 
-export const primitiveSkillInfoAtom = atom<SkillInfo | null>(null);
+export const primitiveSkillInfoAtom = atom<SkillInfo[] | null>(null);
 export const skillInfoAtom = createPersistentAtom(
   primitiveSkillInfoAtom,
   CV_INFO_LOCAL_STORAGE_KEYS.SKILLS
 );
 
-export const primitiveProjectInfoAtom = atom<ProjectInfo | null>(null);
+export const primitiveProjectInfoAtom = atom<ProjectInfo[] | null>(null);
 export const projectInfoAtom = createPersistentAtom(
   primitiveProjectInfoAtom,
   CV_INFO_LOCAL_STORAGE_KEYS.PROJECTS
 );
 
-export const primitiveAwardInfo = atom<AwardInfo | null>(null);
+export const primitiveAwardInfo = atom<AwardInfo[] | null>(null);
 export const awardInfoAtom = createPersistentAtom(
   primitiveAwardInfo,
   CV_INFO_LOCAL_STORAGE_KEYS.AWARDS

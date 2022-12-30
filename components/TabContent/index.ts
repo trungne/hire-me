@@ -26,4 +26,5 @@ export type InputFormProps<T> = {
   remove: (id: number) => void;
   add: () => void;
   formMap: Record<number, T>;
+  initialData: T | undefined;
 };

@@ -1,3 +1,5 @@
+"use client";
+
 import { Button, TextInput } from "@mantine/core";
 import { useCallback, useRef, useState } from "react";
 
@@ -8,6 +10,7 @@ import { useForm } from "@mantine/form";
 import { InputFormProps } from ".";
 import { useAtom } from "jotai";
 import { educationInfoAtom } from "shared/atoms";
+import { convertArrayToMap } from "shared/utils";
 
 const INPUT_FORM_PREFIX = "education-info-input-";
 const EducationInfoInputForm = ({
@@ -15,10 +18,10 @@ const EducationInfoInputForm = ({
   remove,
   add,
   formMap,
+  initialData,
 }: InputFormProps<EducationInfo>) => {
-  const [educationInfo, setEducationInfo] = useAtom(educationInfoAtom);
   const form = useForm<EducationInfo>({
-    initialValues: educationInfo ? educationInfo : undefined,
+    initialValues: initialData,
     validate: {
       schoolName: (value) => (!!value ? null : "Invalid school name"),
       schoolLocation: (value) => (!!value ? null : "Invalid school location"),
@@ -107,8 +110,15 @@ const EducationInfoInputForm = ({
 };
 
 const EducationContent = ({ setNavBar }: CommonTabContentType) => {
-  const [formIndices, setFormIndices] = useState<number[]>([0]);
-  const formMapRef = useRef<Record<number, EducationInfo>>({});
+  const [educationInfo, setEducationInfo] = useAtom(educationInfoAtom);
+
+  const [formIndices, setFormIndices] = useState<number[]>(
+    Array.from(Array(educationInfo ? educationInfo.length : 1).keys())
+  );
+  console.log(educationInfo);
+  const formMapRef = useRef<Record<number, EducationInfo>>(
+    convertArrayToMap(educationInfo)
+  );
 
   const addSchool = useCallback(() => {
     setFormIndices((prev) => {
@@ -137,6 +147,7 @@ const EducationContent = ({ setNavBar }: CommonTabContentType) => {
           remove={removeSchool}
           idx={idx}
           key={idx}
+          initialData={formMapRef.current[idx]}
         />
       ))}
 
@@ -161,6 +172,7 @@ const EducationContent = ({ setNavBar }: CommonTabContentType) => {
             // number of form object received equal to form => all form is valid
             if (Object.keys(formMapRef.current).length === formIndices.length) {
               setNavBar("Work");
+              setEducationInfo(Object.values(formMapRef.current));
             }
           }}
           type="submit"

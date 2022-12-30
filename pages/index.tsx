@@ -1,81 +1,13 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useAtom } from "jotai";
-import { useEffect, useState } from "react";
-import { Tabs } from "@mantine/core";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import SideBar from "components/SideBar";
-import {
-  appUserAtom,
-  firebaseUserAtom,
-  navBarAtom,
-  writeAcessTokenAtom,
-} from "shared/atoms";
-import { NavCategory, NavCategoryValueType, User } from "shared/types";
-import { CURRENT_NAV_BAR_LOCAL_STORAGE } from "shared/constants";
-import {
-  TemplateContent,
-  ProfileContent,
-  EducationContent,
-  WorkContent,
-  SkillContent,
-  ProjectContent,
-  AwardContent,
-} from "components/TabContent";
 import { Header } from "components/Header";
-import { getAccessToken, getUserByEmail } from "shared/queries";
 import RegistrationModal from "components/Modal/RegistrationModal";
+import { useInitCVInfo, useSubscribeFbAuthState } from "shared/hooks";
+import Main from "components/Main";
 
-const auth = getAuth();
 const Home: NextPage = () => {
-  const [opened, setOpened] = useState(false);
-  const [_, setAccessToken] = useAtom(writeAcessTokenAtom);
-  const [_firebaseUser, setFirebaseUser] = useAtom(firebaseUserAtom);
-  const [appUser, setAppUser] = useAtom(appUserAtom);
-  const [modalOpened, setModalOpened] = useState(false);
-
-  const [navBar, setNavBar] = useAtom(navBarAtom);
-  useEffect(() => {
-    const persistentNavBar = localStorage.getItem(
-      CURRENT_NAV_BAR_LOCAL_STORAGE
-    );
-    if (
-      persistentNavBar &&
-      Object.values(NavCategory).includes(
-        persistentNavBar as NavCategoryValueType
-      )
-    ) {
-      setNavBar(persistentNavBar as NavCategoryValueType);
-    } else {
-      setNavBar("Template");
-    }
-  }, []);
-  useEffect(() => {
-    const subscribe = onAuthStateChanged(auth, async (fbUser) => {
-      if (!fbUser || !fbUser.email) {
-        setAccessToken("");
-        setFirebaseUser(null);
-        return;
-      }
-      setFirebaseUser(fbUser);
-
-      try {
-        const { data } = await getUserByEmail(fbUser.email);
-
-        if (data.error && data.error.code === 404) {
-          setModalOpened(true);
-          return;
-        }
-
-        setAppUser(data.data);
-      } catch (e) {
-        console.log(e);
-      }
-    });
-    return () => {
-      subscribe();
-    };
-  }, []);
+  useInitCVInfo();
+  useSubscribeFbAuthState();
 
   return (
     <>
@@ -86,48 +18,8 @@ const Home: NextPage = () => {
       </Head>
 
       <Header></Header>
-      <Tabs
-        classNames={{
-          root: "bg-slate-50 ",
-          tabLabel: "font-['Montserrat']",
-          panel: "h-full",
-          tabsList: "p-0",
-        }}
-        orientation="vertical"
-        value={navBar}
-        onTabChange={(value) => {
-          if (value) {
-            setNavBar(value as typeof NavCategory[keyof typeof NavCategory]);
-          }
-        }}
-      >
-        <SideBar isOpened={opened}></SideBar>
-        <div className="overflow-y-auto w-full scrollbar-hide p-4">
-          <Tabs.Panel value={NavCategory.TEMPLATE}>
-            <TemplateContent setNavBar={setNavBar} />
-          </Tabs.Panel>
-          <Tabs.Panel value={NavCategory.PROFILE}>
-            <ProfileContent setNavBar={setNavBar} />
-          </Tabs.Panel>
-          <Tabs.Panel value={NavCategory.EDUCATION}>
-            <EducationContent setNavBar={setNavBar} />
-          </Tabs.Panel>
-          <Tabs.Panel value={NavCategory.WORK}>
-            <WorkContent setNavBar={setNavBar} />
-          </Tabs.Panel>
-          <Tabs.Panel value={NavCategory.SKILLS}>
-            <SkillContent setNavBar={setNavBar} />
-          </Tabs.Panel>
-          <Tabs.Panel value={NavCategory.PROJECTS}>
-            <ProjectContent setNavBar={setNavBar} />
-          </Tabs.Panel>
-          <Tabs.Panel value={NavCategory.AWARDS}>
-            <AwardContent setNavBar={setNavBar} />
-          </Tabs.Panel>
-        </div>
-      </Tabs>
-
-      <RegistrationModal isOpened={modalOpened} setIsOpened={setModalOpened} />
+      <Main />
+      <RegistrationModal />
     </>
   );
 };

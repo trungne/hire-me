@@ -2,22 +2,20 @@ import { Button, Modal, Text } from "@mantine/core";
 import { useAtom } from "jotai";
 import { memo } from "react";
 import { useMutation } from "react-query";
-import { appUserAtom, firebaseUserAtom } from "shared/atoms";
+import { appUserAtom, firebaseUserAtom, registrationModalAtom } from "shared/atoms";
 import { createUser as createUserMutation } from "shared/queries";
 import { User } from "shared/types";
 
-type Props = {
-  isOpened: boolean;
-  setIsOpened: (isOpen: boolean) => void;
-};
-const RegistrationModal = ({ isOpened, setIsOpened }: Props) => {
+
+const RegistrationModal = () => {
+  const [modalOpened, setModalOpened] = useAtom(registrationModalAtom);
   const [firebaseUser] = useAtom(firebaseUserAtom);
-  const [_, setAppUser] = useAtom(appUserAtom);
+  const [, setAppUser] = useAtom(appUserAtom);
   const { mutate: createUser } = useMutation("createUser", {
     mutationFn: createUserMutation,
     onSuccess: ({ data: { data: appUser } }) => {
       setAppUser(appUser);
-      setIsOpened(false);
+      setModalOpened(false);
     },
     onError: (e) => {
       console.log(e);
@@ -37,8 +35,8 @@ const RegistrationModal = ({ isOpened, setIsOpened }: Props) => {
   };
   return (
     <Modal
-      opened={isOpened}
-      onClose={() => setIsOpened(false)}
+      opened={modalOpened}
+      onClose={() => setModalOpened(false)}
       closeOnClickOutside={false}
       closeOnEscape={false}
       withCloseButton={false}

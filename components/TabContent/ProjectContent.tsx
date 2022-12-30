@@ -15,6 +15,7 @@ const SkillInfoInputForm = ({
   remove,
   add,
   formMap,
+  initialData
 }: InputFormProps<ProjectInfo>) => {
   const form = useForm<Omit<ProjectInfo, "toolsUsed">>({
     validate: {
@@ -33,6 +34,7 @@ const SkillInfoInputForm = ({
     <>
       <div className=" h-2 my-4 bg-slate-700"></div>
       <form
+      
         className="flex flex-col gap-4 mb-4"
         onSubmit={form.onSubmit(
           (values) => {
@@ -132,6 +134,7 @@ const ProjectContent = ({ setNavBar }: CommonTabContentType) => {
           remove={removeSchool}
           idx={idx}
           key={idx}
+          initialData={undefined}
         />
       ))}
 
@@ -143,7 +146,7 @@ const ProjectContent = ({ setNavBar }: CommonTabContentType) => {
         >
           Previous
         </Button>
-        <Button
+        <Button 
           onClick={() => {
             formIndices.forEach((idx) => {
               const button = document.querySelector<HTMLButtonElement>(

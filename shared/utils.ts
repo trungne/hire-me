@@ -22,3 +22,14 @@ export const getLocalStorageData = <T = string>(key: string): T | null => {
 
   return null;
 };
+
+export const convertArrayToMap = <T = any>(array: T[] | null) => {
+  if (array === null) {
+    return {};
+  }
+  const map: Record<number, T> = {};
+  array.forEach((item, idx) => {
+    map[idx] = item;
+  });
+  return map;
+};
