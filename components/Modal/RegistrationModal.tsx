@@ -17,6 +17,7 @@ const RegistrationModal = ({ isOpened, setIsOpened }: Props) => {
     mutationFn: createUserMutation,
     onSuccess: ({ data: { data: appUser } }) => {
       setAppUser(appUser);
+      setIsOpened(false);
     },
     onError: (e) => {
       console.log(e);
