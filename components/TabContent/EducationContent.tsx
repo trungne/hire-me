@@ -115,7 +115,7 @@ const EducationContent = ({ setNavBar }: CommonTabContentType) => {
   const [formIndices, setFormIndices] = useState<number[]>(
     Array.from(Array(educationInfo ? educationInfo.length : 1).keys())
   );
-  console.log(educationInfo);
+
   const formMapRef = useRef<Record<number, EducationInfo>>(
     convertArrayToMap(educationInfo)
   );

@@ -1,15 +1,16 @@
 import TabContent from "./TabContent";
 import { useForm } from "@mantine/form";
 import { TextInput, Button } from "@mantine/core";
-import { CommonTabContentType } from ".";
 import { ProfileInfo } from "shared/types";
 import { useAtom } from "jotai";
-import { profileInfoAtom } from "shared/atoms";
+import { navBarAtom, profileInfoAtom } from "shared/atoms";
+import { memo } from "react";
 
-const ProfileContent = ({ setNavBar }: CommonTabContentType) => {
+const ProfileContent = () => {
   const [profileInfo, setProfileInfo] = useAtom(profileInfoAtom);
+  const [, setNavBar] = useAtom(navBarAtom);
   const form = useForm<ProfileInfo>({
-    initialValues: profileInfo ? profileInfo : undefined,
+    initialValues: profileInfo ?? undefined,
     validate: {
       fullName: (value) => (value.length > 0 ? null : "Invalid full name"),
       email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
@@ -83,4 +84,4 @@ const ProfileContent = ({ setNavBar }: CommonTabContentType) => {
   );
 };
 
-export default ProfileContent;
+export default memo(ProfileContent);

@@ -3,8 +3,10 @@ import Head from "next/head";
 import { Header } from "components/Header";
 import RegistrationModal from "components/Modal/RegistrationModal";
 import { useInitCVInfo, useSubscribeFbAuthState } from "shared/hooks";
-import Main from "components/Main";
 
+import dynamic from "next/dynamic";
+
+const DynamicMain = dynamic(() => import("components/Main"), { ssr: false });
 const Home: NextPage = () => {
   useInitCVInfo();
   useSubscribeFbAuthState();
@@ -18,7 +20,7 @@ const Home: NextPage = () => {
       </Head>
 
       <Header></Header>
-      <Main />
+      <DynamicMain />
       <RegistrationModal />
     </>
   );

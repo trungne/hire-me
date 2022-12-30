@@ -41,7 +41,7 @@ const Main = () => {
             <TemplateContent setNavBar={setNavBar} />
           </Tabs.Panel>
           <Tabs.Panel value={NavCategory.PROFILE}>
-            <ProfileContent setNavBar={setNavBar} />
+            <ProfileContent />
           </Tabs.Panel>
           <Tabs.Panel value={NavCategory.EDUCATION}>
             <EducationContent setNavBar={setNavBar} />
