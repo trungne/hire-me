@@ -3,17 +3,13 @@ import { useForm } from "@mantine/form";
 import { TextInput, Button } from "@mantine/core";
 import { CommonTabContentType } from ".";
 import { ProfileInfo } from "shared/types";
+import { useAtom } from "jotai";
+import { profileInfoAtom } from "shared/atoms";
 
 const ProfileContent = ({ setNavBar }: CommonTabContentType) => {
+  const [profileInfo, setProfileInfo] = useAtom(profileInfoAtom);
   const form = useForm<ProfileInfo>({
-    initialValues: {
-      fullName: "",
-      email: "",
-      phoneNumber: "",
-      location: "",
-      website: "",
-    },
-
+    initialValues: profileInfo ? profileInfo : undefined,
     validate: {
       fullName: (value) => (value.length > 0 ? null : "Invalid full name"),
       email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
@@ -27,7 +23,9 @@ const ProfileContent = ({ setNavBar }: CommonTabContentType) => {
     <TabContent title="Enter your personal information">
       <form
         className="grow flex flex-col"
-        onSubmit={form.onSubmit((values) => console.log(values))}
+        onSubmit={form.onSubmit((values) => {
+          setProfileInfo(values);
+        })}
       >
         <div className="flex flex-col gap-4">
           <TextInput

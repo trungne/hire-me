@@ -6,6 +6,8 @@ import TabContent from "./TabContent";
 import { EducationInfo } from "shared/types";
 import { useForm } from "@mantine/form";
 import { InputFormProps } from ".";
+import { useAtom } from "jotai";
+import { educationInfoAtom } from "shared/atoms";
 
 const INPUT_FORM_PREFIX = "education-info-input-";
 const EducationInfoInputForm = ({
@@ -14,7 +16,9 @@ const EducationInfoInputForm = ({
   add,
   formMap,
 }: InputFormProps<EducationInfo>) => {
+  const [educationInfo, setEducationInfo] = useAtom(educationInfoAtom);
   const form = useForm<EducationInfo>({
+    initialValues: educationInfo ? educationInfo : undefined,
     validate: {
       schoolName: (value) => (!!value ? null : "Invalid school name"),
       schoolLocation: (value) => (!!value ? null : "Invalid school location"),

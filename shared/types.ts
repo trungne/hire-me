@@ -1,5 +1,3 @@
-import axios from "axios";
-
 export const NavCategory = {
   TEMPLATE: "Template",
   PROFILE: "Profile",
@@ -36,6 +34,9 @@ export type ResponseBody<T = any> = {
 };
 
 // Tab Content Types
+export type TemplateInfo = {
+  type: string
+}
 
 export type ProfileInfo = {
   fullName: string;

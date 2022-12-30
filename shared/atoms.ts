@@ -1,7 +1,20 @@
 import { atom } from "jotai";
 import axiosInstance from "./axios-settings";
-import { CURRENT_NAV_BAR_LOCAL_STORAGE } from "./constants";
-import { NavCategoryValueType, ProjectInfo, User } from "./types";
+import {
+  CURRENT_NAV_BAR_LOCAL_STORAGE,
+  CV_INFO_LOCAL_STORAGE_KEYS,
+} from "./constants";
+import {
+  AwardInfo,
+  EducationInfo,
+  NavCategoryValueType,
+  ProfileInfo,
+  ProjectInfo,
+  SkillInfo,
+  TemplateInfo,
+  User,
+  WorkInfo,
+} from "./types";
 import { User as FirebaseUser } from "firebase/auth";
 import { getAccessToken, getUserByEmail } from "./queries";
 
@@ -69,16 +82,44 @@ export const appUserAtom = atom<User | null, User>(
     set(_appUserAtom, update);
   }
 );
-
-const primitiveProjectInfo = atom<ProjectInfo | null>(null);
-export const projectInfoAtom = createPersistentAtom(
-  primitiveProjectInfo,
-  "HIRE_ME_PROJECT_INFO"
+// CV info atoms
+export const primitiveTemplateInfoAtom = atom<TemplateInfo | null>(null);
+export const templateInfoAtom = createPersistentAtom(
+  primitiveTemplateInfoAtom,
+  CV_INFO_LOCAL_STORAGE_KEYS.TEMPLATE
 );
-// export const projectInfoAtom = atom<ProjectInfo | null, ProjectInfo>(
-//   (get) => get(primitiveProjectInfo),
-//   (get, set, update) => {
-//     // `update` is any single value we receive for updating this atom
-//     set(primitiveProjectInfo, update);
-//   }
-// );
+export const primitiveProfileInfoAtom = atom<ProfileInfo | null>(null);
+export const profileInfoAtom = createPersistentAtom(
+  primitiveProfileInfoAtom,
+  CV_INFO_LOCAL_STORAGE_KEYS.PROFILE
+);
+
+export const primitiveEducationInfoAtom = atom<EducationInfo | null>(null);
+export const educationInfoAtom = createPersistentAtom(
+  primitiveEducationInfoAtom,
+  CV_INFO_LOCAL_STORAGE_KEYS.EDUCATION
+);
+
+export const primitiveWorkInfoAtom = atom<WorkInfo | null>(null);
+export const workInfoAtom = createPersistentAtom(
+  primitiveWorkInfoAtom,
+  CV_INFO_LOCAL_STORAGE_KEYS.WORK
+);
+
+export const primitiveSkillInfoAtom = atom<SkillInfo | null>(null);
+export const skillInfoAtom = createPersistentAtom(
+  primitiveSkillInfoAtom,
+  CV_INFO_LOCAL_STORAGE_KEYS.SKILLS
+);
+
+export const primitiveProjectInfoAtom = atom<ProjectInfo | null>(null);
+export const projectInfoAtom = createPersistentAtom(
+  primitiveProjectInfoAtom,
+  CV_INFO_LOCAL_STORAGE_KEYS.PROJECTS
+);
+
+export const primitiveAwardInfo = atom<AwardInfo | null>(null);
+export const awardInfoAtom = createPersistentAtom(
+  primitiveAwardInfo,
+  CV_INFO_LOCAL_STORAGE_KEYS.AWARDS
+);
