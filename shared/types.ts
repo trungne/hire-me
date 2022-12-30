@@ -35,8 +35,8 @@ export type ResponseBody<T = any> = {
 
 // Tab Content Types
 export type TemplateInfo = {
-  type: string
-}
+  type: string;
+};
 
 export type ProfileInfo = {
   fullName: string;
@@ -82,4 +82,14 @@ export type AwardInfo = {
   date: string;
   awarder: string;
   summary: string;
+};
+
+export type CVInfo = {
+  template: TemplateInfo;
+  profile?: ProfileInfo;
+  education?: EducationInfo;
+  work?: WorkInfo;
+  skill?: SkillInfo;
+  project?: ProjectInfo;
+  award?: AwardInfo;
 };
