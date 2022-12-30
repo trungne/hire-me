@@ -104,6 +104,8 @@ const AwardContent = () => {
 
       return [...prev, newIdx];
     });
+
+    setAwardInfo(Object.values(formMapRef.current));
   }, []);
 
   const removeSchool = useCallback((id: number) => {
@@ -114,6 +116,8 @@ const AwardContent = () => {
     if (formMapRef.current[id]) {
       delete formMapRef.current[id];
     }
+
+    setAwardInfo(Object.values(formMapRef.current));
   }, []);
 
   return (

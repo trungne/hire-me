@@ -127,6 +127,7 @@ const EducationContent = () => {
 
       return [...prev, newIdx];
     });
+    setEducationInfo(Object.values(formMapRef.current));
   }, []);
 
   const removeSchool = useCallback((id: number) => {
@@ -137,6 +138,7 @@ const EducationContent = () => {
     if (formMapRef.current[id]) {
       delete formMapRef.current[id];
     }
+    setEducationInfo(Object.values(formMapRef.current));
   }, []);
 
   return (

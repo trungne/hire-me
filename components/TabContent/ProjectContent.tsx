@@ -122,6 +122,8 @@ const ProjectContent = () => {
 
       return [...prev, newIdx];
     });
+
+    setProjectInfo(Object.values(formMapRef.current));
   }, []);
 
   const removeSchool = useCallback((id: number) => {
@@ -132,6 +134,8 @@ const ProjectContent = () => {
     if (formMapRef.current[id]) {
       delete formMapRef.current[id];
     }
+
+    setProjectInfo(Object.values(formMapRef.current));
   }, []);
 
   return (

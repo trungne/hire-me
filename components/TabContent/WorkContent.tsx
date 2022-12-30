@@ -16,7 +16,7 @@ const WorkInfoInputForm = ({
   remove,
   add,
   formMap,
-  initialData
+  initialData,
 }: InputFormProps<WorkInfo>) => {
   const form = useForm<Omit<WorkInfo, "responsibilities">>({
     initialValues: initialData,
@@ -30,7 +30,7 @@ const WorkInfoInputForm = ({
     placeholder: "Make awesome stuff",
     errorMessage: "Invalid responsibility",
     label: "Responsibilities",
-    initialData: initialData?.responsibilities
+    initialData: initialData?.responsibilities,
   });
 
   return (
@@ -118,6 +118,8 @@ const WorkContent = () => {
 
       return [...prev, newIdx];
     });
+
+    setWorkInfo(Object.values(formMapRef.current));
   }, []);
 
   const removeWork = useCallback((id: number) => {
@@ -128,6 +130,8 @@ const WorkContent = () => {
     if (formMapRef.current[id]) {
       delete formMapRef.current[id];
     }
+
+    setWorkInfo(Object.values(formMapRef.current));
   }, []);
 
   return (

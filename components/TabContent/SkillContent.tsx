@@ -17,7 +17,7 @@ const SkillInfoInputForm = ({
   remove,
   add,
   formMap,
-  initialData
+  initialData,
 }: InputFormProps<SkillInfo>) => {
   const form = useForm<Omit<SkillInfo, "details">>({
     initialValues: initialData,
@@ -107,6 +107,8 @@ const SkillContent = () => {
 
       return [...prev, newIdx];
     });
+
+    setSkillInfo(Object.values(formMapRef.current));
   }, []);
 
   const removeSchool = useCallback((id: number) => {
@@ -117,6 +119,8 @@ const SkillContent = () => {
     if (formMapRef.current[id]) {
       delete formMapRef.current[id];
     }
+
+    setSkillInfo(Object.values(formMapRef.current));
   }, []);
 
   return (
