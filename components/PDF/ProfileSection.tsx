@@ -1,11 +1,19 @@
-import { Divider } from "@mantine/core";
-import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
-import { useAtom } from "jotai";
-import { cvInfoAtom } from "shared/atoms";
-import { ProfileInfo } from "shared/types";
-import { WorkSection } from "./WorkSection";
+import { Text, View, StyleSheet } from "@react-pdf/renderer";
+import { Style } from "@react-pdf/types";
 
-const styles = StyleSheet.create({
+import { ProfileInfo } from "shared/types";
+
+export type ProfileSectionStyle = {
+  page: Style;
+  name: Style;
+  header: Style;
+  infoContainer: Style;
+  location: Style;
+  email: Style;
+  phone: Style;
+};
+
+const styles = StyleSheet.create<ProfileSectionStyle>({
   page: {
     display: "flex",
     flexDirection: "column",
@@ -24,6 +32,15 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     textAlign: "center",
   },
+  infoContainer: {
+    marginTop: 8,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+  location: {},
+  email: {},
+  phone: {},
 });
 
 const DefaultSeparator = () => {
@@ -44,19 +61,12 @@ const ProfileSection = ({ profile }: { profile: ProfileInfo }) => {
     <View style={styles.header}>
       <Text style={styles.name}>{profile.fullName}</Text>
 
-      <View
-        style={{
-          marginTop: 8,
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "center",
-        }}
-      >
-        <Text>{profile.location}</Text>
+      <View style={styles.infoContainer}>
+        <Text style={styles.location}>{profile.location}</Text>
         <DefaultSeparator />
-        <Text>{profile.email}</Text>
+        <Text style={styles.email}>{profile.email}</Text>
         <DefaultSeparator />
-        <Text>{profile.phoneNumber}</Text>
+        <Text style={styles.phone}>{profile.phoneNumber}</Text>
       </View>
     </View>
   );

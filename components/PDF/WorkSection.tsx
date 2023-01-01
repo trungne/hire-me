@@ -44,7 +44,7 @@ const styles = StyleSheet.create<WorkSectionType>({
 
 export const WorkSection = ({ workList }: { workList: WorkInfo[] }) => {
   return (
-    <Container marginHorizontal={48} marginVertical={12}>
+    <Container marginVertical={12}>
       <View style={styles.sectionTitle}>
         <Text>Experience</Text>
       </View>

@@ -4,12 +4,12 @@ import { Style } from "@react-pdf/types";
 
 const Container = ({
   children,
-  marginHorizontal,
-  marginVertical,
+  marginHorizontal = 0,
+  marginVertical = 0,
 }: {
   children: ReactNode;
-  marginHorizontal: number;
-  marginVertical: number;
+  marginHorizontal?: number;
+  marginVertical?: number;
 }) => {
   return (
     <View style={{ display: "flex", flexDirection: "column" }}>
