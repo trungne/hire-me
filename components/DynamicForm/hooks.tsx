@@ -18,7 +18,6 @@ export const useDynamicForm = ({
   const [fields, setFields] = useState<Record<string, string>>(
     convertArrayToMap(initialData ?? [""])
   );
-  console.log(label, fields);
 
   const removeField = (id: string) => {
     setFields((prev) => {
