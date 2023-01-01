@@ -8,6 +8,7 @@ import {
 } from "@react-pdf/renderer";
 import { useAtom } from "jotai";
 import { cvInfoAtom } from "shared/atoms";
+import { TemplateA } from "./Templates";
 
 // Create styles
 const styles = StyleSheet.create({
@@ -53,7 +54,7 @@ const PdfDocument = () => {
 // Create Document Component
 const MyDocument = () => (
   <>
-    <PdfDocument />
+    <TemplateA />
     {/* <PDFDownloadLink document={<PdfDocument />} fileName="somename.pdf">
       {({ blob, url, loading, error }) =>
         loading ? "Loading document..." : "Download now!"
