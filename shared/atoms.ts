@@ -71,7 +71,7 @@ export const appUserAtom = atom<User | null, User>(
       data: { data: accessToken },
     } = await getAccessToken({ idToken });
 
-    set(accessTokenAtom, accessToken);
+    set(writeAcessTokenAtom, accessToken);
     set(_appUserAtom, update);
   }
 );
