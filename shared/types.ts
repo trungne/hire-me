@@ -67,6 +67,8 @@ export type WorkInfo = {
 
 export type SkillInfo = {
   name: string;
+  expirience: number;
+  summary: string | undefined;
   details: string[];
 };
 
