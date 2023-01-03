@@ -9,6 +9,8 @@ import { InputFormProps } from ".";
 import { convertArrayToMap, hasEmptyStringField } from "shared/utils";
 import { navBarAtom, skillInfoAtom } from "shared/atoms";
 import { useAtom } from "jotai";
+import { Configuration, OpenAIApi } from "openai";
+import { signOut } from "firebase/auth";
 
 const INPUT_FORM_PREFIX = "skill-info-input-";
 
@@ -23,6 +25,7 @@ const SkillInfoInputForm = ({
     initialValues: initialData,
     validate: {
       name: (value) => (!!value ? null : "Invalid skill name"),
+      experience: (value) => (!!value ? null : "Invalid year"),
     },
   });
 
@@ -30,8 +33,32 @@ const SkillInfoInputForm = ({
     placeholder: "OOP",
     errorMessage: "Invalid detail",
     label: "Skill details",
-    initialData: initialData?.details
   });
+
+  const [summary, setSummary] = useState<string | undefined>("");
+
+  const ai = async () => {
+    const configuration = new Configuration({
+      apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
+    });
+    const openai = new OpenAIApi(configuration);
+
+    const response = await openai.createCompletion({
+      model: "text-davinci-003",
+      prompt: `write a summary for CV beginning with adjectives in the first sentence:
+      ${form.getInputProps("name").value} skills,
+      ${form.getInputProps("experience").value} of experience
+      `,
+      temperature: 0.9,
+      max_tokens: 1000,
+      top_p: 1,
+      frequency_penalty: 0,
+      presence_penalty: 0.6,
+      stop: [" Human:", " AI:"],
+    });
+    // setSummary(response.data.choices[0].text);
+    form.setFieldValue("summary", response.data.choices[0].text);
+  };
 
   return (
     <>
@@ -57,9 +84,22 @@ const SkillInfoInputForm = ({
       >
         <TextInput
           withAsterisk
+          label="Experience"
+          placeholder="Year(s)"
+          {...form.getInputProps("experience")}
+        />
+
+        <TextInput
+          withAsterisk
           label="Skill name"
           placeholder="Programming Langauge"
           {...form.getInputProps("name")}
+        />
+
+        <TextInput
+          label="AI Summary"
+          placeholder="AI Do It For You"
+          {...form.getInputProps("summary")}
         />
 
         <button
@@ -81,6 +121,15 @@ const SkillInfoInputForm = ({
           }}
         >
           Remove
+        </Button>
+
+        <Button
+          variant="light"
+          onClick={() => {
+            ai();
+          }}
+        >
+          Let AI Write It For You
         </Button>
 
         <Button variant="light" onClick={add}>
