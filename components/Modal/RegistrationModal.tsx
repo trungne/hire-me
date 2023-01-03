@@ -44,7 +44,7 @@ const RegistrationModal = () => {
     >
       <div className="flex flex-col gap-4">
         <Text className="text-center">Look like we have a new user.</Text>
-        <Text className="text-center">Tell us what you're looking for!</Text>
+        <Text className="text-center">Tell us what you&apos;re looking for!</Text>
         <div className="flex flex-col gap-4">
           <Button
             onClick={async () => {
@@ -52,7 +52,7 @@ const RegistrationModal = () => {
             }}
             color="teal"
           >
-            I'm looking for a job
+            I&apos;m looking for a job
           </Button>
           <Button
             onClick={async () => {
@@ -60,7 +60,7 @@ const RegistrationModal = () => {
             }}
             color="indigo"
           >
-            I'm looking for candidates
+            I&apos;m looking for candidates
           </Button>
         </div>
       </div>
