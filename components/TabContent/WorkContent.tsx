@@ -120,7 +120,7 @@ const WorkContent = () => {
     });
 
     setWorkInfo(Object.values(formMapRef.current));
-  }, []);
+  }, [setWorkInfo]);
 
   const removeWork = useCallback((id: number) => {
     setFormIndices((prev) => {
@@ -132,7 +132,7 @@ const WorkContent = () => {
     }
 
     setWorkInfo(Object.values(formMapRef.current));
-  }, []);
+  }, [setWorkInfo]);
 
   return (
     <TabContent title="Enter your work history">

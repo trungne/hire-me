@@ -110,7 +110,7 @@ const SkillContent = () => {
     });
 
     setSkillInfo(Object.values(formMapRef.current));
-  }, []);
+  }, [setSkillInfo]);
 
   const removeSchool = useCallback((id: number) => {
     setFormIndices((prev) => {
@@ -122,7 +122,7 @@ const SkillContent = () => {
     }
 
     setSkillInfo(Object.values(formMapRef.current));
-  }, []);
+  }, [setSkillInfo]);
 
   return (
     <TabContent title="Enter your skills">

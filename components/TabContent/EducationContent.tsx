@@ -128,7 +128,7 @@ const EducationContent = () => {
       return [...prev, newIdx];
     });
     setEducationInfo(Object.values(formMapRef.current));
-  }, []);
+  }, [setEducationInfo]);
 
   const removeSchool = useCallback((id: number) => {
     setFormIndices((prev) => {
@@ -139,7 +139,7 @@ const EducationContent = () => {
       delete formMapRef.current[id];
     }
     setEducationInfo(Object.values(formMapRef.current));
-  }, []);
+  }, [setEducationInfo]);
 
   return (
     <TabContent title="Enter your education background">

@@ -125,7 +125,7 @@ const ProjectContent = () => {
     });
 
     setProjectInfo(Object.values(formMapRef.current));
-  }, []);
+  }, [setProjectInfo]);
 
   const removeSchool = useCallback((id: number) => {
     setFormIndices((prev) => {
@@ -137,7 +137,7 @@ const ProjectContent = () => {
     }
 
     setProjectInfo(Object.values(formMapRef.current));
-  }, []);
+  }, [setProjectInfo]);
 
   return (
     <TabContent title="Enter your skills">

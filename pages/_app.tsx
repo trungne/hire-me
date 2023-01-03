@@ -57,7 +57,15 @@ function MyApp({ Component, pageProps }: AppProps) {
     setAwardInfo(
       getLocalStorageData<AwardInfo[]>(CV_INFO_LOCAL_STORAGE_KEYS.AWARDS)
     );
-  }, []);
+  }, [
+    setTemplateInfo,
+    setProfileInfo,
+    setEducationInfo,
+    setWorkInfo,
+    setSkillInfo,
+    setProjectInfo,
+    setAwardInfo,
+  ]);
   return (
     <JotaiProvider>
       <QueryClientProvider client={QUERY_CLIENT}>

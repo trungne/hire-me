@@ -49,9 +49,10 @@ export const WorkSection = ({ workList }: { workList: WorkInfo[] }) => {
         <Text>Experience</Text>
       </View>
       <View>
-        {workList.map((work) => {
+        {workList.map((work, idx) => {
           return (
             <View
+              key={idx}
               style={{
                 ...styles.workSection,
                 display: "flex",
@@ -85,7 +86,7 @@ export const WorkSection = ({ workList }: { workList: WorkInfo[] }) => {
                 }}
               >
                 {work.responsibilities.map((responsibility, idx) => {
-                  return <Text>- {responsibility}</Text>;
+                  return <Text key={idx}>- {responsibility}</Text>;
                 })}
               </View>
             </View>

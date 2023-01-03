@@ -90,7 +90,7 @@ export const useDynamicForm = ({
         </div>
       </form>
     );
-  }, [fields]);
+  }, [fields, errorMessage, label, placeholder]);
 
   return { fields, formElement };
 };
