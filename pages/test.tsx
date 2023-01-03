@@ -1,8 +1,9 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useInitCVInfo, useSubscribeFbAuthState } from "shared/hooks";
-import { MyDocument } from "components/PDF";
+import dynamic from "next/dynamic";
 
+const PDFDocument = dynamic(() => import("components/PDF"), { ssr: false });
 const Test: NextPage = () => {
   useInitCVInfo();
   useSubscribeFbAuthState();
@@ -15,7 +16,7 @@ const Test: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <MyDocument />
+      <PDFDocument />
     </>
   );
 };

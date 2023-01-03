@@ -1,6 +1,6 @@
 import { Text, View, StyleSheet } from "@react-pdf/renderer";
 import { Style } from "@react-pdf/types";
-import { SkillInfo } from "shared/types";
+import { EducationInfo } from "shared/types";
 import Container from "./Container";
 
 export type SkillSectionStyle = {
@@ -18,19 +18,23 @@ const styles = StyleSheet.create<SkillSectionStyle>({
   },
 });
 
-const SkillSection = ({ skillList }: { skillList: SkillInfo[] }) => {
+const EducationSection = ({
+  educationList,
+}: {
+  educationList: EducationInfo[];
+}) => {
   return (
     <Container marginVertical={12}>
       <View style={styles.sectionTitle}>
-        <Text>Skills</Text>
+        <Text>Education</Text>
       </View>
       <View style={styles.skillSection}>
-        {skillList.map((skill) => {
+        {educationList.map((education) => {
           return (
-            <>
-              <Text>- {skill.name}: </Text>
-              <Text>{skill.details.join(", ")}</Text>
-            </>
+            <View style={{ display: "flex", flexDirection: "column" }}>
+              <Text>{education.schoolName}</Text>
+              <Text>{education.schoolLocation}</Text>
+            </View>
           );
         })}
       </View>
@@ -38,4 +42,4 @@ const SkillSection = ({ skillList }: { skillList: SkillInfo[] }) => {
   );
 };
 
-export default SkillSection;
+export default EducationSection;

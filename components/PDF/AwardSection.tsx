@@ -1,6 +1,6 @@
 import { Text, View, StyleSheet } from "@react-pdf/renderer";
 import { Style } from "@react-pdf/types";
-import { SkillInfo } from "shared/types";
+import { AwardInfo } from "shared/types";
 import Container from "./Container";
 
 export type SkillSectionStyle = {
@@ -18,19 +18,21 @@ const styles = StyleSheet.create<SkillSectionStyle>({
   },
 });
 
-const SkillSection = ({ skillList }: { skillList: SkillInfo[] }) => {
+const AwardSection = ({ awardList }: { awardList: AwardInfo[] }) => {
   return (
     <Container marginVertical={12}>
       <View style={styles.sectionTitle}>
-        <Text>Skills</Text>
+        <Text>Awards</Text>
       </View>
       <View style={styles.skillSection}>
-        {skillList.map((skill) => {
+        {awardList.map((award) => {
           return (
-            <>
-              <Text>- {skill.name}: </Text>
-              <Text>{skill.details.join(", ")}</Text>
-            </>
+            <View style={{ display: "flex", flexDirection: "column" }}>
+              <Text style={{ fontWeight: "bold" }}>{award.name}</Text>
+              <Text>Awarder: {award.awarder}</Text>
+              <Text>Date: {award.date}</Text>
+              <Text>Summary: {award.summary}</Text>
+            </View>
           );
         })}
       </View>
@@ -38,4 +40,4 @@ const SkillSection = ({ skillList }: { skillList: SkillInfo[] }) => {
   );
 };
 
-export default SkillSection;
+export default AwardSection;
