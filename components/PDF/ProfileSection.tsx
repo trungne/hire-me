@@ -13,6 +13,7 @@ export type ProfileSectionStyle = {
   location: Style;
   email: Style;
   phone: Style;
+  website: Style;
 };
 
 const styles = StyleSheet.create<ProfileSectionStyle>({
@@ -23,7 +24,7 @@ const styles = StyleSheet.create<ProfileSectionStyle>({
   },
 
   name: {
-    fontSize: SECTION_FONT_SIZE,
+    fontSize: SECTION_FONT_SIZE + 4,
     textAlign: "center",
   },
   header: {
@@ -41,9 +42,18 @@ const styles = StyleSheet.create<ProfileSectionStyle>({
     justifyContent: "center",
     fontSize: CONTENT_FONT_SIZE,
   },
-  location: {},
-  email: {},
-  phone: {},
+  location: {
+    fontSize: CONTENT_FONT_SIZE,
+  },
+  email: {
+    fontSize: CONTENT_FONT_SIZE,
+  },
+  phone: {
+    fontSize: CONTENT_FONT_SIZE,
+  },
+  website: {
+    fontSize: CONTENT_FONT_SIZE,
+  },
 });
 
 const DefaultSeparator = () => {
@@ -59,18 +69,34 @@ const DefaultSeparator = () => {
   );
 };
 
-const ProfileSection = ({ profile }: { profile?: ProfileInfo }) => {
+const ProfileSection = ({ profile }: { profile: ProfileInfo }) => {
   return (
     <View style={styles.header}>
       <Text style={styles.name}>{profile?.fullName}</Text>
 
       <View style={styles.infoContainer}>
-        <Text style={styles.location}>{profile?.location}</Text>
-        <DefaultSeparator />
-        <Text style={styles.email}>{profile?.email}</Text>
-        <DefaultSeparator />
-        <Text style={styles.phone}>{profile?.phoneNumber}</Text>
+        {profile.location && (
+          <Text style={styles.location}>{profile.location}</Text>
+        )}
+        {profile.email && (
+          <>
+            <DefaultSeparator />
+            <Text style={styles.email}>{profile?.email}</Text>
+          </>
+        )}
+
+        {profile.phoneNumber && (
+          <>
+            <DefaultSeparator />
+            <Text style={styles.phone}>{profile.phoneNumber}</Text>
+          </>
+        )}
       </View>
+      {profile.website && (
+        <View>
+          <Text style={styles.website}>{profile.website}</Text>
+        </View>
+      )}
     </View>
   );
 };

@@ -18,9 +18,12 @@ const styles = StyleSheet.create<SkillSectionStyle>({
     marginLeft: 16,
     marginRight: 16,
     fontSize: CONTENT_FONT_SIZE,
+    display: "flex",
+    flexDirection: "column",
   },
   skillName: {
     fontWeight: "bold",
+    marginRight: 8,
   },
 });
 
@@ -33,15 +36,21 @@ const SkillSection = ({ skillList }: { skillList: SkillInfo[] }) => {
       <View style={styles.skillSection}>
         {skillList.map((skill, idx) => {
           return (
-            <>
-              -{" "}
-              <Text key={idx} style={styles.skillName}>
-                {skill.name}:{" "}
-              </Text>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+              }}
+            >
+              {skill.name && (
+                <Text key={idx + skill.name} style={styles.skillName}>
+                  {skill.name}:{" "}
+                </Text>
+              )}
               {skill.details && (
                 <Text key={idx}>{skill.details.join(", ")}</Text>
               )}
-            </>
+            </View>
           );
         })}
       </View>

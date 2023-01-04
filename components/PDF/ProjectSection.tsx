@@ -33,6 +33,7 @@ const ProjectSection = ({ projectList }: { projectList: ProjectInfo[] }) => {
               style={{
                 display: "flex",
                 flexDirection: "column",
+                marginBottom: 12,
               }}
             >
               <Text

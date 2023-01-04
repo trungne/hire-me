@@ -12,6 +12,7 @@ export type EducationSectionStyle = {
   duration: Style;
   dateSeparator: Style;
   school: Style;
+  degree: Style;
 };
 
 const styles = StyleSheet.create<EducationSectionStyle>({
@@ -42,6 +43,7 @@ const styles = StyleSheet.create<EducationSectionStyle>({
   school: {
     fontWeight: "bold",
   },
+  degree: {},
 });
 
 const EducationSection = ({
@@ -66,15 +68,25 @@ const EducationSection = ({
             >
               <View style={{ display: "flex", flexDirection: "column" }}>
                 {education.schoolName && (
-                  <Text style={styles.school}>{education.schoolName}</Text>
+                  <>
+                    <Text style={styles.school}>{education.schoolName}</Text>
+                  </>
                 )}
-                {education.major && <Text>Major: {education.major}</Text>}
-                {education.GPA && <Text>GPA: {education.GPA}</Text>}
+
+                {education.degree && (
+                  <Text style={styles.degree}>{education.degree}</Text>
+                )}
+                {education.major && (
+                  <>
+                    <Text>Major: {education.major}</Text>
+                  </>
+                )}
               </View>
-              <View>
+              <View style={{ display: "flex", flexDirection: "column" }}>
                 {education.schoolLocation && (
-                  <Text>{education.schoolLocation}</Text>
+                  <Text>Location: {education.schoolLocation}</Text>
                 )}
+                {education.GPA && <Text>GPA: {education.GPA}</Text>}
 
                 {education.startDate && education.endDate && (
                   <View style={styles.date}>
