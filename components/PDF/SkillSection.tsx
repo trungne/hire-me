@@ -7,6 +7,7 @@ import { CONTENT_FONT_SIZE, SECTION_FONT_SIZE } from "./styles";
 export type SkillSectionStyle = {
   sectionTitle: Style;
   skillSection: Style;
+  skillName: Style;
 };
 
 const styles = StyleSheet.create<SkillSectionStyle>({
@@ -18,6 +19,9 @@ const styles = StyleSheet.create<SkillSectionStyle>({
     marginRight: 16,
     fontSize: CONTENT_FONT_SIZE,
   },
+  skillName: {
+    fontWeight: "bold",
+  },
 });
 
 const SkillSection = ({ skillList }: { skillList: SkillInfo[] }) => {
@@ -27,11 +31,16 @@ const SkillSection = ({ skillList }: { skillList: SkillInfo[] }) => {
         <Text>Skills</Text>
       </View>
       <View style={styles.skillSection}>
-        {skillList.map((skill) => {
+        {skillList.map((skill, idx) => {
           return (
             <>
-              <Text>- {skill.name}: </Text>
-              {skill.details && <Text>{skill.details.join(", ")}</Text>}
+              -{" "}
+              <Text key={idx} style={styles.skillName}>
+                {skill.name}:{" "}
+              </Text>
+              {skill.details && (
+                <Text key={idx}>{skill.details.join(", ")}</Text>
+              )}
             </>
           );
         })}
