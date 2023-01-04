@@ -1,20 +1,46 @@
 import { Text, View, StyleSheet } from "@react-pdf/renderer";
 import { Style } from "@react-pdf/types";
 import { EducationInfo } from "shared/types";
+import { formatDate } from "shared/utils";
 import Container from "./Container";
+import { CONTENT_FONT_SIZE, SECTION_FONT_SIZE } from "./styles";
 
-export type SkillSectionStyle = {
+export type EducationSectionStyle = {
   sectionTitle: Style;
-  skillSection: Style;
+  educationSection: Style;
+  date: Style;
+  duration: Style;
+  dateSeparator: Style;
+  school: Style;
 };
 
-const styles = StyleSheet.create<SkillSectionStyle>({
+const styles = StyleSheet.create<EducationSectionStyle>({
   sectionTitle: {
-    fontSize: 28,
+    fontSize: SECTION_FONT_SIZE,
   },
-  skillSection: {
+  educationSection: {
     marginLeft: 16,
     marginRight: 16,
+    fontSize: CONTENT_FONT_SIZE,
+  },
+  date: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  duration: {
+    fontStyle: "italic",
+    fontWeight: "thin",
+  },
+  dateSeparator: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    marginLeft: 8,
+    marginRight: 8,
+  },
+  school: {
+    fontWeight: "bold",
   },
 });
 
@@ -28,17 +54,43 @@ const EducationSection = ({
       <View style={styles.sectionTitle}>
         <Text>Education</Text>
       </View>
-      <View style={styles.skillSection}>
+      <View style={styles.educationSection}>
         {educationList.map((education) => {
           return (
-            <View style={{ display: "flex", flexDirection: "column" }}>
-              <Text>{education.schoolName}</Text>
-              <Text>{education.schoolLocation}</Text>
-              <Text>
-                {education.startDate && Intl.DateTimeFormat("en-US").format(
-                  new Date(education.startDate)
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <View style={{ display: "flex", flexDirection: "column" }}>
+                {education.schoolName && (
+                  <Text style={styles.school}>{education.schoolName}</Text>
                 )}
-              </Text>
+                {education.major && <Text>Major: {education.major}</Text>}
+                {education.GPA && <Text>GPA: {education.GPA}</Text>}
+              </View>
+              <View>
+                {education.schoolLocation && (
+                  <Text>{education.schoolLocation}</Text>
+                )}
+
+                {education.startDate && education.endDate && (
+                  <View style={styles.date}>
+                    <Text style={styles.duration}>
+                      {formatDate(new Date(education.startDate))}
+                    </Text>
+                    <Text style={styles.dateSeparator}>|</Text>
+
+                    <Text style={styles.duration}>
+                      {education.endDate !== "Present"
+                        ? formatDate(new Date(education.endDate))
+                        : "Present"}
+                    </Text>
+                  </View>
+                )}
+              </View>
             </View>
           );
         })}

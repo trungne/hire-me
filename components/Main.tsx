@@ -39,10 +39,10 @@ const Main = () => {
       >
         <SideBar isOpened={opened}></SideBar>
         <div
-          className={`overflow-y-auto w-full scrollbar-hide 
-          p-4 
-          max-h-[calc(100vh_-_${HEADER_HEIGHT}px)] 
-          h-[calc(100vh_-_${HEADER_HEIGHT}px)]`}
+          style={{
+            maxHeight: `calc(100vh - ${HEADER_HEIGHT}px)`,
+          }}
+          className={`overflow-y-auto w-full scrollbar-hide p-4 `}
         >
           <Tabs.Panel value={NavCategory.TEMPLATE}>
             <TemplateContent />

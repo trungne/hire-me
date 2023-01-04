@@ -1,8 +1,8 @@
 import { Text, View, StyleSheet } from "@react-pdf/renderer";
 import { Style } from "@react-pdf/types";
-import Link from "next/link";
 import { ProjectInfo } from "shared/types";
 import Container from "./Container";
+import { CONTENT_FONT_SIZE, SECTION_FONT_SIZE } from "./styles";
 
 export type SkillSectionStyle = {
   sectionTitle: Style;
@@ -11,11 +11,12 @@ export type SkillSectionStyle = {
 
 const styles = StyleSheet.create<SkillSectionStyle>({
   sectionTitle: {
-    fontSize: 28,
+    fontSize: SECTION_FONT_SIZE,
   },
   skillSection: {
     marginLeft: 16,
     marginRight: 16,
+    fontSize: CONTENT_FONT_SIZE,
   },
 });
 

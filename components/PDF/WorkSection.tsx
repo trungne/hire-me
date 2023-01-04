@@ -3,6 +3,7 @@ import { Style } from "@react-pdf/types";
 import { WorkInfo } from "shared/types";
 import { formatDate } from "shared/utils";
 import Container from "./Container";
+import { CONTENT_FONT_SIZE, SECTION_FONT_SIZE } from "./styles";
 
 export type WorkSectionType = {
   sectionTitle: Style;
@@ -21,11 +22,13 @@ export type WorkSectionType = {
 
 const styles = StyleSheet.create<WorkSectionType>({
   sectionTitle: {
-    fontSize: 28,
+    fontSize: SECTION_FONT_SIZE,
   },
   workSection: {
     marginLeft: 16,
     marginRight: 16,
+    display: "flex",
+    flexDirection: "column",
   },
   companyAndJobTitleContainer: {
     display: "flex",
@@ -43,7 +46,8 @@ const styles = StyleSheet.create<WorkSectionType>({
     flexDirection: "column",
   },
   location: {
-    textAlign: "right",
+    display: "flex",
+    alignSelf: "flex-end",
     marginRight: 8,
   },
   duration: {
@@ -72,24 +76,18 @@ const styles = StyleSheet.create<WorkSectionType>({
 
 export const WorkSection = ({ workList }: { workList: WorkInfo[] }) => {
   return (
-    <Container marginVertical={12}>
+    <Container>
       <View style={styles.sectionTitle}>
         <Text>Experience</Text>
       </View>
-      <View>
+      <View style={{ fontSize: CONTENT_FONT_SIZE }}>
         {workList?.map((work, idx) => {
           return (
-            <View
-              key={idx}
-              style={{
-                ...styles.workSection,
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
+            <View key={idx} style={styles.workSection}>
               <View
                 style={{
                   display: "flex",
+                  flexDirection: "row",
                   justifyContent: "space-between",
                 }}
               >
@@ -113,7 +111,9 @@ export const WorkSection = ({ workList }: { workList: WorkInfo[] }) => {
                       <Text style={styles.dateSeparator}>|</Text>
 
                       <Text style={styles.duration}>
-                        {formatDate(new Date(work.endDate))}
+                        {work.endDate !== "Present"
+                          ? formatDate(new Date(work.endDate))
+                          : "Present"}
                       </Text>
                     </View>
                   )}

@@ -1,7 +1,9 @@
+import { Divider } from "@mantine/core";
 import { Text, View, StyleSheet } from "@react-pdf/renderer";
 import { Style } from "@react-pdf/types";
 
 import { ProfileInfo } from "shared/types";
+import { CONTENT_FONT_SIZE, SECTION_FONT_SIZE } from "./styles";
 
 export type ProfileSectionStyle = {
   page: Style;
@@ -21,7 +23,7 @@ const styles = StyleSheet.create<ProfileSectionStyle>({
   },
 
   name: {
-    fontSize: 28,
+    fontSize: SECTION_FONT_SIZE,
     textAlign: "center",
   },
   header: {
@@ -37,6 +39,7 @@ const styles = StyleSheet.create<ProfileSectionStyle>({
     display: "flex",
     flexDirection: "row",
     justifyContent: "center",
+    fontSize: CONTENT_FONT_SIZE,
   },
   location: {},
   email: {},
@@ -56,17 +59,17 @@ const DefaultSeparator = () => {
   );
 };
 
-const ProfileSection = ({ profile }: { profile: ProfileInfo }) => {
+const ProfileSection = ({ profile }: { profile?: ProfileInfo }) => {
   return (
     <View style={styles.header}>
-      <Text style={styles.name}>{profile.fullName}</Text>
+      <Text style={styles.name}>{profile?.fullName}</Text>
 
       <View style={styles.infoContainer}>
-        <Text style={styles.location}>{profile.location}</Text>
+        <Text style={styles.location}>{profile?.location}</Text>
         <DefaultSeparator />
-        <Text style={styles.email}>{profile.email}</Text>
+        <Text style={styles.email}>{profile?.email}</Text>
         <DefaultSeparator />
-        <Text style={styles.phone}>{profile.phoneNumber}</Text>
+        <Text style={styles.phone}>{profile?.phoneNumber}</Text>
       </View>
     </View>
   );
