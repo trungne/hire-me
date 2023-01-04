@@ -37,14 +37,12 @@ export const convertArrayToMap = <T = any>(array: T[] | null | undefined) => {
 export const isClientSide = () => {
   return typeof window !== "undefined";
 };
-
-const DATE_FOTMATTER = new Intl.DateTimeFormat("en-US", {
+const options: Intl.DateTimeFormatOptions = {
   year: "numeric",
   month: "long",
-});
+};
+const DATE_FOTMATTER = new Intl.DateTimeFormat("en-US", options);
+
 export const formatDate = (date: Date) => {
-  if (!date) {
-    return "";
-  }
   return DATE_FOTMATTER.format(date);
 };

@@ -1,4 +1,4 @@
-import { Text, useMantineTheme } from "@mantine/core";
+import { Button, Text, useMantineTheme } from "@mantine/core";
 import { MonthPicker } from "mantine-dates-6";
 
 type Props = {
@@ -6,14 +6,19 @@ type Props = {
   endDate?: string;
   startDateInputProps: any;
   endDateInputProps: any;
+  onPresentClicked: () => void;
 };
 const MonthInput = ({
   startDate,
   endDate,
   startDateInputProps,
   endDateInputProps,
+  onPresentClicked,
 }: Props) => {
   const theme = useMantineTheme();
+  {
+    console.log("endDate", endDate);
+  }
 
   return (
     <div className="flex justify-center gap-4">
@@ -29,26 +34,31 @@ const MonthInput = ({
         </Text>
         <MonthPicker
           defaultDate={startDate ? new Date(startDate) : undefined}
-          {...startDateInputProps}
-          label="Start Date"
           placeholder="Start Date"
+          {...startDateInputProps}
         />
       </div>
       <div className="text-center">
-        <Text
-          style={{
-            color: theme.colors.gray[9],
-          }}
-          component="label"
-          className="font-['Montserrat'] font-medium text-[14px]"
-        >
-          End date
-        </Text>
+        <div className="flex gap-4 justify-center items-center">
+          <Text
+            style={{
+              color: theme.colors.gray[9],
+            }}
+            component="label"
+            className="font-['Montserrat'] font-medium text-[14px]"
+          >
+            End date
+          </Text>
+          <Button color="teal" onClick={onPresentClicked} size="xs">
+            Present
+          </Button>
+        </div>
         <MonthPicker
-          defaultDate={endDate ? new Date(endDate) : undefined}
-          {...endDateInputProps}
-          label="End Date"
           placeholder="End Date"
+          defaultDate={
+            endDate && endDate !== "Present" ? new Date(endDate) : undefined
+          }
+          {...endDateInputProps}
         />
       </div>
     </div>

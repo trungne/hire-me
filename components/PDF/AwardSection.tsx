@@ -27,11 +27,33 @@ const AwardSection = ({ awardList }: { awardList: AwardInfo[] }) => {
       <View style={styles.skillSection}>
         {awardList.map((award) => {
           return (
-            <View style={{ display: "flex", flexDirection: "column" }}>
-              <Text style={{ fontWeight: "bold" }}>{award.name}</Text>
-              <Text>Awarder: {award.awarder}</Text>
-              <Text>Date: {award.date}</Text>
-              <Text>Summary: {award.summary}</Text>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <View style={{ display: "flex", flexDirection: "column" }}>
+                {award.name && (
+                  <Text style={{ fontWeight: "bold" }}>{award.name}</Text>
+                )}
+                {award.summary && <Text>Summary: {award.summary}</Text>}
+              </View>
+
+              <View style={{ display: "flex", flexDirection: "column" }}>
+                {award.awarder && <Text>Awarder: {award.awarder}</Text>}
+                {award.date && (
+                  <Text>
+                    Date:{" "}
+                    {new Intl.DateTimeFormat("en-US", {
+                      year: "numeric",
+                      month: "short",
+                      day: "2-digit",
+                    }).format(new Date(award.date))}
+                  </Text>
+                )}
+              </View>
             </View>
           );
         })}

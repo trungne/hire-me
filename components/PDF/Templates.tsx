@@ -30,7 +30,7 @@ export const TemplateA = () => {
         {cvInfo.profile && <ProfileSection profile={cvInfo.profile} />}
         <Divider />
 
-        <Container marginHorizontal={48}>
+        <Container marginHorizontal={64}>
           {cvInfo.workList && <WorkSection workList={cvInfo.workList} />}
           <Divider />
           {cvInfo.skillList && <SkillSection skillList={cvInfo.skillList} />}

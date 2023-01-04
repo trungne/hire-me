@@ -14,6 +14,7 @@ export type WorkSectionType = {
   locationAndDurationContainer: Style;
   location: Style;
   duration: Style;
+  responsibilities: Style;
   date: Style;
   dateSeparator: Style;
 };
@@ -61,6 +62,12 @@ const styles = StyleSheet.create<WorkSectionType>({
     justifyContent: "center",
     alignItems: "center",
   },
+  responsibilities: {
+    display: "flex",
+    flexDirection: "column",
+    marginTop: 10,
+    marginBottom: 10,
+  },
 });
 
 export const WorkSection = ({ workList }: { workList: WorkInfo[] }) => {
@@ -87,34 +94,33 @@ export const WorkSection = ({ workList }: { workList: WorkInfo[] }) => {
                 }}
               >
                 <View style={styles.companyAndJobTitleContainer}>
-                  <Text style={styles.companyName}>{work.companyName}</Text>
-                  <Text style={styles.jobTitle}>{work.jobTitle}</Text>
+                  {work.companyName && (
+                    <Text style={styles.companyName}>{work.companyName}</Text>
+                  )}
+                  {work.jobTitle && (
+                    <Text style={styles.jobTitle}>{work.jobTitle}</Text>
+                  )}
                 </View>
                 <View style={styles.locationAndDurationContainer}>
-                  <Text style={styles.location}>{work.location}</Text>
-                  <View style={styles.date}>
-                    <Text style={styles.duration}>
-                      {work.startDate
-                        ? formatDate(new Date(work.startDate))
-                        : ""}
-                    </Text>
-                    <Text style={styles.dateSeparator}>|</Text>
+                  {work.location && (
+                    <Text style={styles.location}>{work.location}</Text>
+                  )}
+                  {work.startDate && work.endDate && (
+                    <View style={styles.date}>
+                      <Text style={styles.duration}>
+                        {formatDate(new Date(work.startDate))}
+                      </Text>
+                      <Text style={styles.dateSeparator}>|</Text>
 
-                    <Text style={styles.duration}>
-                      {work.endDate ? formatDate(new Date(work.endDate)) : ""}
-                    </Text>
-                  </View>
+                      <Text style={styles.duration}>
+                        {formatDate(new Date(work.endDate))}
+                      </Text>
+                    </View>
+                  )}
                 </View>
               </View>
               {work.responsibilities && (
-                <View
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    marginTop: 10,
-                    marginBottom: 10,
-                  }}
-                >
+                <View style={styles.responsibilities}>
                   <Text>Responsibilities: </Text>
                   {work.responsibilities.map((responsibility, idx) => {
                     return <Text key={idx}>- {responsibility}</Text>;

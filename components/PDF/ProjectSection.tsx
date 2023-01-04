@@ -45,7 +45,7 @@ const ProjectSection = ({ projectList }: { projectList: ProjectInfo[] }) => {
               <Text>{project.description}</Text>
               <Text>Tool(s) used: {project.toolsUsed.join(", ")}</Text>
               <Text>
-                <a href={project.link}>project.link</a>
+                Visit: <a href={project.link}>project.link</a>
               </Text>
             </View>
           );

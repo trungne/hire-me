@@ -75,6 +75,7 @@ const EducationInfoInputForm = ({
           endDate={initialData?.endDate}
           startDateInputProps={form.getInputProps("startDate")}
           endDateInputProps={form.getInputProps("endDate")}
+          onPresentClicked={() => form.setValues({ endDate: "Present" })}
         />
 
         <TextInput
