@@ -13,6 +13,7 @@ import {
   ProjectContent,
   AwardContent,
 } from "components/TabContent";
+import { HEADER_HEIGHT } from "./Header";
 
 const Main = () => {
   const [opened, setOpened] = useState(false);
@@ -21,8 +22,9 @@ const Main = () => {
   return (
     <>
       <Tabs
+        styles={{ panel: { height: "calc(100vh - 64px)" } }}
         classNames={{
-          root: "bg-slate-50 ",
+          root: "bg-slate-50",
           tabLabel: "font-['Montserrat']",
           panel: "h-full",
           tabsList: "p-0",
@@ -36,7 +38,12 @@ const Main = () => {
         }}
       >
         <SideBar isOpened={opened}></SideBar>
-        <div className="overflow-y-auto w-full scrollbar-hide p-4">
+        <div
+          className={`overflow-y-auto w-full scrollbar-hide 
+          p-4 
+          max-h-[calc(100vh_-_${HEADER_HEIGHT}px)] 
+          h-[calc(100vh_-_${HEADER_HEIGHT}px)]`}
+        >
           <Tabs.Panel value={NavCategory.TEMPLATE}>
             <TemplateContent />
           </Tabs.Panel>

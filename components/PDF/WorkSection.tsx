@@ -77,7 +77,7 @@ export const WorkSection = ({ workList }: { workList: WorkInfo[] }) => {
                   </View>
                 </View>
               </View>
-              <View
+              {work.responsibilities && <View
                 style={{
                   display: "flex",
                   flexDirection: "column",
@@ -88,7 +88,7 @@ export const WorkSection = ({ workList }: { workList: WorkInfo[] }) => {
                 {work.responsibilities.map((responsibility, idx) => {
                   return <Text key={idx}>- {responsibility}</Text>;
                 })}
-              </View>
+              </View>}
             </View>
           );
         })}

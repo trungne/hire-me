@@ -21,10 +21,7 @@ const SkillInfoInputForm = ({
 }: InputFormProps<ProjectInfo>) => {
   const form = useForm<Omit<ProjectInfo, "toolsUsed">>({
     initialValues: initialData,
-    validate: {
-      name: (value) => (!!value ? null : "Invalid project name"),
-      description: (value) => (!!value ? null : "Invalid description"),
-    },
+    validate: {},
   });
 
   const { fields, formElement } = useDynamicForm({
@@ -127,17 +124,20 @@ const ProjectContent = () => {
     setProjectInfo(Object.values(formMapRef.current));
   }, [setProjectInfo]);
 
-  const removeSchool = useCallback((id: number) => {
-    setFormIndices((prev) => {
-      return [...prev.filter((e) => e !== id)];
-    });
+  const removeSchool = useCallback(
+    (id: number) => {
+      setFormIndices((prev) => {
+        return [...prev.filter((e) => e !== id)];
+      });
 
-    if (formMapRef.current[id]) {
-      delete formMapRef.current[id];
-    }
+      if (formMapRef.current[id]) {
+        delete formMapRef.current[id];
+      }
 
-    setProjectInfo(Object.values(formMapRef.current));
-  }, [setProjectInfo]);
+      setProjectInfo(Object.values(formMapRef.current));
+    },
+    [setProjectInfo]
+  );
 
   return (
     <TabContent title="Enter your skills">

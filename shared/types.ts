@@ -39,35 +39,35 @@ export type TemplateInfo = {
 };
 
 export type ProfileInfo = {
-  fullName: string;
-  email: string;
-  phoneNumber: string;
-  location: string;
+  fullName?: string;
+  email?: string;
+  phoneNumber?: string;
+  location?: string;
   website?: string;
 };
 
 export type EducationInfo = {
-  schoolName: string;
-  schoolLocation: string;
-  degree: string;
-  major: string;
-  GPA: number;
+  schoolName?: string;
+  schoolLocation?: string;
+  degree?: string;
+  major?: string;
+  GPA?: number;
   startDate?: string;
   endDate?: string;
 };
 
 export type WorkInfo = {
-  companyName: string;
-  jobTitle: string;
-  location: string;
+  companyName?: string;
+  jobTitle?: string;
+  location?: string;
   startDate?: string;
   endDate?: string;
-  responsibilities: string[];
+  responsibilities?: string[];
 };
 
 export type SkillInfo = {
-  name: string;
-  details: string[];
+  name?: string;
+  details?: string[];
 };
 
 export type ProjectInfo = {

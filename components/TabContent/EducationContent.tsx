@@ -1,16 +1,18 @@
 "use client";
 
-import { Button, TextInput } from "@mantine/core";
+import { Button, Text, TextInput, useMantineTheme } from "@mantine/core";
+import { DatePicker, DateRangePicker } from "@mantine/dates";
 import { useCallback, useRef, useState } from "react";
 
-import { CommonTabContentType } from ".";
 import TabContent from "./TabContent";
 import { EducationInfo } from "shared/types";
 import { useForm } from "@mantine/form";
 import { InputFormProps } from ".";
 import { useAtom } from "jotai";
 import { educationInfoAtom, navBarAtom } from "shared/atoms";
-import { convertArrayToMap } from "shared/utils";
+import { convertArrayToMap, isClientSide } from "shared/utils";
+import { MonthPicker, MonthPickerInput } from "mantine-dates-6";
+import MonthInput from "components/MonthInput";
 
 const INPUT_FORM_PREFIX = "education-info-input-";
 const EducationInfoInputForm = ({
@@ -20,20 +22,11 @@ const EducationInfoInputForm = ({
   formMap,
   initialData,
 }: InputFormProps<EducationInfo>) => {
+  const theme = useMantineTheme();
+
   const form = useForm<EducationInfo>({
     initialValues: initialData,
-    validate: {
-      schoolName: (value) => (!!value ? null : "Invalid school name"),
-      schoolLocation: (value) => (!!value ? null : "Invalid school location"),
-      degree: (value) => (!!value ? null : "Invalid degree"),
-      major: (value) => (!!value ? null : "Invalid majot"),
-      GPA: (value) =>
-        value!! &&
-        /[+-]?((\d+\.?\d*)|(\.\d+))/.test(value.toString()) &&
-        value > 0
-          ? null
-          : "Invalid GPA",
-    },
+    validate: {},
   });
 
   return (
@@ -75,6 +68,13 @@ const EducationInfoInputForm = ({
           label="Major"
           placeholder="Computer Science"
           {...form.getInputProps("major")}
+        />
+
+        <MonthInput
+          startDate={initialData?.startDate}
+          endDate={initialData?.endDate}
+          startDateInputProps={form.getInputProps("startDate")}
+          endDateInputProps={form.getInputProps("endDate")}
         />
 
         <TextInput
@@ -130,16 +130,19 @@ const EducationContent = () => {
     setEducationInfo(Object.values(formMapRef.current));
   }, [setEducationInfo]);
 
-  const removeSchool = useCallback((id: number) => {
-    setFormIndices((prev) => {
-      return [...prev.filter((e) => e !== id)];
-    });
+  const removeSchool = useCallback(
+    (id: number) => {
+      setFormIndices((prev) => {
+        return [...prev.filter((e) => e !== id)];
+      });
 
-    if (formMapRef.current[id]) {
-      delete formMapRef.current[id];
-    }
-    setEducationInfo(Object.values(formMapRef.current));
-  }, [setEducationInfo]);
+      if (formMapRef.current[id]) {
+        delete formMapRef.current[id];
+      }
+      setEducationInfo(Object.values(formMapRef.current));
+    },
+    [setEducationInfo]
+  );
 
   return (
     <TabContent title="Enter your education background">

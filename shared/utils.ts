@@ -33,3 +33,7 @@ export const convertArrayToMap = <T = any>(array: T[] | null | undefined) => {
   });
   return map;
 };
+
+export const isClientSide = () => {
+  return typeof window !== "undefined";
+};

@@ -29,7 +29,7 @@ const SkillSection = ({ skillList }: { skillList: SkillInfo[] }) => {
           return (
             <>
               <Text>- {skill.name}: </Text>
-              <Text>{skill.details.join(", ")}</Text>
+              {skill.details && <Text>{skill.details.join(", ")}</Text>}
             </>
           );
         })}

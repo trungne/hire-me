@@ -34,6 +34,11 @@ const EducationSection = ({
             <View style={{ display: "flex", flexDirection: "column" }}>
               <Text>{education.schoolName}</Text>
               <Text>{education.schoolLocation}</Text>
+              <Text>
+                {education.startDate && Intl.DateTimeFormat("en-US").format(
+                  new Date(education.startDate)
+                )}
+              </Text>
             </View>
           );
         })}

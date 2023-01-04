@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from "react";
-import { Button, TextInput } from "@mantine/core";
+import { Button, Text, TextInput, useMantineTheme } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useAtom } from "jotai";
 
@@ -8,6 +8,8 @@ import { AwardInfo } from "shared/types";
 import { InputFormProps } from ".";
 import { awardInfoAtom, navBarAtom } from "shared/atoms";
 import { convertArrayToMap } from "shared/utils";
+import { MonthPicker } from "mantine-dates-6";
+import { DatePicker } from "@mantine/dates";
 
 const INPUT_FORM_PREFIX = "award-info-input-";
 const AwardInfoInputForm = ({
@@ -17,6 +19,7 @@ const AwardInfoInputForm = ({
   formMap,
   initialData,
 }: InputFormProps<AwardInfo>) => {
+  const theme = useMantineTheme();
   const form = useForm<AwardInfo>({
     initialValues: initialData,
     validate: {
@@ -41,21 +44,25 @@ const AwardInfoInputForm = ({
         )}
       >
         <TextInput
-          withAsterisk
           label="Award name"
           placeholder="Hack FBI"
           {...form.getInputProps("name")}
         />
-        {/* {TODO: Add date} */}
-
+        <DatePicker
+          defaultDate={
+            initialData?.date ? new Date(initialData?.date) : undefined
+          }
+          {...form.getInputProps("date")}
+          label="Date"
+          placeholder="Date"
+          dropdownType="modal"
+        />
         <TextInput
-          withAsterisk
           label="Awarder"
           placeholder="FBI"
           {...form.getInputProps("awarder")}
         />
         <TextInput
-          withAsterisk
           label="Summary"
           placeholder="I hacked Mr. FBI successfully"
           {...form.getInputProps("summary")}
@@ -108,17 +115,20 @@ const AwardContent = () => {
     setAwardInfo(Object.values(formMapRef.current));
   }, [setAwardInfo]);
 
-  const removeSchool = useCallback((id: number) => {
-    setFormIndices((prev) => {
-      return [...prev.filter((e) => e !== id)];
-    });
+  const removeSchool = useCallback(
+    (id: number) => {
+      setFormIndices((prev) => {
+        return [...prev.filter((e) => e !== id)];
+      });
 
-    if (formMapRef.current[id]) {
-      delete formMapRef.current[id];
-    }
+      if (formMapRef.current[id]) {
+        delete formMapRef.current[id];
+      }
 
-    setAwardInfo(Object.values(formMapRef.current));
-  }, [setAwardInfo]);
+      setAwardInfo(Object.values(formMapRef.current));
+    },
+    [setAwardInfo]
+  );
 
   return (
     <TabContent title="Enter your education background">

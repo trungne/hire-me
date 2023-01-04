@@ -8,6 +8,7 @@ import { useDynamicForm } from "components/DynamicForm/hooks";
 import { convertArrayToMap, hasEmptyStringField } from "shared/utils";
 import { useAtom } from "jotai";
 import { navBarAtom, workInfoAtom } from "shared/atoms";
+import MonthInput from "components/MonthInput";
 
 const INPUT_FORM_PREFIX = "work-info-input-";
 
@@ -20,11 +21,7 @@ const WorkInfoInputForm = ({
 }: InputFormProps<WorkInfo>) => {
   const form = useForm<Omit<WorkInfo, "responsibilities">>({
     initialValues: initialData,
-    validate: {
-      companyName: (value) => (!!value ? null : "Invalid company name"),
-      jobTitle: (value) => (!!value ? null : "Invalid job title"),
-      location: (value) => (!!value ? null : "Invalid location"),
-    },
+    validate: {},
   });
   const { fields, formElement } = useDynamicForm({
     placeholder: "Make awesome stuff",
@@ -56,22 +53,26 @@ const WorkInfoInputForm = ({
         )}
       >
         <TextInput
-          withAsterisk
           label="Company name"
           placeholder="Google"
           {...form.getInputProps("companyName")}
         />
         <TextInput
-          withAsterisk
           label="Job title"
           placeholder="Software Engineer (L1/L2)"
           {...form.getInputProps("jobTitle")}
         />
         <TextInput
-          withAsterisk
           label="Location"
           placeholder="New York, NY"
           {...form.getInputProps("location")}
+        />
+
+        <MonthInput
+          startDate={initialData?.startDate}
+          endDate={initialData?.endDate}
+          startDateInputProps={form.getInputProps("startDate")}
+          endDateInputProps={form.getInputProps("endDate")}
         />
 
         <button
@@ -122,17 +123,20 @@ const WorkContent = () => {
     setWorkInfo(Object.values(formMapRef.current));
   }, [setWorkInfo]);
 
-  const removeWork = useCallback((id: number) => {
-    setFormIndices((prev) => {
-      return [...prev.filter((e) => e !== id)];
-    });
+  const removeWork = useCallback(
+    (id: number) => {
+      setFormIndices((prev) => {
+        return [...prev.filter((e) => e !== id)];
+      });
 
-    if (formMapRef.current[id]) {
-      delete formMapRef.current[id];
-    }
+      if (formMapRef.current[id]) {
+        delete formMapRef.current[id];
+      }
 
-    setWorkInfo(Object.values(formMapRef.current));
-  }, [setWorkInfo]);
+      setWorkInfo(Object.values(formMapRef.current));
+    },
+    [setWorkInfo]
+  );
 
   return (
     <TabContent title="Enter your work history">

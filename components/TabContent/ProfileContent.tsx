@@ -11,13 +11,7 @@ const ProfileContent = () => {
   const [, setNavBar] = useAtom(navBarAtom);
   const form = useForm<ProfileInfo>({
     initialValues: profileInfo ?? undefined,
-    validate: {
-      fullName: (value) => (value.length > 0 ? null : "Invalid full name"),
-      email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
-      phoneNumber: (value) =>
-        value.length > 0 ? null : "Invalid phone number",
-      location: (value) => (!!value ? null : "Invalid location"),
-    },
+    validate: {},
   });
 
   return (
@@ -30,20 +24,17 @@ const ProfileContent = () => {
       >
         <div className="flex flex-col gap-4">
           <TextInput
-            withAsterisk
             label="Full name"
             placeholder="John Doe"
             {...form.getInputProps("fullName")}
           />
 
           <TextInput
-            withAsterisk
             label="Email"
             placeholder="johndoe@email.com"
             {...form.getInputProps("email")}
           />
           <TextInput
-            withAsterisk
             label="Phone Number"
             placeholder="(123) 456 789"
             {...form.getInputProps("phoneNumber")}

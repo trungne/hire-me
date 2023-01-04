@@ -21,9 +21,7 @@ const SkillInfoInputForm = ({
 }: InputFormProps<SkillInfo>) => {
   const form = useForm<Omit<SkillInfo, "details">>({
     initialValues: initialData,
-    validate: {
-      name: (value) => (!!value ? null : "Invalid skill name"),
-    },
+    validate: {},
   });
 
   const { fields, formElement } = useDynamicForm({
@@ -56,7 +54,6 @@ const SkillInfoInputForm = ({
         )}
       >
         <TextInput
-          withAsterisk
           label="Skill name"
           placeholder="Programming Langauge"
           {...form.getInputProps("name")}
