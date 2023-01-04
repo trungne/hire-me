@@ -1,6 +1,7 @@
 import { Text, View, StyleSheet } from "@react-pdf/renderer";
 import { Style } from "@react-pdf/types";
 import { WorkInfo } from "shared/types";
+import { formatDate } from "shared/utils";
 import Container from "./Container";
 
 export type WorkSectionType = {
@@ -13,6 +14,8 @@ export type WorkSectionType = {
   locationAndDurationContainer: Style;
   location: Style;
   duration: Style;
+  date: Style;
+  dateSeparator: Style;
 };
 
 const styles = StyleSheet.create<WorkSectionType>({
@@ -38,8 +41,26 @@ const styles = StyleSheet.create<WorkSectionType>({
     display: "flex",
     flexDirection: "column",
   },
-  location: {},
-  duration: { fontStyle: "italic", fontWeight: "thin" },
+  location: {
+    textAlign: "right",
+    marginRight: 8,
+  },
+  duration: {
+    fontStyle: "italic",
+    fontWeight: "thin",
+    marginLeft: 8,
+    marginRight: 8,
+  },
+  date: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  dateSeparator: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });
 
 export const WorkSection = ({ workList }: { workList: WorkInfo[] }) => {
@@ -49,7 +70,7 @@ export const WorkSection = ({ workList }: { workList: WorkInfo[] }) => {
         <Text>Experience</Text>
       </View>
       <View>
-        {workList.map((work, idx) => {
+        {workList?.map((work, idx) => {
           return (
             <View
               key={idx}
@@ -71,24 +92,35 @@ export const WorkSection = ({ workList }: { workList: WorkInfo[] }) => {
                 </View>
                 <View style={styles.locationAndDurationContainer}>
                   <Text style={styles.location}>{work.location}</Text>
-                  <View>
-                    <Text style={styles.duration}>{work.startDate}</Text>
-                    <Text style={styles.duration}>{work.endDate}</Text>
+                  <View style={styles.date}>
+                    <Text style={styles.duration}>
+                      {work.startDate
+                        ? formatDate(new Date(work.startDate))
+                        : ""}
+                    </Text>
+                    <Text style={styles.dateSeparator}>|</Text>
+
+                    <Text style={styles.duration}>
+                      {work.endDate ? formatDate(new Date(work.endDate)) : ""}
+                    </Text>
                   </View>
                 </View>
               </View>
-              {work.responsibilities && <View
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  marginTop: 10,
-                  marginBottom: 10,
-                }}
-              >
-                {work.responsibilities.map((responsibility, idx) => {
-                  return <Text key={idx}>- {responsibility}</Text>;
-                })}
-              </View>}
+              {work.responsibilities && (
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    marginTop: 10,
+                    marginBottom: 10,
+                  }}
+                >
+                  <Text>Responsibilities: </Text>
+                  {work.responsibilities.map((responsibility, idx) => {
+                    return <Text key={idx}>- {responsibility}</Text>;
+                  })}
+                </View>
+              )}
             </View>
           );
         })}
