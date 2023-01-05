@@ -119,7 +119,7 @@ export const awardInfoAtom = createPersistentAtom(
 
 export const cvInfoAtom = atom<CVInfo | null>((get) => {
   const template = get(primitiveTemplateInfoAtom);
-  if (template === undefined) {
+  if (template === null) {
     return null;
   }
   const profile = get(primitiveProfileInfoAtom) ?? undefined;
