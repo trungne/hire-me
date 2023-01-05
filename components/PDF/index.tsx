@@ -1,5 +1,7 @@
+import { Button } from "@mantine/core";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { useAtom } from "jotai";
+import Link from "next/link";
 import { cvInfoAtom } from "shared/atoms";
 import Template from "./Template";
 
@@ -21,17 +23,25 @@ const MyDocument = () => {
     <>
       <div className="mx-auto max-w-2xl w-4/5 aspect-[1.414]">
         <Template cvInfo={info} />
-      </div>
+        <div className="flex p-4 m-4 justify-between">
+          <Link href="/">
+            <Button variant="outline">Back to edit</Button>
+          </Link>
 
-      <PDFDownloadLink
-        document={<Template cvInfo={info} />}
-        fileName="somename.pdf"
-      >
-        {({ blob, url, loading, error }) => {
-          console.log("error", error);
-          return <h1>{loading ? "Loading" : "Download"}</h1>;
-        }}
-      </PDFDownloadLink>
+          <PDFDownloadLink
+            document={<Template cvInfo={info} />}
+            fileName="somename.pdf"
+          >
+            {({ blob, url, loading, error }) => {
+              return (
+                <Button disabled={loading} color={loading ? "gray" : "teal"}>
+                  {loading ? "Loading" : "Download"}
+                </Button>
+              );
+            }}
+          </PDFDownloadLink>
+        </div>
+      </div>
     </>
   );
 };

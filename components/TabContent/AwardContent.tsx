@@ -10,6 +10,7 @@ import { awardInfoAtom, navBarAtom } from "shared/atoms";
 import { convertArrayToMap } from "shared/utils";
 import { MonthPicker } from "mantine-dates-6";
 import { DatePicker } from "@mantine/dates";
+import Link from "next/link";
 
 const INPUT_FORM_PREFIX = "award-info-input-";
 const AwardInfoInputForm = ({
@@ -151,27 +152,32 @@ const AwardContent = () => {
         >
           Previous
         </Button>
-        <Button
-          onClick={() => {
-            formIndices.forEach((idx) => {
-              const button = document.querySelector<HTMLButtonElement>(
-                `#${INPUT_FORM_PREFIX}${idx}`
-              );
-              if (button) {
-                button.click();
-              }
-            });
+        <Link href="/generate">
+          <Button
+          color="teal"
+            onClick={() => {
+              formIndices.forEach((idx) => {
+                const button = document.querySelector<HTMLButtonElement>(
+                  `#${INPUT_FORM_PREFIX}${idx}`
+                );
+                if (button) {
+                  button.click();
+                }
+              });
 
-            // number of form object received equal to form => all form is valid
-            if (Object.keys(formMapRef.current).length === formIndices.length) {
-              setAwardInfo(Object.values(formMapRef.current));
-              // TODO: create pdf
-            }
-          }}
-          type="submit"
-        >
-          Create PDF!
-        </Button>
+              // number of form object received equal to form => all form is valid
+              if (
+                Object.keys(formMapRef.current).length === formIndices.length
+              ) {
+                setAwardInfo(Object.values(formMapRef.current));
+                // TODO: create pdf
+              }
+            }}
+            type="submit"
+          >
+            Create PDF
+          </Button>
+        </Link>
       </div>
     </TabContent>
   );
