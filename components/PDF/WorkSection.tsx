@@ -1,80 +1,16 @@
-import { Text, View, StyleSheet } from "@react-pdf/renderer";
-import { Style } from "@react-pdf/types";
+import { Text, View } from "@react-pdf/renderer";
 import { WorkInfo } from "shared/types";
 import { formatDate } from "shared/utils";
 import Container from "./Container";
-import { CONTENT_FONT_SIZE, SECTION_FONT_SIZE } from "./styles";
+import { CONTENT_FONT_SIZE, WorkSectionType } from "./styles";
 
-export type WorkSectionType = {
-  sectionTitle: Style;
-  workSection: Style;
-
-  companyAndJobTitleContainer: Style;
-  companyName: Style;
-  jobTitle: Style;
-  locationAndDurationContainer: Style;
-  location: Style;
-  duration: Style;
-  responsibilities: Style;
-  date: Style;
-  dateSeparator: Style;
-};
-
-const styles = StyleSheet.create<WorkSectionType>({
-  sectionTitle: {
-    fontSize: SECTION_FONT_SIZE,
-  },
-  workSection: {
-    marginLeft: 16,
-    marginRight: 16,
-    display: "flex",
-    flexDirection: "column",
-  },
-  companyAndJobTitleContainer: {
-    display: "flex",
-    flexDirection: "column",
-  },
-  companyName: {
-    fontWeight: "bold",
-  },
-  jobTitle: {
-    fontStyle: "italic",
-    fontWeight: "thin",
-  },
-  locationAndDurationContainer: {
-    display: "flex",
-    flexDirection: "column",
-  },
-  location: {
-    display: "flex",
-    alignSelf: "flex-end",
-    marginRight: 8,
-  },
-  duration: {
-    fontStyle: "italic",
-    fontWeight: "thin",
-    marginLeft: 8,
-    marginRight: 8,
-  },
-  date: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  dateSeparator: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  responsibilities: {
-    display: "flex",
-    flexDirection: "column",
-    marginTop: 10,
-    marginBottom: 10,
-  },
-});
-
-export const WorkSection = ({ workList }: { workList: WorkInfo[] }) => {
+export const WorkSection = ({
+  workList,
+  styles,
+}: {
+  workList: WorkInfo[];
+  styles: WorkSectionType;
+}) => {
   return (
     <Container>
       <View style={styles.sectionTitle}>

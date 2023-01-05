@@ -76,7 +76,7 @@ export const appUserAtom = atom<User | null, User>(
   }
 );
 // CV info atoms
-export const primitiveTemplateInfoAtom = atom<TemplateInfo | null>({ type: 0 });
+export const primitiveTemplateInfoAtom = atom<TemplateInfo | null>(0);
 export const templateInfoAtom = createPersistentAtom(
   primitiveTemplateInfoAtom,
   CV_INFO_LOCAL_STORAGE_KEYS.TEMPLATE
@@ -119,8 +119,7 @@ export const awardInfoAtom = createPersistentAtom(
 
 export const cvInfoAtom = atom<CVInfo | null>((get) => {
   const template = get(primitiveTemplateInfoAtom);
-
-  if (!template) {
+  if (template === undefined) {
     return null;
   }
   const profile = get(primitiveProfileInfoAtom) ?? undefined;

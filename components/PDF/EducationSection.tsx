@@ -1,55 +1,15 @@
-import { Text, View, StyleSheet } from "@react-pdf/renderer";
-import { Style } from "@react-pdf/types";
+import { Text, View } from "@react-pdf/renderer";
 import { EducationInfo } from "shared/types";
 import { formatDate } from "shared/utils";
 import Container from "./Container";
-import { CONTENT_FONT_SIZE, SECTION_FONT_SIZE } from "./styles";
-
-export type EducationSectionStyle = {
-  sectionTitle: Style;
-  educationSection: Style;
-  date: Style;
-  duration: Style;
-  dateSeparator: Style;
-  school: Style;
-  degree: Style;
-};
-
-const styles = StyleSheet.create<EducationSectionStyle>({
-  sectionTitle: {
-    fontSize: SECTION_FONT_SIZE,
-  },
-  educationSection: {
-    marginLeft: 16,
-    marginRight: 16,
-    fontSize: CONTENT_FONT_SIZE,
-  },
-  date: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  duration: {
-    fontStyle: "italic",
-    fontWeight: "thin",
-  },
-  dateSeparator: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    marginLeft: 8,
-    marginRight: 8,
-  },
-  school: {
-    fontWeight: "bold",
-  },
-  degree: {},
-});
+import { EducationSectionStyle } from "./styles";
 
 const EducationSection = ({
   educationList,
+  styles,
 }: {
   educationList: EducationInfo[];
+  styles: EducationSectionStyle;
 }) => {
   return (
     <Container marginVertical={12}>

@@ -1,32 +1,21 @@
-import { Text, View, StyleSheet } from "@react-pdf/renderer";
-import { Style } from "@react-pdf/types";
+import { Text, View } from "@react-pdf/renderer";
 import { AwardInfo } from "shared/types";
 import Container from "./Container";
-import { CONTENT_FONT_SIZE, SECTION_FONT_SIZE } from "./styles";
+import { AwardSectionStyle } from "./styles";
 
-export type SkillSectionStyle = {
-  sectionTitle: Style;
-  skillSection: Style;
-};
-
-const styles = StyleSheet.create<SkillSectionStyle>({
-  sectionTitle: {
-    fontSize: SECTION_FONT_SIZE,
-  },
-  skillSection: {
-    marginLeft: 16,
-    marginRight: 16,
-    fontSize: CONTENT_FONT_SIZE,
-  },
-});
-
-const AwardSection = ({ awardList }: { awardList: AwardInfo[] }) => {
+const AwardSection = ({
+  awardList,
+  styles,
+}: {
+  awardList: AwardInfo[];
+  styles: AwardSectionStyle;
+}) => {
   return (
     <Container marginVertical={12}>
       <View style={styles.sectionTitle}>
         <Text>Awards</Text>
       </View>
-      <View style={styles.skillSection}>
+      <View style={styles.awardSection}>
         {awardList.map((award, idx) => {
           return (
             <View

@@ -1,32 +1,21 @@
-import { Text, View, StyleSheet } from "@react-pdf/renderer";
-import { Style } from "@react-pdf/types";
+import { Text, View } from "@react-pdf/renderer";
 import { ProjectInfo } from "shared/types";
 import Container from "./Container";
-import { CONTENT_FONT_SIZE, SECTION_FONT_SIZE } from "./styles";
+import { ProjectSectionStyle } from "./styles";
 
-export type SkillSectionStyle = {
-  sectionTitle: Style;
-  skillSection: Style;
-};
-
-const styles = StyleSheet.create<SkillSectionStyle>({
-  sectionTitle: {
-    fontSize: SECTION_FONT_SIZE,
-  },
-  skillSection: {
-    marginLeft: 16,
-    marginRight: 16,
-    fontSize: CONTENT_FONT_SIZE,
-  },
-});
-
-const ProjectSection = ({ projectList }: { projectList: ProjectInfo[] }) => {
+const ProjectSection = ({
+  projectList,
+  styles,
+}: {
+  projectList: ProjectInfo[];
+  styles: ProjectSectionStyle;
+}) => {
   return (
     <Container marginVertical={12}>
       <View style={styles.sectionTitle}>
         <Text>Projects</Text>
       </View>
-      <View style={styles.skillSection}>
+      <View style={styles.projectSection}>
         {projectList.map((project, idx) => {
           return (
             <View

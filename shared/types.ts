@@ -34,9 +34,7 @@ export type ResponseBody<T = any> = {
 };
 
 // Tab Content Types
-export type TemplateInfo = {
-  type: number;
-};
+export type TemplateInfo = number;
 
 export type ProfileInfo = {
   fullName?: string;
