@@ -1,6 +1,6 @@
 import { Text } from "@react-pdf/renderer";
 
-export default () => (
+const Divider = () => (
   <Text
     style={{
       borderColor: "black",
@@ -9,3 +9,4 @@ export default () => (
     }}
   ></Text>
 );
+export default Divider;

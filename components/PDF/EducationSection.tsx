@@ -57,9 +57,10 @@ const EducationSection = ({
         <Text>Education</Text>
       </View>
       <View style={styles.educationSection}>
-        {educationList.map((education) => {
+        {educationList.map((education, idx) => {
           return (
             <View
+              key={idx}
               style={{
                 display: "flex",
                 flexDirection: "row",

@@ -37,19 +37,16 @@ const SkillSection = ({ skillList }: { skillList: SkillInfo[] }) => {
         {skillList.map((skill, idx) => {
           return (
             <View
+              key={idx}
               style={{
                 display: "flex",
                 flexDirection: "row",
               }}
             >
               {skill.name && (
-                <Text key={idx + skill.name} style={styles.skillName}>
-                  {skill.name}:{" "}
-                </Text>
+                <Text style={styles.skillName}>{skill.name}: </Text>
               )}
-              {skill.details && (
-                <Text key={idx}>{skill.details.join(", ")}</Text>
-              )}
+              {skill.details && <Text>{skill.details.join(", ")}</Text>}
             </View>
           );
         })}

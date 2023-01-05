@@ -27,9 +27,10 @@ const AwardSection = ({ awardList }: { awardList: AwardInfo[] }) => {
         <Text>Awards</Text>
       </View>
       <View style={styles.skillSection}>
-        {awardList.map((award) => {
+        {awardList.map((award, idx) => {
           return (
             <View
+              key={idx}
               style={{
                 display: "flex",
                 flexDirection: "row",

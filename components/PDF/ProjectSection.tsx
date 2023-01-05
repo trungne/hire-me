@@ -30,6 +30,7 @@ const ProjectSection = ({ projectList }: { projectList: ProjectInfo[] }) => {
         {projectList.map((project, idx) => {
           return (
             <View
+              key={idx}
               style={{
                 display: "flex",
                 flexDirection: "column",
@@ -40,7 +41,6 @@ const ProjectSection = ({ projectList }: { projectList: ProjectInfo[] }) => {
                 style={{
                   fontWeight: "bold",
                 }}
-                key={idx}
               >
                 {project.name}
               </Text>
