@@ -15,7 +15,6 @@ const INPUT_FORM_PREFIX = "work-info-input-";
 const WorkInfoInputForm = ({
   idx,
   remove,
-  add,
   formMap,
   initialData,
 }: InputFormProps<WorkInfo>) => {
@@ -96,10 +95,6 @@ const WorkInfoInputForm = ({
         >
           Remove
         </Button>
-
-        <Button variant="light" onClick={add}>
-          Add
-        </Button>
       </div>
     </>
   );
@@ -138,13 +133,35 @@ const WorkContent = () => {
     },
     [setWorkInfo]
   );
+  const onSave = () => {
+    formIndices.forEach((idx) => {
+      const button = document.querySelector<HTMLButtonElement>(
+        `#${INPUT_FORM_PREFIX}${idx}`
+      );
+      if (button) {
+        button.click();
+      }
+    });
+    // number of form object received equal to form => all form is valid
+    if (Object.keys(formMapRef.current).length === formIndices.length) {
+      setWorkInfo(Object.values(formMapRef.current));
+      // TODO: display success message
+      return;
+    }
 
+    // TODO: display error message
+  };
   return (
-    <TabContent title="Enter your work history">
+    <TabContent onSave={onSave} title="Enter your work history">
+      <div>
+        <Button variant="light" onClick={addWork}>
+          Add
+        </Button>
+      </div>
+
       {formIndices.map((idx) => (
         <WorkInfoInputForm
           formMap={formMapRef.current}
-          add={addWork}
           remove={removeWork}
           idx={idx}
           key={idx}
@@ -162,21 +179,8 @@ const WorkContent = () => {
         </Button>
         <Button
           onClick={() => {
-            formIndices.forEach((idx) => {
-              const button = document.querySelector<HTMLButtonElement>(
-                `#${INPUT_FORM_PREFIX}${idx}`
-              );
-              if (button) {
-                button.click();
-              }
-            });
-            // number of form object received equal to form => all form is valid
-            if (Object.keys(formMapRef.current).length === formIndices.length) {
-              setWorkInfo(Object.values(formMapRef.current));
-              setNavBar("Skills");
-            }
+            setNavBar("Skills");
           }}
-          type="submit"
         >
           Next
         </Button>

@@ -1,9 +1,8 @@
-import { Button, Text, TextInput } from "@mantine/core";
+import { Button, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useCallback, useRef, useState } from "react";
 import { useDynamicForm } from "components/DynamicForm/hooks";
 import { SkillInfo } from "shared/types";
-import { CommonTabContentType } from ".";
 import TabContent from "./TabContent";
 import { InputFormProps } from ".";
 import { convertArrayToMap, hasEmptyStringField } from "shared/utils";
@@ -15,7 +14,6 @@ const INPUT_FORM_PREFIX = "skill-info-input-";
 const SkillInfoInputForm = ({
   idx,
   remove,
-  add,
   formMap,
   initialData,
 }: InputFormProps<SkillInfo>) => {
@@ -79,10 +77,6 @@ const SkillInfoInputForm = ({
         >
           Remove
         </Button>
-
-        <Button variant="light" onClick={add}>
-          Add
-        </Button>
       </div>
     </>
   );
@@ -99,7 +93,7 @@ const SkillContent = () => {
     convertArrayToMap(skillInfo)
   );
 
-  const addSchool = useCallback(() => {
+  const addSkill = useCallback(() => {
     setFormIndices((prev) => {
       const newIdx = prev[prev.length - 1] + 1;
 
@@ -124,12 +118,35 @@ const SkillContent = () => {
     [setSkillInfo]
   );
 
+  const onSave = () => {
+    formIndices.forEach((idx) => {
+      const button = document.querySelector<HTMLButtonElement>(
+        `#${INPUT_FORM_PREFIX}${idx}`
+      );
+      if (button) {
+        button.click();
+      }
+    });
+    // number of form object received equal to form => all form is valid
+    if (Object.keys(formMapRef.current).length === formIndices.length) {
+      setSkillInfo(Object.values(formMapRef.current));
+      //TODO: add success message
+      return;
+    }
+
+    //TODO: add error message
+  };
+
   return (
-    <TabContent title="Enter your skills">
+    <TabContent onSave={onSave} title="Enter your skills">
+      <div>
+        <Button variant="light" onClick={addSkill}>
+          Add
+        </Button>
+      </div>
       {formIndices.map((idx) => (
         <SkillInfoInputForm
           formMap={formMapRef.current}
-          add={addSchool}
           remove={removeSchool}
           idx={idx}
           key={idx}

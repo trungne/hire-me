@@ -50,26 +50,27 @@ export const useDynamicForm = ({
   const formElement = useMemo(() => {
     return (
       <form>
-        <Text className="text-[14px] text-[#212529] font-medium font-['Montserrat']">
-          {label}
-          <span
-            className="mantine-u5apz8 mantine-InputWrapper-required mantine-TextInput-required"
-            aria-hidden="true"
-          >
-            {" "}
-            *
-          </span>
-        </Text>
+        <div className="flex items-center gap-4">
+          <Text className="text-[14px] text-[#212529] font-medium font-['Montserrat']">
+            {label}
+          </Text>
 
-        <Button onClick={addField} color="green" compact className="mb-4 mt-2">
-          <Plus />
-        </Button>
+          <Button
+            onClick={addField}
+            color="green"
+            compact
+            className="my-2"
+          >
+            <Plus />
+          </Button>
+        </div>
+
         <div className="flex flex-col gap-4">
           {Object.keys(fields).map((key, index) => {
             return (
               <TextInput
                 value={fields[key]}
-                error={!fields[key] && <div>{errorMessage}</div>}
+                error={fields[key] === undefined && <div>{errorMessage}</div>}
                 key={key}
                 rightSection={
                   <CloseButton

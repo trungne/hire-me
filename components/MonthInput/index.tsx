@@ -30,7 +30,7 @@ const MonthInput = ({
           Start date
         </Text>
         <MonthPicker
-          defaultDate={startDate ? new Date(startDate) : undefined}
+          defaultValue={startDate ? new Date(startDate) : undefined}
           placeholder="Start Date"
           {...startDateInputProps}
         />
@@ -52,7 +52,7 @@ const MonthInput = ({
         </div>
         <MonthPicker
           placeholder="End Date"
-          defaultDate={
+          defaultValue={
             endDate && endDate !== "Present" ? new Date(endDate) : undefined
           }
           {...endDateInputProps}

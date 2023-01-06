@@ -15,7 +15,6 @@ const INPUT_FORM_PREFIX = "project-info-input-";
 const SkillInfoInputForm = ({
   idx,
   remove,
-  add,
   formMap,
   initialData,
 }: InputFormProps<ProjectInfo>) => {
@@ -94,10 +93,6 @@ const SkillInfoInputForm = ({
         >
           Remove
         </Button>
-
-        <Button variant="light" onClick={add}>
-          Add
-        </Button>
       </div>
     </>
   );
@@ -114,7 +109,7 @@ const ProjectContent = () => {
     convertArrayToMap(projectInfo)
   );
 
-  const addSchool = useCallback(() => {
+  const addProject = useCallback(() => {
     setFormIndices((prev) => {
       const newIdx = prev[prev.length - 1] + 1;
 
@@ -139,12 +134,35 @@ const ProjectContent = () => {
     [setProjectInfo]
   );
 
+  const onSave = () => {
+    formIndices.forEach((idx) => {
+      const button = document.querySelector<HTMLButtonElement>(
+        `#${INPUT_FORM_PREFIX}${idx}`
+      );
+      if (button) {
+        button.click();
+      }
+    });
+    // number of form object received equal to form => all form is valid
+    if (Object.keys(formMapRef.current).length === formIndices.length) {
+      setProjectInfo(Object.values(formMapRef.current));
+      // TODO: display success message
+      return;
+    }
+
+    // TODO: display error message
+  };
+
   return (
-    <TabContent title="Enter your skills">
+    <TabContent onSave={onSave} title="Enter your skills">
+      <div>
+        <Button variant="light" onClick={addProject}>
+          Add
+        </Button>
+      </div>
       {formIndices.map((idx) => (
         <SkillInfoInputForm
           formMap={formMapRef.current}
-          add={addSchool}
           remove={removeSchool}
           idx={idx}
           key={idx}
@@ -162,19 +180,7 @@ const ProjectContent = () => {
         </Button>
         <Button
           onClick={() => {
-            formIndices.forEach((idx) => {
-              const button = document.querySelector<HTMLButtonElement>(
-                `#${INPUT_FORM_PREFIX}${idx}`
-              );
-              if (button) {
-                button.click();
-              }
-            });
-            // number of form object received equal to form => all form is valid
-            if (Object.keys(formMapRef.current).length === formIndices.length) {
-              setProjectInfo(Object.values(formMapRef.current));
-              setNavBar("Awards");
-            }
+            setNavBar("Awards");
           }}
           type="submit"
         >

@@ -14,14 +14,15 @@ const ProfileContent = () => {
     validate: {},
   });
 
+  const onSave = () => {
+    setProfileInfo(form.values);
+
+    // TODO: display success message
+  };
+
   return (
-    <TabContent title="Enter your personal information">
-      <form
-        className="grow flex flex-col"
-        onSubmit={form.onSubmit((values) => {
-          setProfileInfo(values);
-        })}
-      >
+    <TabContent onSave={onSave} title="Enter your personal information">
+      <form className="grow flex flex-col">
         <div className="flex flex-col gap-4">
           <TextInput
             label="Full name"
@@ -61,11 +62,8 @@ const ProfileContent = () => {
           </Button>
           <Button
             onClick={() => {
-              if (form.isValid()) {
-                setNavBar("Education");
-              }
+              setNavBar("Education");
             }}
-            type="submit"
           >
             Next
           </Button>

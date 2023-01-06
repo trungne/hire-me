@@ -10,20 +10,16 @@ import { useForm } from "@mantine/form";
 import { InputFormProps } from ".";
 import { useAtom } from "jotai";
 import { educationInfoAtom, navBarAtom } from "shared/atoms";
-import { convertArrayToMap, isClientSide } from "shared/utils";
-import { MonthPicker, MonthPickerInput } from "mantine-dates-6";
+import { convertArrayToMap, getMinimumArrayLength } from "shared/utils";
 import MonthInput from "components/MonthInput";
 
 const INPUT_FORM_PREFIX = "education-info-input-";
 const EducationInfoInputForm = ({
   idx,
   remove,
-  add,
   formMap,
   initialData,
 }: InputFormProps<EducationInfo>) => {
-  const theme = useMantineTheme();
-
   const form = useForm<EducationInfo>({
     initialValues: initialData,
     validate: {},
@@ -100,10 +96,6 @@ const EducationInfoInputForm = ({
           >
             Remove
           </Button>
-
-          <Button variant="light" onClick={add}>
-            Add
-          </Button>
         </div>
       </form>
     </>
@@ -115,7 +107,7 @@ const EducationContent = () => {
   const [educationInfo, setEducationInfo] = useAtom(educationInfoAtom);
 
   const [formIndices, setFormIndices] = useState<number[]>(
-    Array.from(Array(educationInfo ? educationInfo.length : 1).keys())
+    Array.from(Array(getMinimumArrayLength(educationInfo)).keys())
   );
 
   const formMapRef = useRef<Record<number, EducationInfo>>(
@@ -145,12 +137,35 @@ const EducationContent = () => {
     [setEducationInfo]
   );
 
+  const onSave = () => {
+    formIndices.forEach((idx) => {
+      const button = document.querySelector<HTMLButtonElement>(
+        `#${INPUT_FORM_PREFIX}${idx}`
+      );
+      if (button) {
+        button.click();
+      }
+    });
+    // number of form object received equal to form => all form is valid
+    if (Object.keys(formMapRef.current).length === formIndices.length) {
+      setEducationInfo(Object.values(formMapRef.current));
+      // TODO: display success message
+      return;
+    }
+
+    // TODO: display error message
+  };
+
   return (
-    <TabContent title="Enter your education background">
+    <TabContent onSave={onSave} title="Enter your education background">
+      <div>
+        <Button variant="light" onClick={addSchool}>
+          Add
+        </Button>
+      </div>
       {formIndices.map((idx) => (
         <EducationInfoInputForm
           formMap={formMapRef.current}
-          add={addSchool}
           remove={removeSchool}
           idx={idx}
           key={idx}
@@ -168,21 +183,8 @@ const EducationContent = () => {
         </Button>
         <Button
           onClick={() => {
-            formIndices.forEach((idx) => {
-              const button = document.querySelector<HTMLButtonElement>(
-                `#${INPUT_FORM_PREFIX}${idx}`
-              );
-              if (button) {
-                button.click();
-              }
-            });
-            // number of form object received equal to form => all form is valid
-            if (Object.keys(formMapRef.current).length === formIndices.length) {
-              setNavBar("Work");
-              setEducationInfo(Object.values(formMapRef.current));
-            }
+            setNavBar("Work");
           }}
-          type="submit"
         >
           Next
         </Button>

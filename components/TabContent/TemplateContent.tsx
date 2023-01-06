@@ -1,25 +1,42 @@
 import { Button, Radio } from "@mantine/core";
 import { TEMPLATE_MAP } from "components/PDF/styles";
 import { useAtom } from "jotai";
+import { useState } from "react";
 import { navBarAtom, templateInfoAtom } from "shared/atoms";
 import TabContent from "./TabContent";
 
 const TemplateContent = () => {
   const [, setNavBar] = useAtom(navBarAtom);
   const [template, setTemplate] = useAtom(templateInfoAtom);
+  const [value, setValue] = useState<string>(template?.toString() ?? "");
+
+  const onSave = () => {
+    if (!value) {
+      // TODO: display error
+      console.error("No template selected");
+      return;
+    }
+    setTemplate(parseInt(value));
+  };
   return (
-    <TabContent title="Choose a template">
+    <TabContent onSave={onSave} title="Choose a template">
       <Radio.Group
-        value={template?.toString() || "0"}
+        value={value}
         onChange={(value) => {
-          setTemplate(parseInt(value));
+          setValue(value);
         }}
         name="template"
         label="Select your template"
         withAsterisk
       >
         {Object.keys(TEMPLATE_MAP).map((key) => {
-          return <Radio key={key} value={key} label={`Template ${key}`} />;
+          return (
+            <Radio
+              key={key}
+              value={key}
+              label={`Template ${parseInt(key) + 1}`}
+            />
+          );
         })}
       </Radio.Group>
 

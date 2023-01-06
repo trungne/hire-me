@@ -46,3 +46,7 @@ const DATE_FOTMATTER = new Intl.DateTimeFormat("en-US", options);
 export const formatDate = (date: Date) => {
   return DATE_FOTMATTER.format(date);
 };
+
+export const getMinimumArrayLength = (array?: any[] | null) => {
+  return array?.length || 1;
+};

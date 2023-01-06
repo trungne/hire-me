@@ -1,12 +1,13 @@
 import { useCallback, useRef, useState } from "react";
-import { Button, Text, TextInput, useMantineTheme } from "@mantine/core";
+import { Button, TextInput, useMantineTheme } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useAtom } from "jotai";
+import { useRouter } from "next/router";
 
 import TabContent from "./TabContent";
 import { AwardInfo } from "shared/types";
 import { InputFormProps } from ".";
-import { awardInfoAtom, navBarAtom } from "shared/atoms";
+import { awardInfoAtom, cvInfoAtom, navBarAtom } from "shared/atoms";
 import { convertArrayToMap } from "shared/utils";
 import { MonthPicker } from "mantine-dates-6";
 import { DatePicker } from "@mantine/dates";
@@ -16,11 +17,9 @@ const INPUT_FORM_PREFIX = "award-info-input-";
 const AwardInfoInputForm = ({
   idx,
   remove,
-  add,
   formMap,
   initialData,
 }: InputFormProps<AwardInfo>) => {
-  const theme = useMantineTheme();
   const form = useForm<AwardInfo>({
     initialValues: initialData,
     validate: {
@@ -85,10 +84,6 @@ const AwardInfoInputForm = ({
           >
             Remove
           </Button>
-
-          <Button variant="light" onClick={add}>
-            Add
-          </Button>
         </div>
       </form>
     </>
@@ -97,7 +92,9 @@ const AwardInfoInputForm = ({
 
 const AwardContent = () => {
   const [, setNavBar] = useAtom(navBarAtom);
+
   const [awardInfo, setAwardInfo] = useAtom(awardInfoAtom);
+  const [cvInfo, setCvInfo] = useAtom(cvInfoAtom);
 
   const [formIndices, setFormIndices] = useState<number[]>(
     Array.from(Array(awardInfo ? awardInfo.length : 1).keys())
@@ -106,7 +103,7 @@ const AwardContent = () => {
     convertArrayToMap(awardInfo)
   );
 
-  const addSchool = useCallback(() => {
+  const addAward = useCallback(() => {
     setFormIndices((prev) => {
       const newIdx = prev[prev.length - 1] + 1;
 
@@ -116,7 +113,7 @@ const AwardContent = () => {
     setAwardInfo(Object.values(formMapRef.current));
   }, [setAwardInfo]);
 
-  const removeSchool = useCallback(
+  const remove = useCallback(
     (id: number) => {
       setFormIndices((prev) => {
         return [...prev.filter((e) => e !== id)];
@@ -131,13 +128,36 @@ const AwardContent = () => {
     [setAwardInfo]
   );
 
+  const onSave = () => {
+    formIndices.forEach((idx) => {
+      const button = document.querySelector<HTMLButtonElement>(
+        `#${INPUT_FORM_PREFIX}${idx}`
+      );
+      if (button) {
+        button.click();
+      }
+    });
+
+    // number of form object received equal to form => all form is valid
+    if (Object.keys(formMapRef.current).length === formIndices.length) {
+      setAwardInfo(Object.values(formMapRef.current));
+      //TODO: add success message
+      return;
+    }
+    // TODO: add error message
+  };
+
   return (
-    <TabContent title="Enter your education background">
+    <TabContent onSave={onSave} title="Enter your education background">
+      <div>
+        <Button variant="light" onClick={addAward}>
+          Add
+        </Button>
+      </div>
       {formIndices.map((idx) => (
         <AwardInfoInputForm
           formMap={formMapRef.current}
-          add={addSchool}
-          remove={removeSchool}
+          remove={remove}
           idx={idx}
           key={idx}
           initialData={formMapRef.current[idx]}
@@ -152,26 +172,12 @@ const AwardContent = () => {
         >
           Previous
         </Button>
+
         <Link href="/generate">
           <Button
-          color="teal"
+            color="teal"
             onClick={() => {
-              formIndices.forEach((idx) => {
-                const button = document.querySelector<HTMLButtonElement>(
-                  `#${INPUT_FORM_PREFIX}${idx}`
-                );
-                if (button) {
-                  button.click();
-                }
-              });
-
-              // number of form object received equal to form => all form is valid
-              if (
-                Object.keys(formMapRef.current).length === formIndices.length
-              ) {
-                setAwardInfo(Object.values(formMapRef.current));
-                // TODO: create pdf
-              }
+              setNavBar("Awards");
             }}
             type="submit"
           >
