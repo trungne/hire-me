@@ -1,7 +1,4 @@
-"use client";
-
-import { Button, Text, TextInput, useMantineTheme } from "@mantine/core";
-import { DatePicker, DateRangePicker } from "@mantine/dates";
+import { Button, TextInput } from "@mantine/core";
 import { useCallback, useRef, useState } from "react";
 
 import TabContent from "./TabContent";

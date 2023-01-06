@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from "react";
-import { Button, TextInput, useMantineTheme } from "@mantine/core";
+import { Button, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useAtom } from "jotai";
 import { useRouter } from "next/router";
@@ -7,11 +7,17 @@ import { useRouter } from "next/router";
 import TabContent from "./TabContent";
 import { AwardInfo } from "shared/types";
 import { InputFormProps } from ".";
-import { awardInfoAtom, cvInfoAtom, navBarAtom } from "shared/atoms";
+import {
+  appUserAtom,
+  awardInfoAtom,
+  cvInfoAtom,
+  navBarAtom,
+} from "shared/atoms";
 import { convertArrayToMap } from "shared/utils";
 import { MonthPicker } from "mantine-dates-6";
 import { DatePicker } from "@mantine/dates";
 import Link from "next/link";
+import { createCV } from "shared/queries";
 
 const INPUT_FORM_PREFIX = "award-info-input-";
 const AwardInfoInputForm = ({
@@ -92,9 +98,10 @@ const AwardInfoInputForm = ({
 
 const AwardContent = () => {
   const [, setNavBar] = useAtom(navBarAtom);
-
+  const router = useRouter();
   const [awardInfo, setAwardInfo] = useAtom(awardInfoAtom);
-  const [cvInfo, setCvInfo] = useAtom(cvInfoAtom);
+  const [cvInfo] = useAtom(cvInfoAtom);
+  const [user] = useAtom(appUserAtom);
 
   const [formIndices, setFormIndices] = useState<number[]>(
     Array.from(Array(awardInfo ? awardInfo.length : 1).keys())
@@ -173,17 +180,28 @@ const AwardContent = () => {
           Previous
         </Button>
 
-        <Link href="/generate">
-          <Button
-            color="teal"
-            onClick={() => {
-              setNavBar("Awards");
-            }}
-            type="submit"
-          >
-            Create PDF
-          </Button>
-        </Link>
+        <Button
+          color="teal"
+          onClick={async () => {
+            setNavBar("Awards");
+            if (!user || !cvInfo) {
+              // show error
+              return;
+            }
+            // show loading
+            await createCV({
+              name: "CV - " + Date.now(),
+              cvBody: cvInfo,
+              email: user.email,
+            });
+            // turn off loading
+
+            router.push("/generate");
+          }}
+          type="submit"
+        >
+          Create PDF
+        </Button>
       </div>
     </TabContent>
   );
