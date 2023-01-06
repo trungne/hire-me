@@ -16,9 +16,6 @@ const MonthInput = ({
   onPresentClicked,
 }: Props) => {
   const theme = useMantineTheme();
-  {
-    console.log("endDate", endDate);
-  }
 
   return (
     <div className="flex justify-center gap-4">
