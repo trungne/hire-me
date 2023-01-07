@@ -6,6 +6,7 @@ import { createCV } from "shared/queries";
 import { useRouter } from "next/router";
 import { appUserAtom, cvInfoAtom } from "shared/atoms";
 import { faker } from "@faker-js/faker";
+import { showNotification } from "@mantine/notifications";
 
 export const submitCvModalAtom = atom(false);
 
@@ -24,10 +25,17 @@ export const SubmitCvModal = () => {
       }
 
       const cv = data.data;
+      setOpened(false);
       router.push(`/cv/${cv.id}`);
     },
     onError: (error) => {
       console.log(error);
+      setOpened(false);
+      showNotification({
+        title: "Error",
+        message: "Something went wrong",
+        color: "red",
+      });
     },
   });
 

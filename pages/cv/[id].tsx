@@ -2,15 +2,17 @@ import type { NextPage } from "next";
 import { InferGetServerSidePropsType, GetServerSideProps } from "next";
 
 import Head from "next/head";
-import { Header } from "components/Header";
+import { Header, HEADER_HEIGHT } from "components/Header";
 
 import { getCV } from "shared/queries";
-import { CV } from "shared/types";
+import { CV, ResponseBody } from "shared/types";
 import { parseCvInfo } from "shared/utils";
 import dynamic from "next/dynamic";
+import { Alert } from "@mantine/core";
+import { useRouter } from "next/router";
 
 type ServerSideProps = {
-  cv: CV;
+  response: ResponseBody<CV>;
 };
 export const getServerSideProps: GetServerSideProps<ServerSideProps> = async (
   context
@@ -21,7 +23,7 @@ export const getServerSideProps: GetServerSideProps<ServerSideProps> = async (
   const { data: responseBody } = await getCV(id as string);
   return {
     props: {
-      cv: responseBody.data,
+      response: responseBody,
     }, // will be passed to the page component as props
   };
 };
@@ -29,9 +31,11 @@ export const getServerSideProps: GetServerSideProps<ServerSideProps> = async (
 const PDFDocument = dynamic(() => import("components/PDF"), { ssr: false });
 
 const CVPage: NextPage<ServerSideProps> = ({
-  cv,
+  response,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const cvInfo = parseCvInfo(cv.cvBody);
+  const router = useRouter();
+  const { id } = router.query;
+  const info = parseCvInfo(response.data?.cvBody);
   return (
     <>
       <Head>
@@ -41,10 +45,19 @@ const CVPage: NextPage<ServerSideProps> = ({
       </Head>
       <Header></Header>
 
-      {cvInfo ? (
-        <PDFDocument info={cvInfo} />
+      {response.data && info ? (
+        <PDFDocument info={info} />
       ) : (
-        <div>Not enough information to generate PDF</div>
+        <div
+          style={{
+            height: `calc(100vh - ${HEADER_HEIGHT}px)`,
+          }}
+          className="flex justify-center items-center"
+        >
+          <Alert title="Invalid ID" color="red">
+            Cannot fetch CV with id: {id}
+          </Alert>
+        </div>
       )}
     </>
   );
