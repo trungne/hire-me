@@ -91,3 +91,10 @@ export type CVInfo = {
   projectList?: ProjectInfo[];
   awardList?: AwardInfo[];
 };
+
+export type CV = {
+  id: string;
+  email: string;
+  name: string;
+  cvBody: string;
+};

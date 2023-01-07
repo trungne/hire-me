@@ -14,10 +14,10 @@ import {
   navBarAtom,
 } from "shared/atoms";
 import { convertArrayToMap } from "shared/utils";
-import { MonthPicker } from "mantine-dates-6";
 import { DatePicker } from "@mantine/dates";
-import Link from "next/link";
 import { createCV } from "shared/queries";
+import { useMutation } from "react-query";
+import { submitCvModalAtom } from "components/Modal/SubmitCvModal";
 
 const INPUT_FORM_PREFIX = "award-info-input-";
 const AwardInfoInputForm = ({
@@ -102,6 +102,7 @@ const AwardContent = () => {
   const [awardInfo, setAwardInfo] = useAtom(awardInfoAtom);
   const [cvInfo] = useAtom(cvInfoAtom);
   const [user] = useAtom(appUserAtom);
+  const [, setSubmitCvModal] = useAtom(submitCvModalAtom);
 
   const [formIndices, setFormIndices] = useState<number[]>(
     Array.from(Array(awardInfo ? awardInfo.length : 1).keys())
@@ -184,19 +185,7 @@ const AwardContent = () => {
           color="teal"
           onClick={async () => {
             setNavBar("Awards");
-            if (!user || !cvInfo) {
-              // show error
-              return;
-            }
-            // show loading
-            await createCV({
-              name: "CV - " + Date.now(),
-              cvBody: cvInfo,
-              email: user.email,
-            });
-            // turn off loading
-
-            router.push("/generate");
+            setSubmitCvModal(true);
           }}
           type="submit"
         >

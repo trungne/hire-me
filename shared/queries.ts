@@ -1,5 +1,5 @@
 import axiosInstance from "./axios-settings";
-import { CVInfo, GetAccessTokenRequest, ResponseBody, User } from "./types";
+import { CV, CVInfo, GetAccessTokenRequest, ResponseBody, User } from "./types";
 
 export const getUserByEmail = async (email: string) => {
   return axiosInstance.get<ResponseBody<User>>(`users/email/${email}`);
@@ -22,7 +22,7 @@ type CreateCVRequest = {
 export const createCV = async ({ name, cvBody, email }: CreateCVRequest) => {
   const stringifiedBody = JSON.stringify(cvBody);
 
-  return axiosInstance.post<ResponseBody<CVInfo>>(`cv`, {
+  return axiosInstance.post<ResponseBody<CV>>(`cv`, {
     name,
     cvBody: stringifiedBody,
     email,
