@@ -18,7 +18,7 @@ const MonthInput = ({
   const theme = useMantineTheme();
 
   return (
-    <div className="flex justify-center gap-4">
+    <div className="flex flex-col md:flex-row items-center justify-center gap-4">
       <div className="text-center">
         <Text
           style={{

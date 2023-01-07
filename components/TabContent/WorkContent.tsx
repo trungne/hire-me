@@ -5,10 +5,15 @@ import { WorkInfo } from "shared/types";
 import TabContent from "./TabContent";
 import { InputFormProps } from ".";
 import { useDynamicForm } from "components/DynamicForm/hooks";
-import { convertArrayToMap, hasEmptyStringField } from "shared/utils";
+import {
+  convertArrayToMap,
+  getMinimumArrayLength,
+  hasEmptyStringField,
+} from "shared/utils";
 import { useAtom } from "jotai";
 import { navBarAtom, workInfoAtom } from "shared/atoms";
 import MonthInput from "components/MonthInput";
+import { showNotification } from "@mantine/notifications";
 
 const INPUT_FORM_PREFIX = "work-info-input-";
 
@@ -104,7 +109,7 @@ const WorkContent = () => {
   const [, setNavBar] = useAtom(navBarAtom);
   const [workInfo, setWorkInfo] = useAtom(workInfoAtom);
   const [formIndices, setFormIndices] = useState<number[]>(
-    Array.from(Array(workInfo ? workInfo.length : 1).keys())
+    Array.from(Array(getMinimumArrayLength(workInfo)).keys())
   );
   const formMapRef = useRef<Record<number, WorkInfo>>(
     convertArrayToMap(workInfo)
@@ -142,14 +147,13 @@ const WorkContent = () => {
         button.click();
       }
     });
-    // number of form object received equal to form => all form is valid
-    if (Object.keys(formMapRef.current).length === formIndices.length) {
-      setWorkInfo(Object.values(formMapRef.current));
-      // TODO: display success message
-      return;
-    }
 
-    // TODO: display error message
+    setWorkInfo(Object.values(formMapRef.current));
+    showNotification({
+      title: "Success",
+      message: "Work information saved",
+      color: "green",
+    });
   };
   return (
     <TabContent onSave={onSave} title="Enter your work history">

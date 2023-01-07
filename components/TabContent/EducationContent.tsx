@@ -9,6 +9,7 @@ import { useAtom } from "jotai";
 import { educationInfoAtom, navBarAtom } from "shared/atoms";
 import { convertArrayToMap, getMinimumArrayLength } from "shared/utils";
 import MonthInput from "components/MonthInput";
+import { showNotification } from "@mantine/notifications";
 
 const INPUT_FORM_PREFIX = "education-info-input-";
 const EducationInfoInputForm = ({
@@ -143,14 +144,12 @@ const EducationContent = () => {
         button.click();
       }
     });
-    // number of form object received equal to form => all form is valid
-    if (Object.keys(formMapRef.current).length === formIndices.length) {
-      setEducationInfo(Object.values(formMapRef.current));
-      // TODO: display success message
-      return;
-    }
-
-    // TODO: display error message
+    setEducationInfo(Object.values(formMapRef.current));
+    showNotification({
+      title: "Success",
+      message: "Education information saved",
+      color: "green",
+    });
   };
 
   return (

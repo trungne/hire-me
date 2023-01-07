@@ -2,22 +2,15 @@ import { useCallback, useRef, useState } from "react";
 import { Button, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useAtom } from "jotai";
-import { useRouter } from "next/router";
 
 import TabContent from "./TabContent";
 import { AwardInfo } from "shared/types";
 import { InputFormProps } from ".";
-import {
-  appUserAtom,
-  awardInfoAtom,
-  cvInfoAtom,
-  navBarAtom,
-} from "shared/atoms";
-import { convertArrayToMap } from "shared/utils";
+import { awardInfoAtom, navBarAtom } from "shared/atoms";
+import { convertArrayToMap, getMinimumArrayLength } from "shared/utils";
 import { DatePicker } from "@mantine/dates";
-import { createCV } from "shared/queries";
-import { useMutation } from "react-query";
 import { submitCvModalAtom } from "components/Modal/SubmitCvModal";
+import { showNotification } from "@mantine/notifications";
 
 const INPUT_FORM_PREFIX = "award-info-input-";
 const AwardInfoInputForm = ({
@@ -98,14 +91,11 @@ const AwardInfoInputForm = ({
 
 const AwardContent = () => {
   const [, setNavBar] = useAtom(navBarAtom);
-  const router = useRouter();
   const [awardInfo, setAwardInfo] = useAtom(awardInfoAtom);
-  const [cvInfo] = useAtom(cvInfoAtom);
-  const [user] = useAtom(appUserAtom);
   const [, setSubmitCvModal] = useAtom(submitCvModalAtom);
 
   const [formIndices, setFormIndices] = useState<number[]>(
-    Array.from(Array(awardInfo ? awardInfo.length : 1).keys())
+    Array.from(Array(getMinimumArrayLength(awardInfo)).keys())
   );
   const formMapRef = useRef<Record<number, AwardInfo>>(
     convertArrayToMap(awardInfo)
@@ -146,13 +136,12 @@ const AwardContent = () => {
       }
     });
 
-    // number of form object received equal to form => all form is valid
-    if (Object.keys(formMapRef.current).length === formIndices.length) {
-      setAwardInfo(Object.values(formMapRef.current));
-      //TODO: add success message
-      return;
-    }
-    // TODO: add error message
+    setAwardInfo(Object.values(formMapRef.current));
+    showNotification({
+      title: "Success",
+      message: "Award information saved",
+      color: "green",
+    });
   };
 
   return (

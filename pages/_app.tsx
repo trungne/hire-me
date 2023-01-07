@@ -7,15 +7,18 @@ import { QueryClientProvider } from "react-query";
 import { QUERY_CLIENT } from "shared/constants";
 import RegistrationModal from "components/Modal/RegistrationModal";
 import { SubmitCvModal } from "components/Modal/SubmitCvModal";
+import { NotificationsProvider } from "@mantine/notifications";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <JotaiProvider>
       <QueryClientProvider client={QUERY_CLIENT}>
         <MantineProvider withGlobalStyles withNormalizeCSS>
-          <Component {...pageProps} />
-          <RegistrationModal />
-          <SubmitCvModal />
+          <NotificationsProvider position="top-center">
+            <Component {...pageProps} />
+            <RegistrationModal />
+            <SubmitCvModal />
+          </NotificationsProvider>
         </MantineProvider>
       </QueryClientProvider>
     </JotaiProvider>

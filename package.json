@@ -17,6 +17,7 @@
     "@mantine/form": "^5.9.5",
     "@mantine/hooks": "^5.9.4",
     "@mantine/next": "^5.9.4",
+    "@mantine/notifications": "^5.10.0",
     "@react-pdf/renderer": "^3.0.2",
     "axios": "^1.2.1",
     "dayjs": "^1.11.7",

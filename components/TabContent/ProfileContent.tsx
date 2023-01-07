@@ -5,6 +5,7 @@ import { ProfileInfo } from "shared/types";
 import { useAtom } from "jotai";
 import { navBarAtom, profileInfoAtom } from "shared/atoms";
 import { memo } from "react";
+import { showNotification } from "@mantine/notifications";
 
 const ProfileContent = () => {
   const [profileInfo, setProfileInfo] = useAtom(profileInfoAtom);
@@ -16,8 +17,11 @@ const ProfileContent = () => {
 
   const onSave = () => {
     setProfileInfo(form.values);
-
-    // TODO: display success message
+    showNotification({
+      title: "Success",
+      message: "Profile information saved",
+      color: "green",
+    });
   };
 
   return (

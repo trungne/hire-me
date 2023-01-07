@@ -41,6 +41,7 @@ const Main = () => {
         <div
           style={{
             maxHeight: `calc(100vh - ${HEADER_HEIGHT}px)`,
+            height: `calc(100vh - ${HEADER_HEIGHT}px)`,
           }}
           className={`overflow-y-auto w-full scrollbar-hide p-4 `}
         >

@@ -3,12 +3,17 @@ import { useForm } from "@mantine/form";
 import { useDynamicForm } from "components/DynamicForm/hooks";
 import { useState, useRef, useCallback } from "react";
 import { ProjectInfo } from "shared/types";
-import { convertArrayToMap, hasEmptyStringField } from "shared/utils";
+import {
+  convertArrayToMap,
+  getMinimumArrayLength,
+  hasEmptyStringField,
+} from "shared/utils";
 import { CommonTabContentType } from ".";
 import TabContent from "./TabContent";
 import { InputFormProps } from ".";
 import { navBarAtom, projectInfoAtom } from "shared/atoms";
 import { useAtom } from "jotai";
+import { showNotification } from "@mantine/notifications";
 
 const INPUT_FORM_PREFIX = "project-info-input-";
 
@@ -103,7 +108,7 @@ const ProjectContent = () => {
   const [projectInfo, setProjectInfo] = useAtom(projectInfoAtom);
 
   const [formIndices, setFormIndices] = useState<number[]>(
-    Array.from(Array(projectInfo ? projectInfo.length : 1).keys())
+    Array.from(Array(getMinimumArrayLength(projectInfo)).keys())
   );
   const formMapRef = useRef<Record<number, ProjectInfo>>(
     convertArrayToMap(projectInfo)
@@ -143,14 +148,13 @@ const ProjectContent = () => {
         button.click();
       }
     });
-    // number of form object received equal to form => all form is valid
-    if (Object.keys(formMapRef.current).length === formIndices.length) {
-      setProjectInfo(Object.values(formMapRef.current));
-      // TODO: display success message
-      return;
-    }
 
-    // TODO: display error message
+    setProjectInfo(Object.values(formMapRef.current));
+    showNotification({
+      title: "Success",
+      message: "Project information saved",
+      color: "green",
+    });
   };
 
   return (

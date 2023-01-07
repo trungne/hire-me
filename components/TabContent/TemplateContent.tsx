@@ -3,17 +3,22 @@ import { TEMPLATE_MAP } from "components/PDF/styles";
 import { useAtom } from "jotai";
 import { useState } from "react";
 import { navBarAtom, templateInfoAtom } from "shared/atoms";
+import { showNotification } from "@mantine/notifications";
+
 import TabContent from "./TabContent";
 
 const TemplateContent = () => {
   const [, setNavBar] = useAtom(navBarAtom);
   const [template, setTemplate] = useAtom(templateInfoAtom);
-  const [value, setValue] = useState<string>(template?.toString() ?? "");
+  const [value, setValue] = useState<string | undefined>(template?.toString());
 
   const onSave = () => {
     if (!value) {
-      // TODO: display error
-      console.error("No template selected");
+      showNotification({
+        title: "Error",
+        message: "No template selected",
+        color: "red",
+      });
       return;
     }
     setTemplate(parseInt(value));

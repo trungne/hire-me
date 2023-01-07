@@ -5,9 +5,14 @@ import { useDynamicForm } from "components/DynamicForm/hooks";
 import { SkillInfo } from "shared/types";
 import TabContent from "./TabContent";
 import { InputFormProps } from ".";
-import { convertArrayToMap, hasEmptyStringField } from "shared/utils";
+import {
+  convertArrayToMap,
+  getMinimumArrayLength,
+  hasEmptyStringField,
+} from "shared/utils";
 import { navBarAtom, skillInfoAtom } from "shared/atoms";
 import { useAtom } from "jotai";
+import { showNotification } from "@mantine/notifications";
 
 const INPUT_FORM_PREFIX = "skill-info-input-";
 
@@ -87,7 +92,7 @@ const SkillContent = () => {
   const [skillInfo, setSkillInfo] = useAtom(skillInfoAtom);
 
   const [formIndices, setFormIndices] = useState<number[]>(
-    Array.from(Array(skillInfo ? skillInfo.length : 1).keys())
+    Array.from(Array(getMinimumArrayLength(skillInfo)).keys())
   );
   const formMapRef = useRef<Record<number, SkillInfo>>(
     convertArrayToMap(skillInfo)
@@ -127,14 +132,13 @@ const SkillContent = () => {
         button.click();
       }
     });
-    // number of form object received equal to form => all form is valid
-    if (Object.keys(formMapRef.current).length === formIndices.length) {
-      setSkillInfo(Object.values(formMapRef.current));
-      //TODO: add success message
-      return;
-    }
 
-    //TODO: add error message
+    setSkillInfo(Object.values(formMapRef.current));
+    showNotification({
+      title: "Success",
+      message: "Skill information saved",
+      color: "green",
+    });
   };
 
   return (
