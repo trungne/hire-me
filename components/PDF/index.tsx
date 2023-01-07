@@ -1,18 +1,11 @@
 import { Button } from "@mantine/core";
 import { PDFDownloadLink } from "@react-pdf/renderer";
-import { useAtom } from "jotai";
 import Link from "next/link";
-import { cvInfoAtom } from "shared/atoms";
+import { CVInfo } from "shared/types";
 import { TEMPLATE_MAP } from "./styles";
 import Template from "./Template";
 
-const MyDocument = () => {
-  const [info] = useAtom(cvInfoAtom);
-
-  if (!info) {
-    return null;
-  }
-
+const MyDocument = ({ info }: { info: CVInfo }) => {
   return (
     <div className="mx-auto max-w-2xl w-4/5 aspect-[1.414]">
       <Template

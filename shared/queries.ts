@@ -28,3 +28,7 @@ export const createCV = async ({ name, cvBody, email }: CreateCVRequest) => {
     email,
   });
 };
+
+export const getCV = async (id: string) => {
+  return axiosInstance.get<ResponseBody<CV>>(`cv/${id}`);
+};

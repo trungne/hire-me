@@ -1,3 +1,5 @@
+import { CVInfo } from "./types";
+
 export const getRandomNumber = (min: number, max: number) => {
   return Math.random() * (max - min) + min;
 };
@@ -49,4 +51,12 @@ export const formatDate = (date: Date) => {
 
 export const getMinimumArrayLength = (array?: any[] | null) => {
   return array?.length || 1;
+};
+
+export const parseCvInfo = (cvBody: string): CVInfo | null => {
+  try {
+    return JSON.parse(cvBody) as CVInfo;
+  } catch (e) {
+    return null;
+  }
 };

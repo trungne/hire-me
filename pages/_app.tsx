@@ -5,6 +5,8 @@ import { MantineProvider } from "@mantine/core";
 import { Provider as JotaiProvider } from "jotai";
 import { QueryClientProvider } from "react-query";
 import { QUERY_CLIENT } from "shared/constants";
+import RegistrationModal from "components/Modal/RegistrationModal";
+import { SubmitCvModal } from "components/Modal/SubmitCvModal";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -12,6 +14,8 @@ function MyApp({ Component, pageProps }: AppProps) {
       <QueryClientProvider client={QUERY_CLIENT}>
         <MantineProvider withGlobalStyles withNormalizeCSS>
           <Component {...pageProps} />
+          <RegistrationModal />
+          <SubmitCvModal />
         </MantineProvider>
       </QueryClientProvider>
     </JotaiProvider>
