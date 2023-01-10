@@ -1,5 +1,5 @@
 import { Button } from "@mantine/core";
-import { PDFDownloadLink } from "@react-pdf/renderer";
+import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
 import Link from "next/link";
 import { CVInfo } from "shared/types";
 import { TEMPLATE_MAP } from "./styles";
@@ -37,7 +37,9 @@ const MyDocument = ({ info }: { info: CVInfo }) => {
           }}
         </PDFDownloadLink>
       </div>
-      <Template styles={styles} cvInfo={info} />
+      <PDFViewer showToolbar={false} height={1000} width={700}>
+        <Template styles={styles} cvInfo={info} />
+      </PDFViewer>
     </div>
   );
 };
