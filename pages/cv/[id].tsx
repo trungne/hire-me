@@ -7,32 +7,32 @@ import dynamic from "next/dynamic";
 import { Alert, LoadingOverlay } from "@mantine/core";
 import { useRouter } from "next/router";
 import { useQuery } from "react-query";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useAtom } from "jotai";
 import { accessTokenAtom } from "shared/atoms";
-
 
 const PDFDocument = dynamic(() => import("components/PDF"), { ssr: false });
 
 const CVPage: NextPage = () => {
-
   const router = useRouter();
   const [accessToken] = useAtom(accessTokenAtom);
   const { id } = router.query;
-  const {
-    data: response,
-    isLoading,
-    isError,
-  } = useQuery("GetCV", {
+  const { data: response, isLoading } = useQuery("GetCV", {
     queryFn: () => getCV(id as string),
     enabled: !!id && !!accessToken,
   });
+
+  const [isError, setIsError] = useState(false);
   const info = useMemo(() => {
     if (!response) {
       return null;
     }
 
-    return parseCvInfo(response.data.data.cvBody);
+    if (response.data.error) {
+      setIsError(true);
+      return null;
+    }
+    return parseCvInfo(response?.data?.data?.cvBody);
   }, [response]);
   return (
     <>
@@ -55,7 +55,7 @@ const CVPage: NextPage = () => {
           <LoadingOverlay visible={isLoading} />
 
           {isError && (
-            <Alert title="Invalid ID" color="blue">
+            <Alert title="Invalid ID" color="red">
               Cannot fetch CV with id: {id}
             </Alert>
           )}

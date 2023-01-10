@@ -26,18 +26,20 @@ const ProjectSection = ({
                 marginBottom: 12,
               }}
             >
-              <Text
-                style={{
-                  fontWeight: "bold",
-                }}
-              >
-                {project.name}
-              </Text>
-              <Text>{project.description}</Text>
-              <Text>Tool(s) used: {project.toolsUsed.join(", ")}</Text>
-              <Text>
-                Visit: <a href={project.link}>project.link</a>
-              </Text>
+              {project.name && (
+                <Text
+                  style={{
+                    fontWeight: "bold",
+                  }}
+                >
+                  {project.name}
+                </Text>
+              )}
+              {project.description && <Text>{project.description}</Text>}
+              {project.toolsUsed && (
+                <Text>Tool(s) used: {project.toolsUsed.join(", ")}</Text>
+              )}
+              {project.link && <Text>Visit: {project.link}</Text>}
             </View>
           );
         })}

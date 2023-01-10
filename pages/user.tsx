@@ -6,6 +6,13 @@ import { accessTokenAtom, appUserAtom } from "shared/atoms";
 import { useRouter } from "next/router";
 import { useQuery } from "react-query";
 import { getAllCVsByEmail } from "shared/queries";
+import Template from "components/PDF/Template";
+import { parseCvInfo } from "shared/utils";
+import { TEMPLATE_MAP } from "components/PDF/styles";
+import { PDFViewer } from "@react-pdf/renderer";
+import { Button, Text } from "@mantine/core";
+import Link from "next/link";
+import { Eye } from "tabler-icons-react";
 
 const UserPage: NextPage = () => {
   const [user] = useAtom(appUserAtom);
@@ -32,6 +39,42 @@ const UserPage: NextPage = () => {
       </Head>
 
       <Header></Header>
+      <div className="flex justify-center mx-auto max-w-4xl gap-4 flex-wrap">
+        {data?.data.data.map((cv) => {
+          const info = parseCvInfo(cv.cvBody);
+          if (!info) {
+            return null;
+          }
+
+          return (
+            <div>
+              <div className="flex justify-center items-center">
+                <Link className="flex items-center" href={`cv/${cv.id}`}>
+                  <Button variant="subtle" compact>
+                    <Eye></Eye>
+                  </Button>
+                </Link>
+
+                <Text className="text-center">{cv.name}</Text>
+              </div>
+
+              <PDFViewer
+                className="w-full h-[200px] md:h-[450px] md:w-[300px]"
+                showToolbar={false}
+              >
+                <Template
+                  styles={
+                    TEMPLATE_MAP[info.template]
+                      ? TEMPLATE_MAP[info.template]
+                      : TEMPLATE_MAP[0]
+                  }
+                  cvInfo={info}
+                />
+              </PDFViewer>
+            </div>
+          );
+        })}
+      </div>
     </>
   );
 };
