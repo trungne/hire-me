@@ -96,7 +96,7 @@ export const useSubscribeFbAuthState = () => {
     const subscribe = onAuthStateChanged(firebaseAuth, async (fbUser) => {
 
       if (!fbUser || !fbUser.email) {
-        setAccessToken("");
+        setAccessToken(null);
         setFirebaseUser(null);
         return;
       }

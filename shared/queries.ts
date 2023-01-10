@@ -41,13 +41,19 @@ export const getAllCVsByEmail = async (email: string) => {
 
 type UpdateCvRequest = {
   id: string;
-  cvBody: CVInfo;
+  cvBody?: CVInfo;
+  name?: string;
 };
 
-export const updateCvById = async ({ id, cvBody }: UpdateCvRequest) => {
+export const updateCvById = async ({ id, cvBody, name }: UpdateCvRequest) => {
   const stringifiedBody = JSON.stringify(cvBody);
 
   return axiosInstance.patch<void>(`cv/${id}`, {
     cvBody: stringifiedBody,
+    name,
   });
+};
+
+export const deleteCvById = async (id: string) => {
+  return axiosInstance.delete<void>(`cv/${id}`);
 };

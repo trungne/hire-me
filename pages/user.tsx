@@ -1,4 +1,4 @@
-import type { NextPage } from "next";
+import type { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { Header } from "components/Header";
 import { useAtom } from "jotai";
@@ -13,11 +13,28 @@ import { PDFViewer } from "@react-pdf/renderer";
 import { Button, LoadingOverlay, Text } from "@mantine/core";
 import Link from "next/link";
 import { Edit, Eye } from "tabler-icons-react";
+import { editCVModalAtom } from "components/Modal/EditCVModal";
+
+export const getServerSideProps: GetServerSideProps<{}> = async (context) => {
+  console.log(context.req.cookies)
+  if (!context.req.cookies["accessToken"]) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+};
 
 const UserPage: NextPage = () => {
   const [user] = useAtom(appUserAtom);
   const [accessToken] = useAtom(accessTokenAtom);
-  const router = useRouter();
+  const [, setEditCVModalProps] = useAtom(editCVModalAtom);
 
   const { data, isLoading } = useQuery(
     ["getAllCVs", user?.email],
@@ -39,7 +56,7 @@ const UserPage: NextPage = () => {
       </Head>
 
       <Header></Header>
-      <LoadingOverlay visible={isLoading}/>
+      <LoadingOverlay visible={isLoading} />
       <div className=" flex justify-center mx-auto max-w-4xl gap-2 flex-wrap">
         {data?.data.data.map((cv) => {
           const info = parseCvInfo(cv.cvBody);
@@ -57,7 +74,14 @@ const UserPage: NextPage = () => {
                 </Link>
 
                 <Button compact variant="outline">
-                  <Edit />
+                  <Edit
+                    onClick={() => {
+                      setEditCVModalProps({
+                        id: cv.id,
+                        name: cv.name,
+                      });
+                    }}
+                  />
                 </Button>
               </div>
 

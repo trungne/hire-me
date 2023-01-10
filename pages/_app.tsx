@@ -8,6 +8,7 @@ import RegistrationModal from "components/Modal/RegistrationModal";
 import { SubmitCvModal } from "components/Modal/SubmitCvModal";
 import { NotificationsProvider } from "@mantine/notifications";
 import { useInitCVInfo, useSubscribeFbAuthState } from "shared/hooks";
+import { EditCvModal } from "components/Modal/EditCVModal";
 
 function MyApp({ Component, pageProps }: AppProps) {
   useInitCVInfo();
@@ -19,6 +20,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           <Component {...pageProps} />
           <RegistrationModal />
           <SubmitCvModal />
+          <EditCvModal />
         </NotificationsProvider>
       </MantineProvider>
     </QueryClientProvider>

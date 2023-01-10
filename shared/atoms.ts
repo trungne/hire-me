@@ -44,12 +44,20 @@ export const navBarAtom = createPersistentAtom(
 
 // accessTokenAtom
 export const accessTokenAtom = atom<string | null>(null);
-export const writeAcessTokenAtom = atom<null, string>(
+export const writeAcessTokenAtom = atom<null, string | null>(
   null, // it's a convention to pass `null` for the first argument
   (get, set, update) => {
     // `update` is any single value we receive for updating this atom
+    if (!update) {
+      document.cookie = `accessToken=;max-age=0;path=/; domain=${location.hostname}`;
+    } else {
+      document.cookie = `accessToken=${update};max-age=3600;secure`;
+      axiosInstance.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${update}`;
+    }
+
     set(accessTokenAtom, update);
-    axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${update}`;
   }
 );
 
@@ -70,7 +78,6 @@ export const appUserAtom = atom<User | null, User>(
     const {
       data: { data: accessToken },
     } = await getAccessToken({ idToken });
-
     set(writeAcessTokenAtom, accessToken);
     set(_appUserAtom, update);
   }
