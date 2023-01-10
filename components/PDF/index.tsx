@@ -1,5 +1,6 @@
 import { Button } from "@mantine/core";
 import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
+import { HEADER_HEIGHT } from "components/Header";
 import Link from "next/link";
 import { CVInfo } from "shared/types";
 import { TEMPLATE_MAP } from "./styles";
@@ -9,8 +10,11 @@ const MyDocument = ({ info }: { info: CVInfo }) => {
   const styles = TEMPLATE_MAP[info.template] || TEMPLATE_MAP[0];
 
   return (
-    <div className="mx-auto max-w-2xl  aspect-[1.414]">
-      <div className="flex p-2 m-2 justify-between">
+    <div
+      style={{}}
+      className="flex flex-col mx-auto justify-center max-w-full md:max-w-3xl"
+    >
+      <div className="flex p-2 m-2  justify-between ">
         <Link href="/">
           <Button variant="outline">Back to edit</Button>
         </Link>
@@ -37,7 +41,7 @@ const MyDocument = ({ info }: { info: CVInfo }) => {
           }}
         </PDFDownloadLink>
       </div>
-      <PDFViewer showToolbar={false} height={1000} width={700}>
+      <PDFViewer className=" w-full  h-[500px] md:h-[1000px]" showToolbar={false}>
         <Template styles={styles} cvInfo={info} />
       </PDFViewer>
     </div>
