@@ -1,14 +1,11 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import { Header } from "components/Header";
-import { useInitCVInfo, useSubscribeFbAuthState } from "shared/hooks";
 import dynamic from "next/dynamic";
 
 const DynamicMain = dynamic(() => import("components/Main"), { ssr: false });
 const Home: NextPage = () => {
-  useInitCVInfo();
-  useSubscribeFbAuthState();
-
+  
   return (
     <>
       <Head>

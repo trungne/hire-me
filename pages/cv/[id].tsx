@@ -1,41 +1,39 @@
 import type { NextPage } from "next";
-import { InferGetServerSidePropsType, GetServerSideProps } from "next";
-
 import Head from "next/head";
 import { Header, HEADER_HEIGHT } from "components/Header";
-
 import { getCV } from "shared/queries";
-import { CV, ResponseBody } from "shared/types";
 import { parseCvInfo } from "shared/utils";
 import dynamic from "next/dynamic";
-import { Alert } from "@mantine/core";
+import { Alert, LoadingOverlay } from "@mantine/core";
 import { useRouter } from "next/router";
+import { useQuery } from "react-query";
+import { useMemo } from "react";
+import { useAtom } from "jotai";
+import { accessTokenAtom } from "shared/atoms";
 
-type ServerSideProps = {
-  response: ResponseBody<CV>;
-};
-export const getServerSideProps: GetServerSideProps<ServerSideProps> = async (
-  context
-) => {
-  const params = context.params;
-  const id = params?.id;
-
-  const { data: responseBody } = await getCV(id as string);
-  return {
-    props: {
-      response: responseBody,
-    }, // will be passed to the page component as props
-  };
-};
 
 const PDFDocument = dynamic(() => import("components/PDF"), { ssr: false });
 
-const CVPage: NextPage<ServerSideProps> = ({
-  response,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const CVPage: NextPage = () => {
+
   const router = useRouter();
+  const [accessToken] = useAtom(accessTokenAtom);
   const { id } = router.query;
-  const info = parseCvInfo(response.data?.cvBody);
+  const {
+    data: response,
+    isLoading,
+    isError,
+  } = useQuery("GetCV", {
+    queryFn: () => getCV(id as string),
+    enabled: !!id && !!accessToken,
+  });
+  const info = useMemo(() => {
+    if (!response) {
+      return null;
+    }
+
+    return parseCvInfo(response.data.data.cvBody);
+  }, [response]);
   return (
     <>
       <Head>
@@ -45,7 +43,7 @@ const CVPage: NextPage<ServerSideProps> = ({
       </Head>
       <Header></Header>
 
-      {response.data && info ? (
+      {info ? (
         <PDFDocument info={info} />
       ) : (
         <div
@@ -54,9 +52,13 @@ const CVPage: NextPage<ServerSideProps> = ({
           }}
           className="flex justify-center items-center"
         >
-          <Alert title="Invalid ID" color="red">
-            Cannot fetch CV with id: {id}
-          </Alert>
+          <LoadingOverlay visible={isLoading} />
+
+          {isError && (
+            <Alert title="Invalid ID" color="blue">
+              Cannot fetch CV with id: {id}
+            </Alert>
+          )}
         </div>
       )}
     </>
