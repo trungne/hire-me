@@ -1,6 +1,6 @@
 import type { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
-import { Header } from "components/Header";
+import { Header, HEADER_HEIGHT } from "components/Header";
 import { useAtom } from "jotai";
 import { accessTokenAtom, appUserAtom } from "shared/atoms";
 import { useRouter } from "next/router";
@@ -16,7 +16,7 @@ import { Edit, Eye } from "tabler-icons-react";
 import { editCVModalAtom } from "components/Modal/EditCVModal";
 
 export const getServerSideProps: GetServerSideProps<{}> = async (context) => {
-  console.log(context.req.cookies)
+  console.log(context.req.cookies);
   if (!context.req.cookies["accessToken"]) {
     return {
       redirect: {
@@ -57,7 +57,20 @@ const UserPage: NextPage = () => {
 
       <Header></Header>
       <LoadingOverlay visible={isLoading} />
-      <div className=" flex justify-center mx-auto max-w-4xl gap-2 flex-wrap">
+      <div
+        style={{
+          minHeight: `calc(100vh - ${HEADER_HEIGHT}px)`,
+        }}
+        className="flex items-center justify-center mx-auto max-w-4xl gap-2 flex-wrap"
+      >
+        {!data?.data.data.length && !isLoading && (
+          <div className="flex flex-col gap-4">
+            <Text className="text-center">You have no CVs yet</Text>
+            <Link href="/">
+              <Button>Start creating some!</Button>
+            </Link>
+          </div>
+        )}
         {data?.data.data.map((cv) => {
           const info = parseCvInfo(cv.cvBody);
           if (!info) {
