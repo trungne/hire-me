@@ -47,7 +47,7 @@ const UserPage: NextPage = () => {
           }
 
           return (
-            <div>
+            <div key={cv.id}>
               <div className="flex justify-center items-center">
                 <Link className="flex items-center" href={`cv/${cv.id}`}>
                   <Button variant="subtle" compact>
