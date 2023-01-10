@@ -94,14 +94,12 @@ export const useSubscribeFbAuthState = () => {
   const [, setModalOpened] = useAtom(registrationModalAtom);
   useEffect(() => {
     const subscribe = onAuthStateChanged(firebaseAuth, async (fbUser) => {
-
       if (!fbUser || !fbUser.email) {
         setAccessToken(null);
         setFirebaseUser(null);
         return;
       }
 
-      console.log("setFirebaseUser", fbUser);
       setFirebaseUser(fbUser);
 
       try {
@@ -113,7 +111,6 @@ export const useSubscribeFbAuthState = () => {
         }
 
         setAppUser(data.data);
-
       } catch (e) {
         console.log(e);
       }
