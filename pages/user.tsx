@@ -10,16 +10,16 @@ import Template from "components/PDF/Template";
 import { parseCvInfo } from "shared/utils";
 import { TEMPLATE_MAP } from "components/PDF/styles";
 import { PDFViewer } from "@react-pdf/renderer";
-import { Button, Text } from "@mantine/core";
+import { Button, LoadingOverlay, Text } from "@mantine/core";
 import Link from "next/link";
-import { Eye } from "tabler-icons-react";
+import { Edit, Eye } from "tabler-icons-react";
 
 const UserPage: NextPage = () => {
   const [user] = useAtom(appUserAtom);
   const [accessToken] = useAtom(accessTokenAtom);
   const router = useRouter();
 
-  const { data } = useQuery(
+  const { data, isLoading } = useQuery(
     ["getAllCVs", user?.email],
     () => {
       if (user?.email) {
@@ -39,7 +39,8 @@ const UserPage: NextPage = () => {
       </Head>
 
       <Header></Header>
-      <div className="flex justify-center mx-auto max-w-4xl gap-4 flex-wrap">
+      <LoadingOverlay visible={isLoading}/>
+      <div className=" flex justify-center mx-auto max-w-4xl gap-2 flex-wrap">
         {data?.data.data.map((cv) => {
           const info = parseCvInfo(cv.cvBody);
           if (!info) {
@@ -47,15 +48,17 @@ const UserPage: NextPage = () => {
           }
 
           return (
-            <div key={cv.id}>
-              <div className="flex justify-center items-center">
+            <div className="" key={cv.id}>
+              <div className="flex justify-evenly items-center p-2">
                 <Link className="flex items-center" href={`cv/${cv.id}`}>
-                  <Button variant="subtle" compact>
+                  <Button compact>
                     <Eye></Eye>
                   </Button>
                 </Link>
 
-                <Text className="text-center">{cv.name}</Text>
+                <Button compact variant="outline">
+                  <Edit />
+                </Button>
               </div>
 
               <PDFViewer
@@ -71,6 +74,8 @@ const UserPage: NextPage = () => {
                   cvInfo={info}
                 />
               </PDFViewer>
+
+              <Text className="text-center p-2 font-bold">{cv.name}</Text>
             </div>
           );
         })}
