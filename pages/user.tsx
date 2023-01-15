@@ -3,7 +3,6 @@ import Head from "next/head";
 import { Header, HEADER_HEIGHT } from "components/Header";
 import { useAtom } from "jotai";
 import { accessTokenAtom, appUserAtom } from "shared/atoms";
-import { useRouter } from "next/router";
 import { useQuery } from "react-query";
 import { getAllCVsByEmail } from "shared/queries";
 import Template from "components/PDF/Template";
@@ -16,7 +15,7 @@ import { Edit, Eye } from "tabler-icons-react";
 import { editCVModalAtom } from "components/Modal/EditCVModal";
 
 export const getServerSideProps: GetServerSideProps<{}> = async (context) => {
-  console.log(context.req.cookies);
+
   if (!context.req.cookies["accessToken"]) {
     return {
       redirect: {

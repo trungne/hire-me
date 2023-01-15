@@ -54,6 +54,7 @@ export type EducationSectionStyle = {
 };
 
 export type TemplateStyle = {
+  previewImg: string;
   page: Style;
   profile: ProfileSectionStyle;
   work: WorkSectionType;
@@ -65,6 +66,7 @@ export type TemplateStyle = {
 
 export const TEMPLATE_MAP: Record<number, TemplateStyle> = {
   0: {
+    previewImg: "/template_1_preview.png",
     page: {
       fontFamily: "Courier",
       display: "flex",

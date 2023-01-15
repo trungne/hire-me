@@ -6,11 +6,14 @@ import { navBarAtom, templateInfoAtom } from "shared/atoms";
 import { showNotification } from "@mantine/notifications";
 
 import TabContent from "./TabContent";
+import Image from "next/image";
+import { templatePreviewModalAtom } from "components/Modal/TemplatePreviewModal";
 
 const TemplateContent = () => {
   const [, setNavBar] = useAtom(navBarAtom);
   const [template, setTemplate] = useAtom(templateInfoAtom);
   const [value, setValue] = useState<string | undefined>(template?.toString());
+  const [, setTemplateModal] = useAtom(templatePreviewModalAtom);
 
   const onSave = () => {
     if (!value) {
@@ -36,11 +39,26 @@ const TemplateContent = () => {
       >
         {Object.keys(TEMPLATE_MAP).map((key) => {
           return (
-            <Radio
-              key={key}
-              value={key}
-              label={`Template ${parseInt(key) + 1}`}
-            />
+            <div key={key} className="">
+              <Radio
+                value={key}
+                label={`Template ${parseInt(key) + 1}`}
+              ></Radio>
+              <div key={key} className="relative w-32 h-72 cursor-pointer">
+                <Image
+                  style={{ objectFit: "contain" }}
+                  src={TEMPLATE_MAP[+key].previewImg}
+                  fill
+                  alt="Template preview"
+                  className="hover:bg-slate-200 hover:opacity-70"
+                  onClick={() => {
+                    setTemplateModal({
+                      url: TEMPLATE_MAP[+key].previewImg,
+                    });
+                  }}
+                />
+              </div>
+            </div>
           );
         })}
       </Radio.Group>
